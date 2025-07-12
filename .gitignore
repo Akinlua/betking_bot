@@ -1,0 +1,31 @@
+# Node modules
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Logs
+
+*.log
+debug.log
+
+# Environment variables
+.env
+.env.development
+.env.production
+
+# Data files
+# data/captured_data.json
+main.db
+
+# Editor/OS files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Include data/logs and data/cookies directories, but not their files
+data/logs/*
+data/cookies/*
+!data/logs/.gitkeep
+!data/cookies/.gitkeep
+
