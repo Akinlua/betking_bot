@@ -36,99 +36,6 @@ async function _fetchJsonFromApi(url) {
 	}
 }
 
-async function _fetchJsonFromPage(url) {
-	const browser = getBrowserInstance();
-	let page;
-	try {
-		page = await browser.newPage();
-		await page.goto(url, { waitUntil: 'networkidle2' });
-		const content = await page.content();
-		try {
-			await writeFile('content.html', content);
-			console.log('✅ File written successfully');
-		} catch (err) {
-			console.error('❌ Error writing file:', err);
-		}
-
-
-		const frames = page.frames();
-for (const frame of frames) {
-	const scripts = await frame.evaluate(() => Array.from(document.scripts).map(s => s.src));
-	console.log(`Frame ${frame.url()} scripts:`, scripts);
-}
-		// This function runs inside the browser to find the correct script tag.
-		const remixContextData = await page.evaluate(() => {
-			// 1. Get ALL script tags on the page.
-			const scripts = Array.from(document.querySelectorAll('script'));
-
-			// 2. Find the specific script that contains our data object.
-			const contextScript = scripts.find(script => script.textContent.includes('window.__remixContext'));
-
-			// 3. If no script is found, we cannot proceed.
-			if (!contextScript) {
-				return null;
-			}
-
-			// 4. Extract just the JSON part from the script's text content.
-			const scriptText = contextScript.textContent;
-			const jsonText = scriptText.substring(
-				scriptText.indexOf('{'),
-				scriptText.lastIndexOf('}') + 1
-			);
-
-			// 5. Parse the JSON text into an object.
-			try {
-				return JSON.parse(jsonText);
-			} catch (e) {
-				return null;
-			}
-		});
-
-		if (!remixContextData) {
-			throw new Error('Could not find or parse __remixContext script tag on the page.');
-		}
-
-		// 6. Navigate through the complex object to find the event data.
-		const loaderData = remixContextData?.state?.loaderData;
-		if (!loaderData) throw new Error('loaderData not found in Remix context.');
-
-		const routeKey = Object.keys(loaderData).find(key => key.includes('.sports.prematch.'));
-		if (!routeKey) throw new Error('Event route key not found in loaderData.');
-
-		const eventData = loaderData[routeKey]?.event;
-		if (!eventData) return null;
-
-		// 7. Remap the extracted data to the consistent format our bot expects.
-		return {
-			IDEvent: eventData.id,
-			EventName: eventData.name,
-			TeamHome: eventData.name.split(' - ')[0].trim(),
-			TeamAway: eventData.name.split(' - ')[1].trim(),
-			EventDate: eventData.date,
-			Markets: eventData.markets.map(market => ({
-				OddsID: market.id,
-				OddsType: {
-					OddsTypeID: market.typeId,
-					OddsTypeName: market.name,
-					OddsDescription: market.oddsDescription,
-				},
-				Markets: market.selections.map(sel => ({
-					OddAttribute: {
-						OddName: sel.name,
-						SpecialValue: sel.specialValue,
-					},
-					OddOutcome: sel.odd.value
-				}))
-			}))
-		};
-
-	} catch (error) {
-		console.error(`[Bookmaker Service] Error extracting Remix JSON on page ${url}:`, error.message);
-		return null;
-	} finally {
-		if (page) await page.close();
-	}
-}
 
 function normalizeTeamName(name) {
 	if (!name) return '';
@@ -513,10 +420,73 @@ export async function getBetKingMatchDataByTeamPair(home, away) {
 	}
 }
 
+// export async function getBetKingMatchDetailsByEvent(eventId, eventName) {
+// 	if (!eventId || !eventName) return null;
+// 	const eventSlug = _slugifyEventName(eventName);
+// 	const url = `https://m.betking.com/sports/prematch/${eventId}/${eventSlug}`;
+// 	console.log(`[Bookmaker Service] Fetching and parsing data from page: ${url}`);
+// 	return _fetchJsonFromPage(url);
+// }
+//
+
 export async function getBetKingMatchDetailsByEvent(eventId, eventName) {
 	if (!eventId || !eventName) return null;
+
+	// sluggify the eventId and eventName to make the request
 	const eventSlug = _slugifyEventName(eventName);
 	const url = `https://m.betking.com/sports/prematch/${eventId}/${eventSlug}`;
 	console.log(`[Bookmaker Service] Fetching and parsing data from page: ${url}`);
-	return _fetchJsonFromPage(url);
+
+	// initialize browser and make request to URL
+	const browser = getBrowserInstance();
+	let page;
+	try {
+		page = await browser.newPage();
+		await page.setRequestInterception(true);
+		page.on('request', (req) => {
+			if (['image', 'stylesheet', 'font'].includes(req.resourceType())) {
+				req.abort();
+			} else {
+				req.continue();
+			}
+		});
+
+		// not sure if this is neccessary
+		await browser.setCookie({
+			name: 'ABTestNewVirtualsLobby',
+			value: 'false',
+			domain: 'm.betking.com'
+		})
+
+		await page.goto(url, { timeout: 30000, waitUntil: 'domcontentloaded' });
+
+		const remixContentDetails = await page.evaluate(() => {
+			if (window.__remixContext) {
+				return window.__remixContext;
+			} else {
+				throw new Error('Could not find __remixContext on the window object.');
+			}
+		});
+
+		// extract data from json embedded in the page
+		const loaderData = remixContentDetails.state.loaderData;
+		const matchEventDetails = loaderData["routes/($locale).sports.prematch.$matchId.$eventName.($areaId)._index"].event;
+		const matchDetailsMarket = matchEventDetails.markets;
+		const matchDetailsEventId = matchEventDetails.id;
+
+		matchDetailsMarket.forEach(element => {
+			console.log("Types of matches:", element.name);
+		});
+
+		if (matchDetailsEventId != eventId) {
+			throw new Error("Event Id mismatch, Event-Id does not match fetched Match-Details-Event-Id");
+		}
+
+		return matchDetailsMarket;
+	} catch (error) {
+		console.error(`[Bookmaker Service] Error extracting Remix JSON on page ${url}:`, error.message);
+		return null;
+	} finally {
+		if (page) await page.close();
+	}
 }

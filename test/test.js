@@ -5,8 +5,8 @@ import { getBetKingMatchDetailsByEvent } from "../src/services/bookmaker.service
 // This is the data for the specific match we want to fetch,
 // taken from a successful result from our previous fuzzy search.
 const sampleEvent = {
-	"IDEvent": 1002648989,
-	"EventName": "deportivo-alaves-srl-west-bromwich-albion-srl",
+	"IDEvent": 1002585837,
+	"EventName": "wolverhampton-wanderers-manchester-city",
 };
 
 
@@ -29,20 +29,20 @@ async function runDetailedFetchTest() {
 		);
 
 		// 3. Check and display the result
-		if (detailedMatchData) {
-			console.log('\n--- SUCCESS! ---');
-			console.log('Successfully fetched and parsed detailed match data.');
-			console.log('The extracted JSON contains the following markets:');
-			// Log the names of all markets found on the page
-			const marketNames = detailedMatchData.Markets.map(m => m.OddsType.OddsTypeName);
-			console.log(marketNames);
-
-			// For full details, you can log the whole object:
-			// console.log(JSON.stringify(detailedMatchData, null, 2));
-		} else {
-			console.log('\n--- FAILURE ---');
-			console.log('The function did not return any data.');
-		}
+		// if (detailedMatchData) {
+		// 	console.log('\n--- SUCCESS! ---');
+		// 	console.log('Successfully fetched and parsed detailed match data.');
+		// 	console.log('The extracted JSON contains the following markets:');
+		// 	// Log the names of all markets found on the page
+		// 	const marketNames = detailedMatchData.Markets.map(m => m.OddsType.OddsTypeName);
+		// 	console.log(marketNames);
+		//
+		// 	// For full details, you can log the whole object:
+		// 	// console.log(JSON.stringify(detailedMatchData, null, 2));
+		// } else {
+		// 	console.log('\n--- FAILURE ---');
+		// 	console.log('The function did not return any data.');
+		// }
 
 	} catch (error) {
 		console.error('--- TEST FAILED WITH AN ERROR ---');
