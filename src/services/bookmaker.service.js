@@ -1,14 +1,40 @@
 import Fuse from 'fuse.js';
 import { getBrowserInstance } from '../core/browser.js';
-import { writeFile } from "fs/promises"
+import fs from "fs/promises";
+import path from 'path';
+import { URLSearchParams } from 'url';
 
-// --- INTERNAL HELPER FUNCTIONS ---
+async function loadCookies(username) {
+	const cookiePath = path.resolve(`data/cookies/${username}-cookies.json`);
+	try {
+		const cookieData = await fs.readFile(cookiePath, 'utf8');
+		return JSON.parse(cookieData);
+	} catch (error) {
+		return [];
+	}
+}
 
-/**
- * Helper 1: Fetches data from a direct JSON API endpoint.
- * @param {string} url The API URL to fetch.
- * @returns {Promise<object|null>}
- */
+async function saveCookies(username, cookies) {
+	const cookiePath = path.resolve(`./data/cookies/${username}-cookies.json`);
+	await fs.mkdir(path.dirname(cookiePath), { recursive: true });
+	await fs.writeFile(cookiePath, JSON.stringify(cookies, null, 2));
+}
+
+async function areCookiesValid(cookies) {
+	const accessToken = cookies.find(c => c.name === 'accessToken');
+	if (!accessToken) {
+		console.log('[Bookmaker] No accessToken cookie found');
+		return false;
+	}
+	const now = Math.floor(Date.now() / 1000); // Current time in seconds
+	if (accessToken.expires && accessToken.expires < now) {
+		console.log('[Bookmaker] accessToken cookie expired');
+		return false;
+	}
+	console.log('[Bookmaker] accessToken cookie is valid until', new Date(accessToken.expires * 1000));
+	return true;
+}
+
 async function _fetchJsonFromApi(url) {
 	const browser = getBrowserInstance();
 	let page;
@@ -29,7 +55,7 @@ async function _fetchJsonFromApi(url) {
 		let res = await response.json();
 		return res;
 	} catch (error) {
-		console.error(`[Bookmaker Service] Error fetching API URL ${url}:`, error.message);
+		console.error(`[Bookmaker] Error fetching API URL ${url}:`, error.message);
 		return null;
 	} finally {
 		if (page) await page.close();
@@ -41,36 +67,35 @@ function normalizeTeamName(name) {
 	if (!name) return '';
 	// Split on spaces, slashes, hyphens
 	const parts = name.toLowerCase().split(/[ \/-]/).filter(part => part);
-	console.log(`[Bookmaker Service] Normalizing "${name}" -> parts: ${JSON.stringify(parts)}`);
+	// console.log(`[Bookmaker] Normalizing "${name}" -> parts: ${JSON.stringify(parts)}`);
 
 	// Trim parts <=3 chars from front and rear, except youth indicators
-	const keywordExceptions = ['u20', 'u19', 'u21', 'u23'];
 	let start = 0;
 	let end = parts.length;
 
-	while (start < end && parts[start].length <= 3 && !keywordExceptions.includes(parts[start])) {
+	while (start < end && parts[start].length < 3) {
 		start++;
 	}
 
-	while (end > start && parts[end - 1].length <= 3 && !keywordExceptions.includes(parts[end - 1])) {
+	while (end > start && parts[end - 1].length < 3) {
 		end--;
 	}
 
 	let meaningfulParts = parts.slice(start, end);
-	console.log(`[Bookmaker Service] After trimming short parts: ${JSON.stringify(meaningfulParts)}`);
+	// console.log(`[Bookmaker] After trimming short parts: ${JSON.stringify(meaningfulParts)}`);
 
 	// If no meaningful parts remain, use the longest original part
 	if (!meaningfulParts.length) {
 		meaningfulParts = [parts.reduce((longest, part) => part.length > longest.length ? part : longest, '')];
-		console.log(`[Bookmaker Service] No meaningful parts, using longest: "${meaningfulParts[0]}"`);
+		// console.log(`[Bookmaker] No meaningful parts, using longest: "${meaningfulParts[0]}"`);
 	}
 
 	// Remove specific keywords
-	const keywordIncludes = ['club', 'deportivo', 'real', 'santa'];
-	if (keywordIncludes.length > 0) {
-		meaningfulParts = meaningfulParts.filter(part => !keywordIncludes.includes(part));
-		console.log(`[Bookmaker Service] After removing keywords: ${JSON.stringify(meaningfulParts)}`);
-	}
+	// const keywordIncludes = ['club', 'deportivo', 'real', 'santa'];
+	// if (keywordIncludes.length > 0) {
+	// 	meaningfulParts = meaningfulParts.filter(part => !keywordIncludes.includes(part));
+	// 	// console.log(`[Bookmaker] After removing keywords: ${JSON.stringify(meaningfulParts)}`);
+	// }
 
 	// Join parts and clean up
 	let normalized = meaningfulParts.join(' ');
@@ -78,32 +103,16 @@ function normalizeTeamName(name) {
 	normalized = normalized.replace(/\s+/g, ' ');
 	normalized = normalized.trim();
 
-	// Fallback if empty
-	if (!normalized) {
-		normalized = parts.reduce((longest, part) => part.length > longest.length ? part : longest, '');
-		console.log(`[Bookmaker Service] Empty after processing, using longest part: "${normalized}"`);
-	}
+	// // Fallback if empty
+	// if (!normalized) {
+	// 	normalized = parts.reduce((longest, part) => part.length > longest.length ? part : longest, '');
+	// 	// console.log(`[Bookmaker] Empty after processing, using longest part: "${normalized}"`);
+	// }
 
-	console.log(`[Bookmaker Service] Final normalized name: "${normalized}"`);
+	console.log(`[Bookmaker] Final normalized name: "${normalized}"`);
 	return normalized;
 }
-/**
- * Helper 3: Normalizes a team name for better fuzzy matching.
- */
-// function normalizeTeamName(name) {
-// 	if (!name) return '';
-// 	let normalized = name.toLowerCase().split('/')[0];
-// 	const keywords = ['fc', 'sc', 'cf', 'ac', 'as', 'cd', 'ca', 'rc', 'fk', 'sk', 'tsg', 'vfl', 'vfr', 'tsv', 'spvgg', 'gsk', 'ia', 'kr', 'bk', 'if', 'ifk', 'ff', 'club', 'rj', 'cs', 'st', 'una', 'fr', 'ii', 'iii', 'b', 'c', 'ec'];
-// 	// Match keywords anywhere, surrounded by optional spaces or boundaries
-// 	const keywordRegex = new RegExp(`\\b(?:${keywords.join('|')})\\b`, 'g');
-// 	normalized = normalized.replace(keywordRegex, '');
-// 	normalized = normalized.replace(/[.-]/g, ' ');
-// 	normalized = normalized.replace(/\s+/g, ' ');
-// 	return normalized.trim();
-// }
-/**
- * Helper 4: Creates a URL-friendly slug from an event name.
- */
+
 function _slugifyEventName(name) {
 	if (!name) return '';
 	return name.toLowerCase()
@@ -113,8 +122,6 @@ function _slugifyEventName(name) {
 		.replace(/-+/g, '-');
 }
 
-
-// --- EXPORTABLE SERVICE FUNCTIONS ---
 
 /**
  * Fetches basic match data from the API by its numeric ID.
@@ -138,209 +145,17 @@ export async function getBetKingTeamDataByName(searchTerm) {
 	return Array.isArray(matches) ? matches : [matches];
 }
 
-/**
- * Finds the best preliminary match for a team pair using fuzzy search.
- * This is the first step to get the correct IDEvent and EventName.
- */
-// export async function getBetKingMatchDataByTeamPair(home, away) {
-// 	if (!home || !away) { return null; }
-// 	const normalizedHome = normalizeTeamName(home);
-// 	const normalizedAway = normalizeTeamName(away);
-// 	console.log(`[Bookmaker Service] Normalized Search: "${normalizedHome}" vs "${normalizedAway}"`);
-// 	try {
-// 		const searchTerm = normalizedHome.length < normalizedAway.length ? home : away;
-// 		// const matches = await getBetKingTeamDataByName(searchTerm);
-// 		// if (!matches || !matches.length) { return null; }
-// 		const matches = await getBetKingTeamDataByName(searchTerm);
-// 		console.log(`[Bookmaker Service] Raw API response for "${searchTerm}":`, matches);
-// 		if (!matches || !matches.length) {
-// 			console.log(`[Bookmaker Service] No matches found for "${searchTerm}"`);
-// 			return null;
-// 		}
-//
-// 		const searchableMatches = matches.map(match => ({ ...match, normalizedHome: normalizeTeamName(match.TeamHome), normalizedAway: normalizeTeamName(match.TeamAway) }));
-// 		const fuse = new Fuse(searchableMatches, { includeScore: true, threshold: 0.8, keys: [{ name: 'normalizedHome', weight: 0.5 }, { name: 'normalizedAway', weight: 0.5 }] });
-// 		const results = fuse.search({ $and: [{ $or: [{ normalizedHome: normalizedHome }, { normalizedAway: normalizedHome }] }, { $or: [{ normalizedHome: normalizedAway }, { normalizedAway: normalizedAway }] }] });
-//
-// 		if (results.length === 0) { return null; }
-// 		const bestMatch = results[0];
-// 		if (bestMatch.score > 0.5) {
-// 			console.log(`[Bookmaker Service] Match for "${home} vs ${away}" rejected. Score (${bestMatch.score.toFixed(4)}) too high.`);
-// 			return null;
-// 		}
-// 		console.log(`[Bookmaker Service] Found preliminary match with score ${bestMatch.score.toFixed(4)}: "${bestMatch.item.TeamHome} vs ${bestMatch.item.TeamAway}"`);
-// 		return bestMatch.item;
-// 	} catch (error) {
-// 		console.error(`[Bookmaker Service] Error in getBetKingMatchDataByTeamPair:`, error.message);
-// 		return null;
-// 	}
-// }
-
-// export async function getBetKingMatchDataByTeamPair(home, away) {
-//     if (!home || !away) { return null; }
-//     const normalizedHome = normalizeTeamName(home);
-//     const normalizedAway = normalizeTeamName(away);
-//     console.log(`[Bookmaker Service] Normalized Search: "${normalizedHome}" vs "${normalizedAway}"`);
-//
-//     try {
-//         const searchTerm = normalizedHome.length < normalizedAway.length ? home : away;
-//         const matches = await getBetKingTeamDataByName(searchTerm);
-//         console.log(`[Bookmaker Service] Raw API response for "${searchTerm}":`, matches);
-//         if (!matches || !matches.length) {
-//             console.log(`[Bookmaker Service] No matches found for "${searchTerm}"`);
-//             return null;
-//         }
-//
-//         const searchableMatches = matches.map(match => ({
-//             ...match,
-//             normalizedHome: normalizeTeamName(match.TeamHome),
-//             normalizedAway: normalizeTeamName(match.TeamAway)
-//         }));
-//
-//         const fuse = new Fuse(searchableMatches, {
-//             includeScore: true,
-//             threshold: 0.8,
-//             keys: [
-//                 { name: 'normalizedHome', weight: 0.5 },
-//                 { name: 'normalizedAway', weight: 0.5 }
-//             ]
-//         });
-//
-//         // Search for matches where both teams are close
-//         const results = fuse.search({
-//             $and: [
-//                 { normalizedHome: normalizedHome },
-//                 { normalizedAway: normalizedAway }
-//             ]
-//         });
-//
-//         console.log(`[Bookmaker Service] Fuzzy search results for "${home} vs ${away}":`, results.map(r => ({
-//             score: r.score,
-//             eventName: r.item.EventName,
-//             normalizedHome: r.item.normalizedHome,
-//             normalizedAway: r.item.normalizedAway
-//         })));
-//
-//         if (results.length === 0) {
-//             console.log(`[Bookmaker Service] No fuzzy matches found for "${home} vs ${away}"`);
-//             return null;
-//         }
-//
-//         // Iterate through results to find a suitable match
-//         for (const result of results) {
-//             if (result.score <= 0.5) {
-//                 console.log(`[Bookmaker Service] Found preliminary match with score ${result.score.toFixed(4)}: "${result.item.EventName}"`);
-//                 return result.item;
-//             }
-//             console.log(`[Bookmaker Service] Match "${result.item.EventName}" rejected. Score (${result.score.toFixed(4)}) too high.`);
-//         }
-//
-//         console.log(`[Bookmaker Service] No suitable match found for "${home} vs ${away}"`);
-//         return null;
-//     } catch (error) {
-//         console.error(`[Bookmaker Service] Error in getBetKingMatchDataByTeamPair:`, error.message);
-//         return null;
-//     }
-// }
-// export async function getBetKingMatchDataByTeamPair(home, away) {
-//     if (!home || !away) { return null; }
-//     const normalizedHome = normalizeTeamName(home);
-//     const normalizedAway = normalizeTeamName(away);
-//     console.log(`[Bookmaker Service] Normalized Search: "${normalizedHome}" vs "${normalizedAway}"`);
-//
-//     async function searchMatches(searchTerm) {
-//         const matches = await getBetKingTeamDataByName(searchTerm);
-//         console.log(`[Bookmaker Service] Raw API response for "${searchTerm}":`, matches);
-//         if (!matches || !matches.length) {
-//             console.log(`[Bookmaker Service] No matches found for "${searchTerm}"`);
-//             return [];
-//         }
-//         return matches.map(match => ({
-//             ...match,
-//             normalizedHome: normalizeTeamName(match.TeamHome),
-//             normalizedAway: normalizeTeamName(match.TeamAway)
-//         }));
-//     }
-//
-//     try {
-//         // Try searching with both teams
-//         let searchableMatches = await searchMatches(home);
-//         if (!searchableMatches.length) {
-//             searchableMatches = await searchMatches(away);
-//         }
-//
-//         if (!searchableMatches.length) {
-//             console.log(`[Bookmaker Service] No matches found for either "${home}" or "${away}"`);
-//             return null;
-//         }
-//
-//         const fuse = new Fuse(searchableMatches, {
-//             includeScore: true,
-//             threshold: 0.4, // Stricter threshold
-//             keys: [
-//                 { name: 'normalizedHome', weight: 0.8 }, // Higher home team weight
-//                 { name: 'normalizedAway', weight: 0.2 }
-//             ]
-//         });
-//
-//         // Try home/away and away/home combinations
-//         const results = [
-//             ...fuse.search({
-//                 $and: [
-//                     { normalizedHome: normalizedHome },
-//                     { normalizedAway: normalizedAway }
-//                 ]
-//             }),
-//             ...fuse.search({
-//                 $and: [
-//                     { normalizedHome: normalizedAway },
-//                     { normalizedAway: normalizedHome }
-//                 ]
-//             })
-//         ].sort((a, b) => a.score - b.score); // Sort by score ascending
-//
-//         console.log(`[Bookmaker Service] Fuzzy search results for "${home} vs ${away}":`, results.map(r => ({
-//             score: r.score,
-//             eventName: r.item.EventName,
-//             normalizedHome: r.item.normalizedHome,
-//             normalizedAway: r.item.normalizedAway
-//         })));
-//
-//         if (results.length === 0) {
-//             console.log(`[Bookmaker Service] No fuzzy matches found for "${home} vs ${away}"`);
-//             return null;
-//         }
-//
-//         // Log individual scores for debugging
-//         const bestResult = results[0];
-//         const homeScore = fuse.search({ normalizedHome: normalizedHome })[0]?.score || 'N/A';
-//         const awayScore = fuse.search({ normalizedAway: normalizedAway })[0]?.score || 'N/A';
-//         console.log(`[Bookmaker Service] Home team score: ${homeScore}, Away team score: ${awayScore}`);
-//
-//         // Stricter score cutoff
-//         if (bestResult.score <= 0.3) {
-//             console.log(`[Bookmaker Service] Found preliminary match with score ${bestResult.score.toFixed(4)}: "${bestResult.item.EventName}"`);
-//             return bestResult.item;
-//         }
-//
-//         console.log(`[Bookmaker Service] No suitable match found. Best score (${bestResult.score.toFixed(4)}) too high.`);
-//         return null;
-//     } catch (error) {
-//         console.error(`[Bookmaker Service] Error in getBetKingMatchDataByTeamPair:`, error.message);
-//         return null;
-//     }
-// }
 export async function getBetKingMatchDataByTeamPair(home, away) {
 	if (!home || !away) { return null; }
 	const normalizedHome = normalizeTeamName(home);
 	const normalizedAway = normalizeTeamName(away);
-	console.log(`[Bookmaker Service] Normalized Search: "${normalizedHome}" vs "${normalizedAway}"`);
+	console.log(`[Bookmaker] Normalized Search: "${normalizedHome}" vs "${normalizedAway}"`);
 
 	async function searchMatches(searchTerm) {
 		const matches = await getBetKingTeamDataByName(searchTerm);
-		console.log(`[Bookmaker Service] Raw API response for "${searchTerm}":`, matches);
+		console.log(`[Bookmaker] Raw API response for "${searchTerm}":`, matches);
 		if (!matches || !matches.length) {
-			console.log(`[Bookmaker Service] No matches found for "${searchTerm}"`);
+			console.log(`[Bookmaker] No matches found for "${searchTerm}"`);
 			return [];
 		}
 		return matches.map(match => ({
@@ -358,7 +173,7 @@ export async function getBetKingMatchDataByTeamPair(home, away) {
 		}
 
 		if (!searchableMatches.length) {
-			console.log(`[Bookmaker Service] No matches found for either "${home}" or "${away}"`);
+			console.log(`[Bookmaker] No matches found for either "${home}" or "${away}"`);
 			return null;
 		}
 
@@ -387,7 +202,7 @@ export async function getBetKingMatchDataByTeamPair(home, away) {
 			}).map(result => ({ ...result, isHomeAway: false }))
 		].sort((a, b) => a.score - b.score);
 
-		console.log(`[Bookmaker Service] Fuzzy search results for "${home} vs ${away}":`, results.map(r => ({
+		console.log(`[Bookmaker] Fuzzy search results for "${home} vs ${away}":`, results.map(r => ({
 			score: r.score,
 			eventName: r.item.EventName,
 			normalizedHome: r.item.normalizedHome,
@@ -396,7 +211,7 @@ export async function getBetKingMatchDataByTeamPair(home, away) {
 		})));
 
 		if (results.length === 0) {
-			console.log(`[Bookmaker Service] No fuzzy matches found for "${home} vs ${away}"`);
+			console.log(`[Bookmaker] No fuzzy matches found for "${home} vs ${away}"`);
 			return null;
 		}
 
@@ -404,30 +219,21 @@ export async function getBetKingMatchDataByTeamPair(home, away) {
 		const bestResult = results[0];
 		const homeScore = fuse.search({ normalizedHome: normalizedHome })[0]?.score || 'N/A';
 		const awayScore = fuse.search({ normalizedAway: normalizedAway })[0]?.score || 'N/A';
-		console.log(`[Bookmaker Service] Home team score: ${homeScore}, Away team score: ${awayScore}`);
+		console.log(`[Bookmaker] Home team score: ${homeScore}, Away team score: ${awayScore}`);
 
 		// Stricter score cutoff and check individual scores
 		if (bestResult.score <= 0.25 && homeScore <= 0.4 && awayScore <= 0.4) {
-			console.log(`[Bookmaker Service] Found preliminary match with score ${bestResult.score.toFixed(4)}: "${bestResult.item.EventName}" (Home/Away: ${bestResult.isHomeAway})`);
+			console.log(`[Bookmaker] Found preliminary match with score ${bestResult.score.toFixed(4)}: "${bestResult.item.EventName}" (Home/Away: ${bestResult.isHomeAway})`);
 			return bestResult.item;
 		}
 
-		console.log(`[Bookmaker Service] No suitable match found. Best score (${bestResult.score.toFixed(4)}), Home score (${homeScore}), Away score (${awayScore})`);
+		console.log(`[Bookmaker] No suitable match found. Best score (${bestResult.score.toFixed(4)}), Home score (${homeScore}), Away score (${awayScore})`);
 		return null;
 	} catch (error) {
-		console.error(`[Bookmaker Service] Error in getBetKingMatchDataByTeamPair:`, error.message);
+		console.error(`[Bookmaker] Error in getBetKingMatchDataByTeamPair:`, error.message);
 		return null;
 	}
 }
-
-// export async function getBetKingMatchDetailsByEvent(eventId, eventName) {
-// 	if (!eventId || !eventName) return null;
-// 	const eventSlug = _slugifyEventName(eventName);
-// 	const url = `https://m.betking.com/sports/prematch/${eventId}/${eventSlug}`;
-// 	console.log(`[Bookmaker Service] Fetching and parsing data from page: ${url}`);
-// 	return _fetchJsonFromPage(url);
-// }
-//
 
 export async function getBetKingMatchDetailsByEvent(eventId, eventName) {
 	if (!eventId || !eventName) return null;
@@ -435,7 +241,7 @@ export async function getBetKingMatchDetailsByEvent(eventId, eventName) {
 	// sluggify the eventId and eventName to make the request
 	const eventSlug = _slugifyEventName(eventName);
 	const url = `https://m.betking.com/sports/prematch/${eventId}/${eventSlug}`;
-	console.log(`[Bookmaker Service] Fetching and parsing data from page: ${url}`);
+	console.log(`[Bookmaker] Fetching data from page: .../${eventId}/${eventSlug}`);
 
 	// initialize browser and make request to URL
 	const browser = getBrowserInstance();
@@ -471,22 +277,163 @@ export async function getBetKingMatchDetailsByEvent(eventId, eventName) {
 		// extract data from json embedded in the page
 		const loaderData = remixContentDetails.state.loaderData;
 		const matchEventDetails = loaderData["routes/($locale).sports.prematch.$matchId.$eventName.($areaId)._index"].event;
-		const matchDetailsMarket = matchEventDetails.markets;
-		const matchDetailsEventId = matchEventDetails.id;
+		// const macthEventMarket = matchEventDetails.markets;
+		const matchEventId = matchEventDetails.id;
 
-		matchDetailsMarket.forEach(element => {
-			console.log("Types of matches:", element.name);
-		});
-
-		if (matchDetailsEventId != eventId) {
+		if (matchEventId != eventId) {
 			throw new Error("Event Id mismatch, Event-Id does not match fetched Match-Details-Event-Id");
 		}
 
-		return matchDetailsMarket;
+		return matchEventDetails;
 	} catch (error) {
-		console.error(`[Bookmaker Service] Error extracting Remix JSON on page ${url}:`, error.message);
+		console.error(`[Bookmaker] Error extracting Remix JSON on page .../${eventId}/${eventSlug}`, error.message);
 		return null;
 	} finally {
 		if (page) await page.close();
+	}
+}
+
+
+export async function signin(username, password) {
+	const signinData = {
+		__rvfInternalFormId: "signIn",
+		anonymousId: "",
+		username: username,
+		password: password,
+		url: "https://m.betking.com/my-accounts/login?urlAfterLogin=/",
+		signedInUrl: "https://m.betking.com/my-accounts/login",
+		location: "/",
+		action: ""
+	};
+
+	const browser = getBrowserInstance();
+	let page;
+
+	try {
+		page = await browser.newPage();
+		await page.setRequestInterception(true);
+		page.on('request', (req) => {
+			const resourceType = req.resourceType();
+			if (['image', 'stylesheet', 'font', 'media'].includes(resourceType)) {
+				req.abort();
+			} else {
+				req.continue();
+			}
+		});
+
+		// Navigate to login page with increased timeout
+		await page.goto(signinData.url, { waitUntil: 'load', timeout: 30000 });
+
+		// Fill login form
+		await page.waitForSelector('#username', { timeout: 10000 }).catch(() => {
+			throw new Error('Username field not found. Verify selector.');
+		});
+		await page.type('#username', signinData.username);
+
+		await page.waitForSelector('#password', { timeout: 10000 }).catch(() => {
+			throw new Error('Password field not found. Verify selector.');
+		});
+		await page.type('#password', signinData.password);
+
+		// Enter key: 
+		await page.keyboard.press('Enter');
+
+		// check if successfully logged in
+		await page.waitForNavigation({ waitUntil: 'load', timeout: 30000 });
+		if (page.url() === signinData.signedInUrl) {
+			console.log(`[Bookmaker] Logged in ${username}`)
+		} else {
+			throw new Error(`[Bookmaker] Login failed ${username}`);
+		}
+
+		// Capture cookies
+		const cookies = await page.cookies();
+		await saveCookies(username, cookies);
+
+		return {
+			success: true,
+			cookies: cookies,
+		};
+
+	} catch (error) {
+		console.error(`[Bookmaker] Error logging in to ${signinData.url}:`, error.message);
+		return { success: false, error: error.message };
+	}
+}
+
+export async function placeBet(username, data) {
+	const browser = getBrowserInstance();
+	let page;
+
+	try {
+		console.log('[Bookmaker] Starting place bet process for', username);
+
+		const cookies = await loadCookies(username);
+		if (!cookies.length) throw new Error('No cookies found. Please sign in first.');
+		if (!await areCookiesValid(cookies)) throw new Error('Cookies are expired. Please sign in again.');
+
+		page = await browser.newPage();
+		await page.setRequestInterception(true);
+		page.on('request', (req) => {
+			if (['image', 'stylesheet', 'font', 'media'].includes(req.resourceType())) {
+				req.abort();
+			} else {
+				req.continue();
+			}
+		});
+
+		await browser.setCookie(...cookies);
+
+		// console.log('[Bookmaker] Navigating to betslip page to acquire session data...');
+		await page.goto('https://m.betking.com/sports/betslip', { waitUntil: 'load', timeout: 60000 });
+
+		// Log page load confirmation
+		// const pageContent = await page.content();
+		const result = await page.evaluate(async (dataToPost) => {
+			const apiUrl = "https://m.betking.com/sports/action/placebet?_data=routes%2F%28%24locale%29.sports.action.placebet";
+			const bodyPayload = new URLSearchParams();
+			bodyPayload.append('data', JSON.stringify(dataToPost));
+
+			const headers = {
+				'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+				'Referer': 'https://m.betking.com/sports/betslip',
+			};
+
+			const response = await fetch(apiUrl, {
+				method: "PUT",
+				headers: headers,
+				body: bodyPayload
+			});
+
+			const responseText = await response.text();
+
+			if (!response.ok) {
+				return { error: true, status: response.status, text: responseText };
+			}
+			if (!responseText) {
+				return { error: true, status: 200, text: "Server returned an empty successful response." };
+			}
+			try {
+				return JSON.parse(responseText);
+			} catch (e) {
+				return { error: true, status: 200, text: `Failed to parse JSON: ${responseText}` };
+			}
+		}, data);
+
+		if (result.error) {
+			throw new Error(`Bet placement failed with status ${result.status}: ${result.text}`);
+		}
+
+		// A successful response has responseStatus: 1. Anything else is a failure.
+		if (result.responseStatus !== 1 || result.errorsList) {
+			const errorMessage = result.errorsList ? JSON.stringify(result.errorsList) : 'Unknown reason';
+			throw new Error(`Bet was rejected by the server. Status: ${result.responseStatus}, Errors: ${errorMessage}`);
+		}
+
+		console.log('[Bookmaker] Bet placed successfully:', result);
+		return result;
+
+	} catch (error) {
+		throw new Error(`[Bookmaker] Error in placeBet ${error.message}`);
 	}
 }

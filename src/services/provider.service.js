@@ -25,14 +25,13 @@ export function startPolling() {
         return;
     }
     botState.isRunning = true;
-    console.log("[Provider Service] --- Starting Polling ---");
-    console.log(`[Provider Service] Polling URL: ${ALERT_API_URL}`);
+    console.log("[Provider] --- Starting Polling ---");
+    console.log(`[Provider] Polling URL: ${ALERT_API_URL}`);
     poll();
 }
 
 async function poll() {
     while (botState.isRunning) {
-        let timestamp;
         try {
             const url = new URL(ALERT_API_URL);
             if (botState.cursor) {
@@ -59,7 +58,7 @@ async function poll() {
                     await fs.writeFile(DUMP_FILE_PATH, JSON.stringify(notifications, null, 2));
                     console.log(`[Provider Service] Successfully dumped ${notifications.length} alerts to ${DUMP_FILE_PATH}`);
                 } catch (writeError) {
-                    console.error('[Provider Service] Error writing data to dump file:', writeError);
+                    console.error('[Provider] Error writing data to dump file:', writeError);
                 }
                 // --- END OF NEW CODE ---
 
@@ -75,8 +74,7 @@ async function poll() {
             console.error("[Provider Service] Polling error:", error);
         } finally {
             botState.lastChecked = new Date().toISOString();
-            timestamp = new Date().toLocaleTimeString();
-            console.log(`[${timestamp}] [Provider] ${botState.statusMessage} | Cursor: ${botState.cursor}`);
+            console.log(`[Provider] ${botState.statusMessage} | Cursor: ${botState.cursor}`);
         }
 
         await new Promise(resolve => setTimeout(resolve, POLLING_INTERVAL_MS));

@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "start": "NODE_ENV=production node --watch-path=./src src/server.js",
-    "dev": "NODE_ENV=development node --watch-path=./src src/server.js"
+    "dev": "NODE_ENV=development node --watch-path=./src src/server.js",
+	"test": "node --test test/unit"
   },
   "keywords": [],
   "author": "",
