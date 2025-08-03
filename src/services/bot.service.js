@@ -4,6 +4,7 @@ import { getBookmakerIntegration } from './bookmakers/index.js';
 import { devigOdds } from './provider.service.js';
 const CORRELATED_DUMP_PATH = path.join(process.cwd(), 'data', 'correlated_matches.json');
 import chalk from 'chalk';
+import { AuthenticationError } from '../core/errors.js';
 
 const gameQueue = [];
 let isWorkerRunning = false;
@@ -178,16 +179,36 @@ async function processQueue() {
 	isWorkerRunning = true;
 
 	const bookmaker = getBookmakerIntegration('betking');
-	console.log('[Bot] Fetching initial account info...');
-	const initialAccountInfo = await bookmaker.getAccountInfo("07033054766");
-	if (!initialAccountInfo) {
-		console.error(chalk.red('[Bot] Could not fetch initial account info. Worker stopping.'));
+
+	let bankroll;
+	try {
+		console.log('[Bot] Fetching initial account info...');
+		const accountInfo = await bookmaker.getAccountInfo("07033054766");
+		bankroll = accountInfo.balance;
+	} catch (error) {
+		if (error instanceof AuthenticationError) {
+			console.log(chalk.yellow(`[Bot] Auth error: ${error.message}. Attempting to sign in...`));
+
+			// Hardcode credentials for now as requested
+			const signInResult = await bookmaker.signin("07033054766", "A1N2S3I4");
+
+			if (signInResult.success) {
+				const accountInfo = await bookmaker.getAccountInfo("07033054766");
+				if (accountInfo) {
+					bankroll = accountInfo.balance;
+				}
+			}
+		} else {
+			console.error('[Bot] An unexpected error occurred while fetching account info:', error);
+		}
+	}
+
+	if (bankroll === undefined) {
+		console.error(chalk.red('[Bot] Could not establish bankroll. Worker stopping.'));
 		isWorkerRunning = false;
 		return;
 	}
-
-	let bankroll = initialAccountInfo.balance;
-	console.log(chalk.green(`[Bot] Worker started. Initial bankroll: ${bankroll}. Jobs in queue: ${gameQueue.length}`));
+	console.log(chalk.green(`[Bot] Worker started. Initial bankroll: ${bankroll}.`));
 
 	while (gameQueue.length > 0) {
 		const providerData = gameQueue.shift(); // Using shift for FIFO
@@ -247,19 +268,33 @@ async function processQueue() {
 				};
 				console.log(chalk.greenBright('[Bot] Constructed Bet:'), summary);
 
-				const betPayload = bookmaker.constructBetPayload(
-					detailedMatchData,
-					valueBetDetails.market,
-					valueBetDetails.selection,
-					stakeAmount,
-					providerData
-				);
-				await bookmaker.placeBet("07033054766", betPayload);
-				console.log('[Bot] Bet placed, fetching updated account info...');
-				const updatedAccountInfo = await bookmaker.getAccountInfo("07033054766");
-				if (updatedAccountInfo) {
-					bankroll = updatedAccountInfo.balance; // Re-assign the new balance
-					console.log(chalk.cyan(`[Bot] Bankroll updated to: ${bankroll}`));
+				try {
+					const betPayload = bookmaker.constructBetPayload(
+						detailedMatchData,
+						valueBetDetails.market,
+						valueBetDetails.selection,
+						stakeAmount,
+						providerData
+					);
+					await bookmaker.placeBet("07033054766", betPayload);
+					console.log('[Bot] Bet placed, fetching updated account info...');
+					const updatedAccountInfo = await bookmaker.getAccountInfo("07033054766");
+					if (updatedAccountInfo) {
+						bankroll = updatedAccountInfo.balance; // Re-assign the new balance
+						console.log(chalk.cyan(`[Bot] Bankroll updated to: ${bankroll}`));
+					}
+				} catch (betError) {
+					if (betError instanceof AuthenticationError) {
+						console.log(chalk.yellow(`[Bot] Auth error during bet placement: ${betError.message}. Re-signing in...`));
+						const signInResult = await bookmaker.signin("07033054766", "A1N2S3I4");
+						if (signInResult.success) {
+							console.log('[Bot] Sign-in successful. Retrying bet placement...');
+							// Retry placing the bet once
+							await bookmaker.placeBet("07033054766", betPayload);
+						}
+					} else {
+						throw betError; // Re-throw other betting errors
+					}
 				}
 
 			} else {

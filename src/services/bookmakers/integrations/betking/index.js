@@ -5,6 +5,7 @@ import { normalizeTeamName } from './betking.utils.js';
 import { sportIdMapper } from './betking.mapper.js';
 import { URLSearchParams } from 'url';
 import chalk from 'chalk';
+import { AuthenticationError } from '../../../../core/errors.js';
 export { translateProviderData } from './betking.utils.js';
 
 // Fetches basic match data from the API by its numeric ID.
@@ -267,10 +268,10 @@ export async function signin(username, password) {
 export async function getAccountInfo(username) {
 	const cookies = await loadCookies(username);
 	if (!cookies || cookies.length === 0) {
-		throw new Error('No saved cookies found. Please sign in first.');
+		throw new AuthenticationError('No saved cookies found.');
 	}
 	if (!await areCookiesValid(cookies)) {
-		throw new Error('Cookies have expired. Please sign in again.');
+		throw new AuthenticationError('Cookies have expired.');
 	}
 
 	const browser = getBrowserInstance();
@@ -341,8 +342,12 @@ export async function placeBet(username, data) {
 		console.log('[Bookmaker] Starting place bet process for', username);
 
 		const cookies = await loadCookies(username);
-		if (!cookies.length) throw new Error('No cookies found. Please sign in first.');
-		if (!await areCookiesValid(cookies)) throw new Error('Cookies are expired. Please sign in again.');
+		if (!cookies.length) {
+			throw new AuthenticationError('No cookies found.');
+		}
+		if (!await areCookiesValid(cookies)) {
+			throw new AuthenticationError('Cookies are expired.');
+		}
 
 		page = await browser.newPage();
 		await page.setRequestInterception(true);
@@ -441,6 +446,9 @@ export async function placeBet(username, data) {
 		return result;
 
 	} catch (error) {
+		if (error instanceof AuthenticationError) {
+			throw error;
+		}
 		console.error('[Bookmaker] Error in placeBet:', error.message);
 		if (page) {
 			await page.screenshot({ path: `placebet_error_${Date.now()}.png` });
