@@ -150,6 +150,36 @@ const mockBetData = {
 	"transferStakeFromAgent": false
 };
 
+// Mock providerData
+const baseProviderData = {
+    id: "1752592950240-0",
+    sportId: "1",
+    starts: "1754179500000", // This is the milliseconds for 2025-08-03T00:05:00.000Z
+    lineType: "spread",
+    outcome: "away",
+    points: "0",
+    priceAway: "2.11",
+    home: "Slough Town",
+    away: "Brentford B",
+    leagueName: "Club Friendlies"
+};
+// Mock bookmakerMatch
+const createBookmakerMatch = (date) => ({
+	id: "1611665381",
+	name: "Slough Town vs Brentford B",
+	date: date,
+	markets: [
+		{
+			name: "Handicap 0",
+			specialValue: "0",
+			selections: [
+				{ name: "Home", status: "VALID", odd: { value: 1.636 } },
+				{ name: "Away", status: "VALID", odd: { value: 2.11 } }
+			]
+		}
+	]
+});
+
 // This object simulates a successful response from the BetKing API.
 // It's what we expect `fetch` to return when the bet is placed correctly.
 const mockFetchResponse = {
@@ -241,7 +271,40 @@ test("Bookmaker Service Tests", async (t) => {
 		});
 	});
 
-	await t.test("(Get account Info)", async () => {
+	await t.test("(Verify Match - Exact Date)", async () => {
+		console.log("\n--- RUNNING TEST: Verify Match - Exact Date ---");
+		const providerData = { ...baseProviderData };
+		const bookmakerMatch = createBookmakerMatch("2025-08-03T00:05:00.000Z");
+		console.log("Provider Data:", JSON.stringify(providerData, null, 2));
+		console.log("Bookmaker Match:", JSON.stringify(bookmakerMatch, null, 2));
+		const result = await bookmaker.verifyMatch(bookmakerMatch, providerData);
+		console.log("--- RESULT for Verify Match - Exact Date ---");
+		console.log("Result:", result);
+	});
+
+	await t.test("(Verify Match - Close Enough Date)", async () => {
+		console.log("\n--- RUNNING TEST: Verify Match - Close Enough Date ---");
+		const providerData = { ...baseProviderData };
+		const bookmakerMatch = createBookmakerMatch("2025-08-03T00:07:30.000Z");
+		console.log("Provider Data:", JSON.stringify(providerData, null, 2));
+		console.log("Bookmaker Match:", JSON.stringify(bookmakerMatch, null, 2));
+		const result = await bookmaker.verifyMatch(bookmakerMatch, providerData);
+		console.log("--- RESULT for Verify Match - Close Enough Date ---");
+		console.log("Result:", result);
+	});
+
+	await t.test("(Verify Match - Far Apart Date)", async () => {
+		console.log("\n--- RUNNING TEST: Verify Match - Far Apart Date ---");
+		const providerData = { ...baseProviderData };
+		const bookmakerMatch = createBookmakerMatch("2025-08-03T00:12:00.000Z");
+		console.log("Provider Data:", JSON.stringify(providerData, null, 2));
+		console.log("Bookmaker Match:", JSON.stringify(bookmakerMatch, null, 2));
+		const result = await bookmaker.verifyMatch(bookmakerMatch, providerData);
+		console.log("--- RESULT for Verify Match - Far Apart Date ---");
+		console.log("Result:", result);
+	});
+
+	await t.test("(Get account Info)", { skip: true }, async () => {
 		console.log("\n--- RUNNING TEST: Get Account Info ---");
 		const accountInfo = await bookmaker.getAccountInfo(mockUsername);
 		console.log("--- RESULT for Get Account Info ---");

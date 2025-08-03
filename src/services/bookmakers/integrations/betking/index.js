@@ -2,9 +2,10 @@ import Fuse from 'fuse.js';
 import { getBrowserInstance } from '../../../../core/browser.js';
 import { loadCookies, saveCookies, areCookiesValid, _fetchJsonFromApi, _slugifyEventName } from '../../utils.js';
 import { normalizeTeamName } from './betking.utils.js';
-import { sportIdMapper, lineTypeMapper } from './betking.mapper.js';
+import { sportIdMapper } from './betking.mapper.js';
 import { URLSearchParams } from 'url';
 import chalk from 'chalk';
+export { translateProviderData } from './betking.utils.js';
 
 // Fetches basic match data from the API by its numeric ID.
 export async function getTeamDataById(matchId) {
@@ -589,28 +590,3 @@ export function constructBetPayload(matchData, market, selection, stakeAmount, p
 };
 
 
-export function translateProviderData(providerData) {
-	const mapping = lineTypeMapper[providerData.lineType];
-	if (!mapping) {
-		console.log(`[Bot - BOOKMAKER] Unsupported line type: ${providerData.lineType}`);
-		return null;
-	}
-
-	const providerOutcomeKey = providerData.outcome.toLowerCase();
-	const selectionName = mapping.outcome[providerOutcomeKey];
-	if (!selectionName) {
-		console.error(`[Bot] Unknown outcome: ${providerData.outcome} for line type ${providerData.lineType}`);
-		return null;
-	}
-
-	const providerOutcomeName = `price${providerOutcomeKey.charAt(0).toUpperCase() + providerOutcomeKey.slice(1)}`;
-	const odds = providerData[providerOutcomeName];
-
-	// Return a clean, translated object, from what the provider provided to what the bookmaker can use
-	return {
-		marketName: mapping.name,
-		selectionName: selectionName,
-		points: providerData.points,
-		odds: odds,
-	};
-}

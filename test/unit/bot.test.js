@@ -29,74 +29,648 @@ test("Bot Service Tests", async (t) => {
 		mock.restoreAll();
 	});
 
-	await t.test("Unit Test: evaluateBettingOpportunity", async () => {
-		console.log("\n--- RUNNING TEST: evaluateBettingOpportunity ---");
+	await t.test("Football Moneyline - Standard", async () => {
+		console.log("\n--- RUNNING TEST: evaluateBettingOpportunity (Football Moneyline - Standard) ---");
 		const mockData = {
 			providerData: {
+				sportId: "1",
 				lineType: "money_line",
 				outcome: "home",
 				priceHome: 2.0,
-				priceAway: 3.8, // Add this
-				priceDraw: 3.4  // Add this
+				priceAway: 3.5,
+				priceDraw: 3.0,
+				home: "Barrow",
+				away: "Bolton Wanderers"
 			},
 			bookmakerMatch: {
-				name: "Test Match",
+				name: "Barrow vs Bolton Wanderers",
 				markets: [{
-					name: "1x2",
+					name: "1X2",
 					selections: [
 						{ name: "1", status: "VALID", odd: { value: 2.2 } },
-						{ name: "x", status: "VALID", odd: { value: 3.0 } },
-						{ name: "2", status: "VALID", odd: { value: 3.5 } },
-					],
-				}],
-			},
+						{ name: "X", status: "VALID", odd: { value: 3.0 } },
+						{ name: "2", status: "VALID", odd: { value: 3.5 } }
+					]
+				}]
+			}
 		};
-
-		// ACT: Run the function with mock data
 		const result = await evaluateBettingOpportunity(mockData.bookmakerMatch, mockData.providerData);
-		console.log("--- RESULT for evaluateBettingOpportunity ---");
-		console.log(result);
+		console.log("--- RESULT for evaluateBettingOpportunity (Football Moneyline - Standard) ---");
+		console.log(JSON.stringify(result, null, 2));
 	});
 
-	await t.test("Unit Test: evaluateBettingOpportunity (Handicap)", async () => {
-		console.log("\n--- RUNNING TEST: evaluateBettingOpportunity (Handicap) ---");
-
-		// --- SETUP ---
-		// 1. Provider data for a Handicap bet, using the data you provided.
-		const mockProviderData = {
-			"lineType": "spread",
-			"points": "0",
-			"outcome": "home",
-			"home": "Barrow",
-			"away": "Bolton Wanderers",
-			"priceHome": "2.36",
-			"priceAway": "1.49" // Needed for devigging
+	await t.test("Football Moneyline - Missing Price", async () => {
+		console.log("\n--- RUNNING TEST: evaluateBettingOpportunity (Football Moneyline - Missing Price) ---");
+		const mockData = {
+			providerData: {
+				sportId: "1",
+				lineType: "money_line",
+				outcome: "home",
+				priceHome: 2.0,
+				priceAway: 3.5,
+				priceDraw: null, // Missing draw price
+				home: "Barrow",
+				away: "Bolton Wanderers"
+			},
+			bookmakerMatch: {
+				name: "Barrow vs Bolton Wanderers",
+				markets: [{
+					name: "1X2",
+					selections: [
+						{ name: "1", status: "VALID", odd: { value: 2.2 } },
+						{ name: "X", status: "VALID", odd: { value: 3.0 } },
+						{ name: "2", status: "VALID", odd: { value: 3.5 } }
+					]
+				}]
+			}
 		};
-
-		// 2. Mock bookmaker data where the odds are better than the provider's.
-		const mockBookmakerMatch = {
-			name: "Barrow vs Bolton Wanderers",
-			markets: [{
-				name: "Handicap",
-				specialValue: "0", // This MUST match the provider's 'points'
-				selections: [
-					// The bookmaker's odd (2.5) is higher than the provider's true odd (around 2.45)
-					{ name: "Home", status: "VALID", odd: { value: 2.5 } },
-					{ name: "Away", status: "VALID", odd: { value: 1.55 } },
-				],
-			}],
-		};
-
-		const result = await evaluateBettingOpportunity(
-			mockBookmakerMatch,
-			mockProviderData,
-		);
-
-		// --- VERIFICATION ---
-		console.log("--- RESULT for evaluateBettingOpportunity (Handicap) ---");
-		console.log(result);
-
+		const result = await evaluateBettingOpportunity(mockData.bookmakerMatch, mockData.providerData);
+		console.log("--- RESULT for evaluateBettingOpportunity (Football Moneyline - Missing Price) ---");
+		console.log(JSON.stringify(result, null, 2));
 	});
+
+	await t.test("Football Moneyline - Invalid Odds", async () => {
+		console.log("\n--- RUNNING TEST: evaluateBettingOpportunity (Football Moneyline - Invalid Odds) ---");
+		const mockData = {
+			providerData: {
+				sportId: "1",
+				lineType: "money_line",
+				outcome: "home",
+				priceHome: 0, // Invalid odds
+				priceAway: 3.5,
+				priceDraw: 3.0,
+				home: "Barrow",
+				away: "Bolton Wanderers"
+			},
+			bookmakerMatch: {
+				name: "Barrow vs Bolton Wanderers",
+				markets: [{
+					name: "1X2",
+					selections: [
+						{ name: "1", status: "VALID", odd: { value: 2.2 } },
+						{ name: "X", status: "VALID", odd: { value: 3.0 } },
+						{ name: "2", status: "VALID", odd: { value: 3.5 } }
+					]
+				}]
+			}
+		};
+		const result = await evaluateBettingOpportunity(mockData.bookmakerMatch, mockData.providerData);
+		console.log("--- RESULT for evaluateBettingOpportunity (Football Moneyline - Invalid Odds) ---");
+		console.log(JSON.stringify(result, null, 2));
+	});
+
+	// Football Total Tests
+	await t.test("Football Total - Both Prices", async () => {
+		console.log("\n--- RUNNING TEST: evaluateBettingOpportunity (Football Total - Both Prices) ---");
+		const mockData = {
+			providerData: {
+				sportId: "1",
+				lineType: "total",
+				outcome: "under",
+				priceOver: 2.0,
+				priceUnder: 1.8,
+				points: "2.5",
+				home: "Barrow",
+				away: "Bolton Wanderers"
+			},
+			bookmakerMatch: {
+				name: "Barrow vs Bolton Wanderers",
+				markets: [{
+					name: "Total Goals 2.5",
+					specialValue: "2.5",
+					selections: [
+						{ name: "Over", status: "VALID", odd: { value: 1.94 } },
+						{ name: "Under", status: "VALID", odd: { value: 1.74 } }
+					]
+				}]
+			}
+		};
+		const result = await evaluateBettingOpportunity(mockData.bookmakerMatch, mockData.providerData);
+		console.log("--- RESULT for evaluateBettingOpportunity (Football Total - Both Prices) ---");
+		console.log(JSON.stringify(result, null, 2));
+	});
+
+	await t.test("Football Total - Missing PriceOver", async () => {
+		console.log("\n--- RUNNING TEST: evaluateBettingOpportunity (Football Total - Missing PriceOver) ---");
+		const mockData = {
+			providerData: {
+				sportId: "1",
+				lineType: "total",
+				outcome: "under",
+				priceOver: null,
+				priceUnder: 2.54,
+				points: "2.5",
+				home: "Barrow",
+				away: "Bolton Wanderers"
+			},
+			bookmakerMatch: {
+				name: "Barrow vs Bolton Wanderers",
+				markets: [{
+					name: "Total Goals 2.5",
+					specialValue: "2.5",
+					selections: [
+						{ name: "Over", status: "VALID", odd: { value: 1.94 } },
+						{ name: "Under", status: "VALID", odd: { value: 1.74 } }
+					]
+				}]
+			}
+		};
+		const result = await evaluateBettingOpportunity(mockData.bookmakerMatch, mockData.providerData);
+		console.log("--- RESULT for evaluateBettingOpportunity (Football Total - Missing PriceOver) ---");
+		console.log(JSON.stringify(result, null, 2));
+		t.ok(result, "Should return a non-null result using raw odds");
+	});
+
+	await t.test("Football Total - Invalid PriceUnder", async () => {
+		console.log("\n--- RUNNING TEST: evaluateBettingOpportunity (Football Total - Invalid PriceUnder) ---");
+		const mockData = {
+			providerData: {
+				sportId: "1",
+				lineType: "total",
+				outcome: "under",
+				priceOver: 2.0,
+				priceUnder: "invalid",
+				points: "2.5",
+				home: "Barrow",
+				away: "Bolton Wanderers"
+			},
+			bookmakerMatch: {
+				name: "Barrow vs Bolton Wanderers",
+				markets: [{
+					name: "Total Goals 2.5",
+					specialValue: "2.5",
+					selections: [
+						{ name: "Over", status: "VALID", odd: { value: 1.94 } },
+						{ name: "Under", status: "VALID", odd: { value: 1.74 } }
+					]
+				}]
+			}
+		};
+		const result = await evaluateBettingOpportunity(mockData.bookmakerMatch, mockData.providerData);
+		console.log("--- RESULT for evaluateBettingOpportunity (Football Total - Invalid PriceUnder) ---");
+		console.log(JSON.stringify(result, null, 2));
+	});
+
+	await t.test("Football Total - Points Mismatch", async () => {
+		console.log("\n--- RUNNING TEST: evaluateBettingOpportunity (Football Total - Points Mismatch) ---");
+		const mockData = {
+			providerData: {
+				sportId: "1",
+				lineType: "total",
+				outcome: "under",
+				priceOver: 2.0,
+				priceUnder: 1.8,
+				points: "2", // Mismatch with bookmaker's 2.5
+				home: "Barrow",
+				away: "Bolton Wanderers"
+			},
+			bookmakerMatch: {
+				name: "Barrow vs Bolton Wanderers",
+				markets: [{
+					name: "Total Goals 2.5",
+					specialValue: "2.5",
+					selections: [
+						{ name: "Over", status: "VALID", odd: { value: 1.94 } },
+						{ name: "Under", status: "VALID", odd: { value: 1.74 } }
+					]
+				}]
+			}
+		};
+		const result = await evaluateBettingOpportunity(mockData.bookmakerMatch, mockData.providerData);
+		console.log("--- RESULT for evaluateBettingOpportunity (Football Total - Points Mismatch) ---");
+		console.log(JSON.stringify(result, null, 2));
+	});
+
+	// Football Spread Tests
+	await t.test("Football Spread - Draw No Bet", async () => {
+		console.log("\n--- RUNNING TEST: evaluateBettingOpportunity (Football Spread - Draw No Bet) ---");
+		const mockData = {
+			providerData: {
+				sportId: "1",
+				lineType: "spread",
+				outcome: "home",
+				priceHome: 2.36,
+				priceAway: 1.55,
+				points: "0",
+				home: "Barrow",
+				away: "Bolton Wanderers"
+			},
+			bookmakerMatch: {
+				name: "Barrow vs Bolton Wanderers",
+				markets: [{
+					name: "Draw No Bet",
+					specialValue: "0",
+					selections: [
+						{ name: "1 DNB", status: "VALID", odd: { value: 2.5 } },
+						{ name: "2 DNB", status: "VALID", odd: { value: 1.55 } }
+					]
+				}]
+			}
+		};
+		const result = await evaluateBettingOpportunity(mockData.bookmakerMatch, mockData.providerData);
+		console.log("--- RESULT for evaluateBettingOpportunity (Football Spread - Draw No Bet) ---");
+		console.log(JSON.stringify(result, null, 2));
+	});
+
+	await t.test("Football Spread - Handicap Negative Points", async () => {
+		console.log("\n--- RUNNING TEST: evaluateBettingOpportunity (Football Spread - Handicap Negative Points) ---");
+		const mockData = {
+			providerData: {
+				sportId: "1",
+				lineType: "spread",
+				outcome: "home",
+				priceHome: 1.9,
+				priceAway: 1.9,
+				points: "-1",
+				home: "Barrow",
+				away: "Bolton Wanderers"
+			},
+			bookmakerMatch: {
+				name: "Barrow vs Bolton Wanderers",
+				markets: [{
+					name: "Handicap -1",
+					specialValue: "0:1",
+					selections: [
+						{ name: "Home", status: "VALID", odd: { value: 2.0 } },
+						{ name: "Away", status: "VALID", odd: { value: 1.8 } }
+					]
+				}]
+			}
+		};
+		const result = await evaluateBettingOpportunity(mockData.bookmakerMatch, mockData.providerData);
+		console.log("--- RESULT for evaluateBettingOpportunity (Football Spread - Handicap Negative Points) ---");
+		console.log(JSON.stringify(result, null, 2));
+	});
+
+	await t.test("Football Spread - Handicap Positive Points", async () => {
+		console.log("\n--- RUNNING TEST: evaluateBettingOpportunity (Football Spread - Handicap Positive Points) ---");
+		const mockData = {
+			providerData: {
+				sportId: "1",
+				lineType: "spread",
+				outcome: "away",
+				priceHome: 1.8,
+				priceAway: 2.0,
+				points: "1",
+				home: "Barrow",
+				away: "Bolton Wanderers"
+			},
+			bookmakerMatch: {
+				name: "Barrow vs Bolton Wanderers",
+				markets: [{
+					name: "Handicap 1",
+					specialValue: "0:1",
+					selections: [
+						{ name: "Home", status: "VALID", odd: { value: 1.8 } },
+						{ name: "Away", status: "VALID", odd: { value: 2.0 } }
+					]
+				}]
+			}
+		};
+		const result = await evaluateBettingOpportunity(mockData.bookmakerMatch, mockData.providerData);
+		console.log("--- RESULT for evaluateBettingOpportunity (Football Spread - Handicap Positive Points) ---");
+		console.log(JSON.stringify(result, null, 2));
+	});
+
+	await t.test("Football Spread - Quarter-Goal Handicap", async () => {
+		console.log("\n--- RUNNING TEST: evaluateBettingOpportunity (Football Spread - Quarter-Goal Handicap) ---");
+		const mockData = {
+			providerData: {
+				sportId: "1",
+				lineType: "spread",
+				outcome: "home",
+				priceHome: 1.9,
+				priceAway: 1.9,
+				points: "-0.5",
+				home: "Barrow",
+				away: "Bolton Wanderers"
+			},
+			bookmakerMatch: {
+				name: "Barrow vs Bolton Wanderers",
+				markets: [{
+					name: "Handicap -0.5",
+					specialValue: "0:0.5",
+					selections: [
+						{ name: "Home", status: "VALID", odd: { value: 2.0 } },
+						{ name: "Away", status: "VALID", odd: { value: 1.8 } }
+					]
+				}]
+			}
+		};
+		const result = await evaluateBettingOpportunity(mockData.bookmakerMatch, mockData.providerData);
+		console.log("--- RESULT for evaluateBettingOpportunity (Football Spread - Quarter-Goal Handicap) ---");
+		console.log(JSON.stringify(result, null, 2));
+	});
+
+	// Basketball Total Tests
+	await t.test("Basketball Total - Both Prices", async () => {
+		console.log("\n--- RUNNING TEST: evaluateBettingOpportunity (Basketball Total - Both Prices) ---");
+		const mockData = {
+			providerData: {
+				sportId: "3",
+				lineType: "total",
+				outcome: "over",
+				priceOver: 1.85,
+				priceUnder: 1.95,
+				points: "180.5",
+				periodNumber: "0",
+				home: "Team A",
+				away: "Team B"
+			},
+			bookmakerMatch: {
+				name: "Team A vs Team B",
+				markets: [{
+					name: "Total (Incl. Overtime) 180.5",
+					specialValue: "180.5",
+					selections: [
+						{ name: "Over", status: "VALID", odd: { value: 1.95 } },
+						{ name: "Under", status: "VALID", odd: { value: 1.75 } }
+					]
+				}]
+			}
+		};
+		const result = await evaluateBettingOpportunity(mockData.bookmakerMatch, mockData.providerData);
+		console.log("--- RESULT for evaluateBettingOpportunity (Basketball Total - Both Prices) ---");
+		console.log(JSON.stringify(result, null, 2));
+	});
+
+	await t.test("Basketball Total - Missing PriceUnder", async () => {
+		console.log("\n--- RUNNING TEST: evaluateBettingOpportunity (Basketball Total - Missing PriceUnder) ---");
+		const mockData = {
+			providerData: {
+				sportId: "3",
+				lineType: "total",
+				outcome: "over",
+				priceOver: 1.85,
+				priceUnder: null,
+				points: "180.5",
+				periodNumber: "0",
+				home: "Team A",
+				away: "Team B"
+			},
+			bookmakerMatch: {
+				name: "Team A vs Team B",
+				markets: [{
+					name: "Total (Incl. Overtime) 180.5",
+					specialValue: "180.5",
+					selections: [
+						{ name: "Over", status: "VALID", odd: { value: 1.95 } },
+						{ name: "Under", status: "VALID", odd: { value: 1.75 } }
+					]
+				}]
+			}
+		};
+		const result = await evaluateBettingOpportunity(mockData.bookmakerMatch, mockData.providerData);
+		console.log("--- RESULT for evaluateBettingOpportunity (Basketball Total - Missing PriceUnder) ---");
+		console.log(JSON.stringify(result, null, 2));
+	});
+
+	await t.test("Basketball Total - Invalid Points", async () => {
+		console.log("\n--- RUNNING TEST: evaluateBettingOpportunity (Basketball Total - Invalid Points) ---");
+		const mockData = {
+			providerData: {
+				sportId: "3",
+				lineType: "total",
+				outcome: "over",
+				priceOver: 1.85,
+				priceUnder: 1.95,
+				points: "invalid",
+				periodNumber: "0",
+				home: "Team A",
+				away: "Team B"
+			},
+			bookmakerMatch: {
+				name: "Team A vs Team B",
+				markets: [{
+					name: "Total (Incl. Overtime) 180.5",
+					specialValue: "180.5",
+					selections: [
+						{ name: "Over", status: "VALID", odd: { value: 1.95 } },
+						{ name: "Under", status: "VALID", odd: { value: 1.75 } }
+					]
+				}]
+			}
+		};
+		const result = await evaluateBettingOpportunity(mockData.bookmakerMatch, mockData.providerData);
+		console.log("--- RESULT for evaluateBettingOpportunity (Basketball Total - Invalid Points) ---");
+		console.log(JSON.stringify(result, null, 2));
+	});
+
+	// Basketball Spread Tests
+	await t.test("Basketball Spread - Draw No Bet", async () => {
+		console.log("\n--- RUNNING TEST: evaluateBettingOpportunity (Basketball Spread - Draw No Bet) ---");
+		const mockData = {
+			providerData: {
+				sportId: "3",
+				lineType: "spread",
+				outcome: "away",
+				priceHome: 1.9,
+				priceAway: 2.0,
+				points: "0",
+				periodNumber: "0",
+				home: "Team A",
+				away: "Team B"
+			},
+			bookmakerMatch: {
+				name: "Team A vs Team B",
+				markets: [{
+					name: "DNB RT",
+					specialValue: "0",
+					selections: [
+						{ name: "1 DNB", status: "VALID", odd: { value: 1.9 } },
+						{ name: "2 DNB", status: "VALID", odd: { value: 2.1 } }
+					]
+				}]
+			}
+		};
+		const result = await evaluateBettingOpportunity(mockData.bookmakerMatch, mockData.providerData);
+		console.log("--- RESULT for evaluateBettingOpportunity (Basketball Spread - Draw No Bet) ---");
+		console.log(JSON.stringify(result, null, 2));
+	});
+
+	await t.test("Basketball Spread - Handicap Negative Points", async () => {
+		console.log("\n--- RUNNING TEST: evaluateBettingOpportunity (Basketball Spread - Handicap Negative Points) ---");
+		const mockData = {
+			providerData: {
+				sportId: "3",
+				lineType: "spread",
+				outcome: "home",
+				priceHome: 1.9,
+				priceAway: 1.9,
+				points: "-5.5",
+				periodNumber: "0",
+				home: "Team A",
+				away: "Team B"
+			},
+			bookmakerMatch: {
+				name: "Team A vs Team B",
+				markets: [{
+					name: "Handicap (Incl. Overtime) -5.5",
+					specialValue: "0 : 5.5",
+					selections: [
+						{ name: "1 AH", status: "VALID", odd: { value: 2.0 } },
+						{ name: "2 AH", status: "VALID", odd: { value: 1.8 } }
+					]
+				}]
+			}
+		};
+		const result = await evaluateBettingOpportunity(mockData.bookmakerMatch, mockData.providerData);
+		console.log("--- RESULT for evaluateBettingOpportunity (Basketball Spread - Handicap Negative Points) ---");
+		console.log(JSON.stringify(result, null, 2));
+	});
+
+	await t.test("Basketball Spread - Handicap Positive Points", async () => {
+		console.log("\n--- RUNNING TEST: evaluateBettingOpportunity (Basketball Spread - Handicap Positive Points) ---");
+		const mockData = {
+			providerData: {
+				sportId: "3",
+				lineType: "spread",
+				outcome: "away",
+				priceHome: 1.8,
+				priceAway: 2.0,
+				points: "5.5",
+				periodNumber: "0",
+				home: "Team A",
+				away: "Team B"
+			},
+			bookmakerMatch: {
+				name: "Team A vs Team B",
+				markets: [{
+					name: "Handicap (Incl. Overtime) 5.5",
+					specialValue: "0 : 5.5",
+					selections: [
+						{ name: "1 AH", status: "VALID", odd: { value: 1.8 } },
+						{ name: "2 AH", status: "VALID", odd: { value: 2.0 } }
+					]
+				}]
+			}
+		};
+		const result = await evaluateBettingOpportunity(mockData.bookmakerMatch, mockData.providerData);
+		console.log("--- RESULT for evaluateBettingOpportunity (Basketball Spread - Handicap Positive Points) ---");
+		console.log(JSON.stringify(result, null, 2));
+	});
+
+	await t.test("Basketball Spread - Non-Zero Period", async () => {
+		console.log("\n--- RUNNING TEST: evaluateBettingOpportunity (Basketball Spread - Non-Zero Period) ---");
+		const mockData = {
+			providerData: {
+				sportId: "3",
+				lineType: "spread",
+				outcome: "home",
+				priceHome: 1.9,
+				priceAway: 1.9,
+				points: "-5.5",
+				periodNumber: "1", // Unsupported period
+				home: "Team A",
+				away: "Team B"
+			},
+			bookmakerMatch: {
+				name: "Team A vs Team B",
+				markets: [{
+					name: "Handicap (Incl. Overtime) -5.5",
+					specialValue: "0 : 5.5",
+					selections: [
+						{ name: "1 AH", status: "VALID", odd: { value: 2.0 } },
+						{ name: "2 AH", status: "VALID", odd: { value: 1.8 } }
+					]
+				}]
+			}
+		};
+		const result = await evaluateBettingOpportunity(mockData.bookmakerMatch, mockData.providerData);
+		console.log("--- RESULT for evaluateBettingOpportunity (Basketball Spread - Non-Zero Period) ---");
+		console.log(JSON.stringify(result, null, 2));
+	});
+
+	// Edge Cases
+	await t.test("Edge Case - Unsupported Line Type", async () => {
+		console.log("\n--- RUNNING TEST: evaluateBettingOpportunity (Edge Case - Unsupported Line Type) ---");
+		const mockData = {
+			providerData: {
+				sportId: "1",
+				lineType: "invalid_type",
+				outcome: "home",
+				priceHome: 1.9,
+				priceAway: 1.9,
+				home: "Barrow",
+				away: "Bolton Wanderers"
+			},
+			bookmakerMatch: {
+				name: "Barrow vs Bolton Wanderers",
+				markets: [{
+					name: "Handicap -1",
+					specialValue: "0:1",
+					selections: [
+						{ name: "Home", status: "VALID", odd: { value: 2.0 } },
+						{ name: "Away", status: "VALID", odd: { value: 1.8 } }
+					]
+				}]
+			}
+		};
+		const result = await evaluateBettingOpportunity(mockData.bookmakerMatch, mockData.providerData);
+		console.log("--- RESULT for evaluateBettingOpportunity (Edge Case - Unsupported Line Type) ---");
+		console.log(JSON.stringify(result, null, 2));
+	});
+
+	await t.test("Edge Case - Unsupported Sport ID", async () => {
+		console.log("\n--- RUNNING TEST: evaluateBettingOpportunity (Edge Case - Unsupported Sport ID) ---");
+		const mockData = {
+			providerData: {
+				sportId: "99", // Unsupported sport
+				lineType: "spread",
+				outcome: "home",
+				priceHome: 1.9,
+				priceAway: 1.9,
+				points: "-1",
+				home: "Team A",
+				away: "Team B"
+			},
+			bookmakerMatch: {
+				name: "Team A vs Team B",
+				markets: [{
+					name: "Handicap -1",
+					specialValue: "0:1",
+					selections: [
+						{ name: "Home", status: "VALID", odd: { value: 2.0 } },
+						{ name: "Away", status: "VALID", odd: { value: 1.8 } }
+					]
+				}]
+			}
+		};
+		const result = await evaluateBettingOpportunity(mockData.bookmakerMatch, mockData.providerData);
+		console.log("--- RESULT for evaluateBettingOpportunity (Edge Case - Unsupported Sport ID) ---");
+		console.log(JSON.stringify(result, null, 2));
+	});
+
+	await t.test("Edge Case - Invalid Selection Name", async () => {
+		console.log("\n--- RUNNING TEST: evaluateBettingOpportunity (Edge Case - Invalid Selection Name) ---");
+		const mockData = {
+			providerData: {
+				sportId: "1",
+				lineType: "spread",
+				outcome: "invalid_outcome",
+				priceHome: 1.9,
+				priceAway: 1.9,
+				points: "-1",
+				home: "Barrow",
+				away: "Bolton Wanderers"
+			},
+			bookmakerMatch: {
+				name: "Barrow vs Bolton Wanderers",
+				markets: [{
+					name: "Handicap -1",
+					specialValue: "0:1",
+					selections: [
+						{ name: "Home", status: "VALID", odd: { value: 2.0 } },
+						{ name: "Away", status: "VALID", odd: { value: 1.8 } }
+					]
+				}]
+			}
+		};
+		const result = await evaluateBettingOpportunity(mockData.bookmakerMatch, mockData.providerData);
+		console.log("--- RESULT for evaluateBettingOpportunity (Edge Case - Invalid Selection Name) ---");
+		console.log(JSON.stringify(result, null, 2));
+	});
+
 
 	await t.test("Integration Test: Full Workflow (Live)", { skip: true }, { timeout: 90000 }, async () => {
 		console.log("\n--- RUNNING TEST: Full Workflow (Live) ---");

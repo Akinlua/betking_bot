@@ -3,35 +3,10 @@ import path from 'path';
 import { getBookmakerIntegration } from './bookmakers/index.js';
 import { devigOdds } from './provider.service.js';
 const CORRELATED_DUMP_PATH = path.join(process.cwd(), 'data', 'correlated_matches.json');
-const PROCESSED_IDS_PATH = path.join(process.cwd(), 'data', 'processed_event_ids.json');
 import chalk from 'chalk';
 
 const gameQueue = [];
 let isWorkerRunning = false;
-let processedEventIds = new Set();
-
-async function loadProcessedIds() {
-	try {
-		const data = await fs.readFile(PROCESSED_IDS_PATH, 'utf-8');
-		const ids = JSON.parse(data);
-		processedEventIds = new Set(ids);
-		console.log(`[Bot] Loaded ${processedEventIds.size} previously processed event IDs.`);
-	} catch (error) {
-		if (error.code === 'ENOENT') {
-			console.log('[Bot] No processed IDs file found. Starting with a fresh set.');
-		} else {
-			console.error('[Bot] Error loading processed IDs file:', error);
-		}
-	}
-}
-
-async function saveProcessedIds() {
-	try {
-		await fs.writeFile(PROCESSED_IDS_PATH, JSON.stringify(Array.from(processedEventIds), null, 2));
-	} catch (error) {
-		console.error('[Bot] Error saving processed IDs file:', error);
-	}
-}
 
 async function saveSuccessfulMatch(matchData, providerData) {
 	try {
@@ -74,8 +49,9 @@ export function calculateStake(trueOdd, bookmakerOdds, bankroll, fraction = 0.1)
 
 export async function evaluateBettingOpportunity(matchData, providerData, bookmaker) {
 	try {
-		// delete later
-		const bookmaker = getBookmakerIntegration('betking');
+		// used to make uni test easier comment later
+		// const bookmaker = getBookmakerIntegration('betking');
+
 		const translatedData = bookmaker.translateProviderData(providerData);
 
 		if (!translatedData) {
@@ -104,7 +80,7 @@ export async function evaluateBettingOpportunity(matchData, providerData, bookma
 
 			return {
 				value: value,
-				trueOdd: trueOdd,
+				trueOdd: oddsToUse,
 				bookmakerOdds: selection.odd.value
 			};
 		};
@@ -124,36 +100,50 @@ export async function evaluateBettingOpportunity(matchData, providerData, bookma
 								console.log(`[BOT] Value bet found: ${result.value.toFixed(2)}%`);
 								return { market, selection, trueOdd: result.trueOdd, bookmakerOdds: result.bookmakerOdds };
 							}
+							else if (result) {
+								console.log(`[BOT] No value bet for "${selection.name}": Value=${result.value.toFixed(2)}%`);
+							}
 						}
 					}
 				}
 			}
 
-			// --- Case 2: Totals (Over/Under) ---
 			else if (providerData.lineType === 'total') {
-				if (marketNameLower.startsWith(translatedMarketNameLower)) {
+				if (marketNameLower.startsWith(translatedMarketNameLower.replace(/ \d+(\.\d+)?$/, ''))) {
 					const marketPoints = parseFloat(market.specialValue);
-					const providerPoints = parseFloat(translatedData.points);
-					if (marketPoints === providerPoints) {
-						for (const selection of market.selections) {
-							if (selection.name.toLowerCase() === translatedData.selectionName.toLowerCase() && selection.status.toUpperCase() === "VALID") {
-								const result = calculateValue(selection, providerData);
-								if (result && result.value > 0) {
-									console.log(`[BOT] Value bet found: ${result.value.toFixed(2)}%`);
-									return { market, selection, trueOdd: result.trueOdd, bookmakerOdds: result.bookmakerOdds };
+					const providerPoints = parseFloat(translatedData.specialValue);
+					let pointsToCheck = [providerPoints];
+					if (Number.isInteger(providerPoints)) {
+						pointsToCheck.push(providerPoints + 0.5); // Try half-point for round numbers
+					}
+					console.log(`[BOT] Checking total market: ${market.name}, specialValue: ${market.specialValue}, translatedSpecialValue: ${providerPoints}`);
+					for (const checkPoints of pointsToCheck) {
+						console.log(`[BOT] Checking points: marketPoints=${marketPoints}, checkPoints=${checkPoints}`);
+						if (marketPoints === checkPoints) {
+							for (const selection of market.selections) {
+								console.log(`[BOT] Checking selection: ${selection.name}, status: ${selection.status}`);
+								if (selection.name.toLowerCase() === translatedData.selectionName.toLowerCase() && selection.status.toUpperCase() === "VALID") {
+									const result = calculateValue(selection, providerData);
+									if (result && result.value > 0) {
+										console.log(`[BOT] Value bet found: ${result.value.toFixed(2)}%`);
+										return { market, selection, trueOdd: result.trueOdd, bookmakerOdds: result.bookmakerOdds };
+									}
+									else if (result) {
+										console.log(`[BOT] No value bet for "${selection.name}": Value=${result.value.toFixed(2)}%`);
+									}
 								}
 							}
 						}
 					}
+				} else {
+					console.log(`[BOT] Market name mismatch: marketName=${market.name}, translatedMarketName=${translatedMarketNameLower}`);
 				}
 			}
 
 			// --- Case 3: Spreads (Handicap) ---
 			else if (providerData.lineType === 'spread') {
 				if (marketNameLower.startsWith(translatedMarketNameLower)) {
-					const marketPoints = parseFloat(market.specialValue);
-					const providerPoints = parseFloat(translatedData.points);
-					if (marketPoints === providerPoints) {
+					if (translatedData.specialValue.replace(/\s/g, '') === market.specialValue.replace(/\s/g, '')) {
 						for (const selection of market.selections) {
 							if (selection.name.toLowerCase() === translatedData.selectionName.toLowerCase() && selection.status.toUpperCase() === "VALID") {
 								const result = calculateValue(selection, providerData);
@@ -161,8 +151,13 @@ export async function evaluateBettingOpportunity(matchData, providerData, bookma
 									console.log(`[BOT] Value bet found: ${result.value.toFixed(2)}%`);
 									return { market, selection, trueOdd: result.trueOdd, bookmakerOdds: result.bookmakerOdds };
 								}
+								else if (result) {
+									console.log(`[BOT] No value bet for "${selection.name}": Value=${result.value.toFixed(2)}%`);
+								}
 							}
 						}
+					} else {
+						console.log(`[BOT] Special value mismatch: Provider=${translatedData.specialValue}, Bookmaker=${market.specialValue}`);
 					}
 				}
 			}
@@ -195,7 +190,7 @@ async function processQueue() {
 	console.log(chalk.green(`[Bot] Worker started. Initial bankroll: ${bankroll}. Jobs in queue: ${gameQueue.length}`));
 
 	while (gameQueue.length > 0) {
-		const providerData = gameQueue.pop(); // Using shift for FIFO
+		const providerData = gameQueue.shift(); // Using shift for FIFO
 		try {
 			console.log(`[Bot] Processing: ${providerData.home} vs ${providerData.away}`);
 
@@ -219,29 +214,27 @@ async function processQueue() {
 			console.log(`[Bot] Successfully fetched full data for ${detailedMatchData.name}`);
 
 			// --- STEP 3: Verify the match time ---
-			// const isMatchVerified = bookmaker.verifyMatch(detailedMatchData, providerData);
-			// if (!isMatchVerified) {
-			// 	console.log('[Bot] Match discarded due to time mismatch.');
-			// 	continue; // Exit for this item
-			// }
-			// console.log('[Bot] Match time verified successfully.');
+			const isMatchVerified = await bookmaker.verifyMatch(detailedMatchData, providerData);
+			if (!isMatchVerified) {
+				console.log(`[Bot] Match discarded due to time mismatch: ${detailedMatchData.name}`)
+				continue; // Exit for this item
+			}
+			console.log('[Bot] Match time verified successfully.', detailedMatchData.name);
+
 			await saveSuccessfulMatch(detailedMatchData, providerData);
 
 			// --- STEP 4: Evaluate for a value bet ---
 			const valueBetDetails = await evaluateBettingOpportunity(detailedMatchData, providerData, bookmaker);
 			if (!valueBetDetails) {
-				// The evaluate function already logs "no value found"
 				continue; // Exit for this item
 			}
 
 			// --- FINAL STEP: Calculate stake and place the bet ---
-			// This code only runs if all previous checks have passed.
 			const stakeAmount = calculateStake(
 				valueBetDetails.trueOdd,
 				valueBetDetails.bookmakerOdds,
 				bankroll
 			);
-
 			if (stakeAmount > 0) {
 				const summary = {
 					match: detailedMatchData.name,
@@ -291,18 +284,12 @@ async function processQueue() {
 export function addGamesToProcessingQueue(games) {
 	if (!games || !games.length === 0) return;
 
-	// De-duplicate using the IDEvent field against our persistent set.
-	// const newGames = games.filter(game => !processedEventIds.has(game.IDEvent));
 	const newGames = games;
 
 	if (newGames.length === 0) {
 		console.log('[Bot] No new, unprocessed games to add to the queue (all were duplicates).');
 		return;
 	}
-
-	// Add the new, unique IDEvents to our tracking set and save to file.
-	newGames.forEach(game => processedEventIds.add(game.IDEvent));
-	saveProcessedIds(); // Persist the new set of IDs
 
 	console.log(`[Bot] Adding ${newGames.length} new games to the processing queue.`);
 
@@ -318,5 +305,247 @@ export function addGamesToProcessingQueue(games) {
 	processQueue();
 }
 
-// Immediately load the processed IDs when the service starts.
-loadProcessedIds();
+//
+// import fs from 'fs/promises';
+// import path from 'path';
+// import chalk from 'chalk';
+// import { getBookmakerIntegration } from './bookmakers/index.js';
+// import { devigOdds } from './provider.service.js';
+//
+// const CORRELATED_DUMP_PATH = path.join(process.cwd(), 'data', 'correlated_matches.json');
+//
+// class Bot {
+// 	constructor(user) {
+// 		this.user = user;
+// 		this.bookmaker = getBookmakerIntegration('betking');
+// 		this.gameQueue = [];
+// 		this.isWorkerRunning = false;
+// 		this.bankroll = 0;
+// 	}
+//
+// 	async start() {
+// 		console.log(`[Bot] Starting for user: ${this.user.username}`);
+// 		const accountInfo = await this.bookmaker.getAccountInfo(this.user.username);
+// 		if (!accountInfo) {
+// 			console.error(`[Bot] Could not fetch initial info for ${this.user.username}. Stopping.`);
+// 			return;
+// 		}
+// 		this.bankroll = accountInfo.balance;
+// 		console.log(`[Bot] Initial bankroll for ${this.user.username}: ${this.bankroll}`);
+// 	}
+//
+// 	addGamesToProcessingQueue(games) {
+// 		if (!games || games.length === 0) return;
+// 		this.gameQueue.push(...games);
+// 		if (!this.isWorkerRunning) {
+// 			this.processQueue();
+// 		}
+// 	}
+//
+// 	async saveSuccessfulMatch(matchData, providerData) {
+// 		try {
+// 			let existingData = [];
+// 			try {
+// 				const fileContent = await fs.readFile(CORRELATED_DUMP_PATH, 'utf-8');
+// 				existingData = JSON.parse(fileContent);
+// 			} catch (readError) { /* File doesn't exist yet */ }
+//
+// 			const comprehensiveData = { providerData, bookmakerMatch: matchData };
+// 			existingData.push(comprehensiveData);
+// 			await fs.writeFile(CORRELATED_DUMP_PATH, JSON.stringify(existingData, null, 2));
+// 			console.log(`[Bot] => Success! Saved correlated match ${matchData.EventName} to file.`);
+// 		} catch (error) {
+// 			console.error('[Bot] Error saving successful match to dump file:', error);
+// 		}
+// 	}
+//
+// 	calculateStake(trueOdd, bookmakerOdds, bankroll, fraction = 0.1) {
+// 		const trueProbability = 1 / trueOdd;
+// 		const b = bookmakerOdds - 1;
+// 		const q = 1 - trueProbability;
+// 		const numerator = (b * trueProbability) - q;
+// 		if (numerator <= 0) return 0;
+// 		const fullStake = bankroll * (numerator / b);
+// 		return Math.floor((fullStake * fraction) * 100) / 100;
+// 	}
+//
+// 	async evaluateBettingOpportunity(matchData, providerData) {
+// 		try {
+// 			const translatedData = this.bookmaker.translateProviderData(providerData);
+// 			if (!translatedData) {
+// 				console.log(`[Bot] Could not translate provider data for ${providerData.lineType}`);
+// 				return null;
+// 			}
+//
+// 			const calculateValue = (selection, providerData) => {
+// 				const outcomeKey = providerData.outcome.toLowerCase();
+// 				const trueOdd = devigOdds(providerData)?.[outcomeKey];
+// 				const fallbackOddsKey = `price${outcomeKey.charAt(0).toUpperCase() + outcomeKey.slice(1)}`;
+// 				const originalOdd = parseFloat(providerData[fallbackOddsKey]);
+// 				const oddsToUse = trueOdd || originalOdd;
+// 				if (!oddsToUse || isNaN(oddsToUse)) return null;
+// 				const value = (selection.odd.value / oddsToUse - 1) * 100;
+// 				return {
+// 					value: value,
+// 					trueOdd: oddsToUse,
+// 					bookmakerOdds: selection.odd.value
+// 				};
+// 			};
+//
+// 			for (const market of matchData.markets) {
+// 				const marketNameLower = market.name.toLowerCase();
+// 				const translatedMarketNameLower = translatedData.marketName.toLowerCase();
+//
+// 				// --- Case 1: Money Line (1x2) ---
+// 				if (providerData.lineType === 'money_line') {
+// 					if (marketNameLower.startsWith(translatedMarketNameLower)) {
+// 						for (const selection of market.selections) {
+// 							if (selection.name.toLowerCase() === translatedData.selectionName.toLowerCase() && selection.status.toUpperCase() === "VALID") {
+// 								const result = calculateValue(selection, providerData);
+// 								if (result && result.value > 0) {
+// 									console.log(`[BOT] Value bet found: ${result.value.toFixed(2)}%`);
+// 									return { market, selection, trueOdd: result.trueOdd, bookmakerOdds: result.bookmakerOdds };
+// 								}
+// 								else if (result) {
+// 									console.log(`[BOT] No value bet for "${selection.name}": Value=${result.value.toFixed(2)}%`);
+// 								}
+// 							}
+// 						}
+// 					}
+// 				}
+//
+// 				else if (providerData.lineType === 'total') {
+// 					if (marketNameLower.startsWith(translatedMarketNameLower.replace(/ \d+(\.\d+)?$/, ''))) {
+// 						const marketPoints = parseFloat(market.specialValue);
+// 						const providerPoints = parseFloat(translatedData.specialValue);
+// 						let pointsToCheck = [providerPoints];
+// 						if (Number.isInteger(providerPoints)) {
+// 							pointsToCheck.push(providerPoints + 0.5); // Try half-point for round numbers
+// 						}
+// 						console.log(`[BOT] Checking total market: ${market.name}, specialValue: ${market.specialValue}, translatedSpecialValue: ${providerPoints}`);
+// 						for (const checkPoints of pointsToCheck) {
+// 							console.log(`[BOT] Checking points: marketPoints=${marketPoints}, checkPoints=${checkPoints}`);
+// 							if (marketPoints === checkPoints) {
+// 								for (const selection of market.selections) {
+// 									console.log(`[BOT] Checking selection: ${selection.name}, status: ${selection.status}`);
+// 									if (selection.name.toLowerCase() === translatedData.selectionName.toLowerCase() && selection.status.toUpperCase() === "VALID") {
+// 										const result = calculateValue(selection, providerData);
+// 										if (result && result.value > 0) {
+// 											console.log(`[BOT] Value bet found: ${result.value.toFixed(2)}%`);
+// 											return { market, selection, trueOdd: result.trueOdd, bookmakerOdds: result.bookmakerOdds };
+// 										}
+// 										else if (result) {
+// 											console.log(`[BOT] No value bet for "${selection.name}": Value=${result.value.toFixed(2)}%`);
+// 										}
+// 									}
+// 								}
+// 							}
+// 						}
+// 					} else {
+// 						console.log(`[BOT] Market name mismatch: marketName=${market.name}, translatedMarketName=${translatedMarketNameLower}`);
+// 					}
+// 				}
+//
+// 				// --- Case 3: Spreads (Handicap) ---
+// 				else if (providerData.lineType === 'spread') {
+// 					if (marketNameLower.startsWith(translatedMarketNameLower)) {
+// 						if (translatedData.specialValue.replace(/\s/g, '') === market.specialValue.replace(/\s/g, '')) {
+// 							for (const selection of market.selections) {
+// 								if (selection.name.toLowerCase() === translatedData.selectionName.toLowerCase() && selection.status.toUpperCase() === "VALID") {
+// 									const result = calculateValue(selection, providerData);
+// 									if (result && result.value > 0) {
+// 										console.log(`[BOT] Value bet found: ${result.value.toFixed(2)}%`);
+// 										return { market, selection, trueOdd: result.trueOdd, bookmakerOdds: result.bookmakerOdds };
+// 									}
+// 									else if (result) {
+// 										console.log(`[BOT] No value bet for "${selection.name}": Value=${result.value.toFixed(2)}%`);
+// 									}
+// 								}
+// 							}
+// 						} else {
+// 							console.log(`[BOT] Special value mismatch: Provider=${translatedData.specialValue}, Bookmaker=${market.specialValue}`);
+// 						}
+// 					}
+// 				}
+// 			}
+//
+// 			console.log(`[BOT] No value bet found for ${matchData.name}.`);
+// 			return null;
+// 		} catch (error) {
+// 			console.error('[Bot] Error evaluating betting opportunity:', error);
+// 			return null;
+// 		}
+// 	}
+//
+// 	async processQueue() {
+// 		if (this.isWorkerRunning) return;
+// 		this.isWorkerRunning = true;
+//
+// 		while (this.gameQueue.length > 0) {
+// 			const providerData = this.gameQueue.shift();
+// 			try {
+// 				console.log(`[Bot] Processing: ${providerData.home} vs ${providerData.away}`);
+//
+// 				const potentialMatch = await this.bookmaker.getMatchDataByTeamPair(providerData.home, providerData.away);
+// 				if (!potentialMatch) {
+// 					console.log(`[Bot] Match not found for ${providerData.home} vs ${providerData.away}`);
+// 					continue;
+// 				}
+//
+// 				const detailedMatchData = await this.bookmaker.getMatchDetailsByEvent(potentialMatch.IDEvent, potentialMatch.EventName);
+// 				if (!detailedMatchData) {
+// 					console.log(`[Bot] Failed to fetch full match details.`);
+// 					continue;
+// 				}
+//
+// 				const isMatchVerified = this.bookmaker.verifyMatch(detailedMatchData, providerData);
+// 				if (!isMatchVerified) {
+// 					console.log(`[Bot] Match discarded due to time mismatch: ${detailedMatchData.name}`);
+// 					continue;
+// 				}
+//
+// 				await this.saveSuccessfulMatch(detailedMatchData, providerData);
+//
+// 				const valueBetDetails = await this.evaluateBettingOpportunity(detailedMatchData, providerData);
+// 				if (!valueBetDetails) {
+// 					continue;
+// 				}
+//
+// 				const stakeAmount = this.calculateStake(valueBetDetails.trueOdd, valueBetDetails.bookmakerOdds, this.bankroll);
+//
+// 				if (stakeAmount > 0) {
+// 					const summary = {
+// 						match: detailedMatchData.name,
+// 						market: valueBetDetails.market.name,
+// 						selection: valueBetDetails.selection.name,
+// 						odds: valueBetDetails.selection.odd.value,
+// 						stake: stakeAmount,
+// 						potentialWinnings: stakeAmount * valueBetDetails.selection.odd.value,
+// 						bankroll: bankroll
+// 					};
+// 					console.log(chalk.greenBright('[Bot] Constructed Bet:'), summary);
+//
+// 					const betPayload = bookmaker.constructBetPayload(
+// 						detailedMatchData,
+// 						valueBetDetails.market,
+// 						valueBetDetails.selection,
+// 						stakeAmount,
+// 						providerData
+// 					);
+//
+// 					await this.bookmaker.placeBet(this.user.username, betPayload);
+//
+// 					const updatedInfo = await this.bookmaker.getAccountInfo(this.user.username);
+// 					if (updatedInfo) {
+// 						this.bankroll = updatedInfo.balance;
+// 					}
+// 				}
+// 			} catch (error) {
+// 				console.error(`[Bot] Error processing provider data ${providerData.id}:`, error);
+// 			}
+// 		}
+// 		this.isWorkerRunning = false;
+// 	}
+// }
+//
+// export default Bot;
