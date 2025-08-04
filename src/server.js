@@ -13,6 +13,7 @@ import providerRoutes from "./routes/provider.routes.js";
 import bookmakerRoutes from "./routes/bookmaker.routes.js";
 import { initializeBrowser, closeBrowser } from './core/browser.js';
 import { startPolling } from "./services/provider.service.js";
+import nodeCron from "node-cron";
 
 const PORT = process.env.PORT || 8080;
 
@@ -53,6 +54,23 @@ async function startEdgeRunnerBot() {
 	}
 }
 
+// Schedule keep-alive pings every 10 minutes using node-cron to by pass render limitation
+function startKeepAlive() {
+  const url = configurations.apiBaseUrl;
+  console.log(`[KeepAlive] Scheduling keep-alive pings to ${url} every 10 minutes`);
+
+  // Schedule cron job to run every 5 minutes
+  nodeCron.schedule("*/5 * * * *", async () => {
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      console.log(`[KeepAlive] Ping successful at ${new Date().toISOString()}: ${JSON.stringify(data)}`);
+    } catch (error) {
+      console.error(`[KeepAlive] Ping failed at ${new Date().toISOString()}:`, error.message);
+    }
+  });
+}
+
 // The main application function to set up and run the server.
 async function main() {
 	const app = express();
@@ -69,6 +87,7 @@ async function main() {
 		console.log(`[Server] Server is running on http://localhost:${PORT}`);
 		// startDiscordBot();
 		startEdgeRunnerBot();
+		startKeepAlive();
 	});
 }
 
