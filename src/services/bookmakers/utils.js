@@ -38,15 +38,12 @@ export async function _fetchJsonFromApi(url) {
 	let page;
 	try {
 		page = await browser.newPage();
-		await page.setRequestInterception(true);
-		page.on('request', (req) => {
-			if (['image', 'stylesheet', 'font'].includes(req.resourceType())) {
-				req.abort();
-			} else {
-				req.continue();
-			}
+		await page.setExtraHTTPHeaders({
+			'Cache-Control': 'no-cache',
+			'Pragma': 'no-cache'
 		});
-		const response = await page.goto(url, { waitUntil: 'networkidle2' });
+		// 30s
+		const response = await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
 		if (!response.ok()) {
 			throw new Error(`Request failed with status: ${response.status()}`);
 		}
