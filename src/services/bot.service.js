@@ -4,24 +4,26 @@ import { getBookmakerIntegration } from './bookmakers/index.js';
 import { devigOdds } from './provider.service.js';
 import chalk from 'chalk';
 import { AuthenticationError } from '../core/errors.js';
+import configurations from '../../configurations/index.js';
 
 const gameQueue = [];
 let isWorkerRunning = false;
-const DELAY_INTERVAL_S = 5;
 const CORRELATED_DUMP_PATH = path.join(process.cwd(), 'data', 'correlated_matches.json');
 
 async function saveSuccessfulMatch(matchData, providerData) {
-	try {
-		// Ensure the data/ directory exists
-		const dir = path.dirname(CORRELATED_DUMP_PATH);
-		await fs.mkdir(dir, { recursive: true });
-		const comprehensiveData = { providerData: providerData, bookmakerMatch: matchData };
+	if (configurations.bookmaker.storeData) {
+		try {
+			// Ensure the data/ directory exists
+			const dir = path.dirname(CORRELATED_DUMP_PATH);
+			await fs.mkdir(dir, { recursive: true });
+			const comprehensiveData = { providerData: providerData, bookmakerMatch: matchData };
 
-		// Overwrite file with new data
-		await fs.writeFile(CORRELATED_DUMP_PATH, JSON.stringify(comprehensiveData, null, 2));
-		console.log(`[Bot] Success: Overwrote ${CORRELATED_DUMP_PATH} with match ${minimalMatchData.EventName} in ${Date.now() - startTime}ms`);
-	} catch (error) {
-		console.error(`[Bot] Error writing to ${CORRELATED_DUMP_PATH}:`, error.message);
+			// Overwrite file with new data
+			await fs.writeFile(CORRELATED_DUMP_PATH, JSON.stringify(comprehensiveData, null, 2));
+			console.log(`[Bot] Success: Overwrote ${CORRELATED_DUMP_PATH}`);
+		} catch (error) {
+			console.error(`[Bot] Error writing to ${CORRELATED_DUMP_PATH}:`, error.message);
+		}
 	}
 }
 
@@ -123,13 +125,13 @@ export async function evaluateBettingOpportunity(matchData, providerData, bookma
 								console.log(`[BOT] Checking selection: ${selection.name}, status: ${selection.status}`);
 								if (selection.name.toLowerCase() === translatedData.selectionName.toLowerCase() && selection.status.toUpperCase() === "VALID") {
 									const result = calculateValue(selection, providerData);
-									if (result && result.value > 0) {
+									// if (result && result.value > 0) {
 										console.log(`[BOT] Value bet found: ${result.value.toFixed(2)}%`);
 										return { market, selection, trueOdd: result.trueOdd, bookmakerOdds: result.bookmakerOdds };
-									}
-									else if (result) {
-										console.log(`[BOT] No value bet for "${selection.name}": Value=${result.value.toFixed(2)}%`);
-									}
+									// }
+									// else if (result) {
+									// 	console.log(`[BOT] No value bet for "${selection.name}": Value=${result.value.toFixed(2)}%`);
+									// }
 								}
 							}
 						}
@@ -146,13 +148,13 @@ export async function evaluateBettingOpportunity(matchData, providerData, bookma
 						for (const selection of market.selections) {
 							if (selection.name.toLowerCase() === translatedData.selectionName.toLowerCase() && selection.status.toUpperCase() === "VALID") {
 								const result = calculateValue(selection, providerData);
-								if (result && result.value > 0) {
-									console.log(`[BOT] Value bet found: ${result.value.toFixed(2)}%`);
-									return { market, selection, trueOdd: result.trueOdd, bookmakerOdds: result.bookmakerOdds };
-								}
-								else if (result) {
-									console.log(`[BOT] No value bet for "${selection.name}": Value=${result.value.toFixed(2)}%`);
-								}
+								// if (result && result.value > 0) {
+								console.log(`[BOT] Value bet found: ${result.value.toFixed(2)}%`);
+								return { market, selection, trueOdd: result.trueOdd, bookmakerOdds: result.bookmakerOdds };
+								// }
+								// else if (result) {
+								// 	console.log(`[BOT] No value bet for "${selection.name}": Value=${result.value.toFixed(2)}%`);
+								// }
 							}
 						}
 					} else {
@@ -209,7 +211,7 @@ async function processQueue() {
 	console.log(chalk.green(`[Bot] Worker started. Initial bankroll: ${bankroll}.`));
 
 	while (gameQueue.length > 0) {
-		const providerData = gameQueue.shift(); // Using shift for FIFO
+		const providerData = gameQueue.pop(); // Using shift for FIFO
 		try {
 			console.log(`[Bot] Processing: ${providerData.home} vs ${providerData.away}`);
 
@@ -249,11 +251,12 @@ async function processQueue() {
 			}
 
 			// --- FINAL STEP: Calculate stake and place the bet ---
-			const stakeAmount = calculateStake(
-				valueBetDetails.trueOdd,
-				valueBetDetails.bookmakerOdds,
-				bankroll
-			);
+			// const stakeAmount = calculateStake(
+			// 	valueBetDetails.trueOdd,
+			// 	valueBetDetails.bookmakerOdds,
+			// 	bankroll
+			// );
+			const stakeAmount = 10;
 			if (stakeAmount > 0) {
 				const summary = {
 					match: detailedMatchData.name,
@@ -303,7 +306,7 @@ async function processQueue() {
 			console.error(`[Bot] Error processing provider data ${providerData.id}:`, error);
 		} finally {
 			// Add a delay between processing each item
-			await new Promise(resolve => setTimeout(resolve, DELAY_INTERVAL_S * 1000));
+			await new Promise(resolve => setTimeout(resolve, configurations.bookmaker.interval * 1000));
 		}
 	}
 	isWorkerRunning = false;
@@ -315,6 +318,12 @@ async function processQueue() {
  */
 export function addGamesToProcessingQueue(games) {
 	if (!games || !games.length === 0) return;
+	// When pod first starts it drops mostly outdated games in bulk 250 we skip this to save time
+	// comment out if we need the test data
+	if (!games || games.length === 250) {
+		console.log("[Bot] skipping the bulk 250");
+		return
+	};
 
 	const newGames = games;
 

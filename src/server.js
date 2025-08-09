@@ -13,6 +13,7 @@ import providerRoutes from "./routes/provider.routes.js";
 import bookmakerRoutes from "./routes/bookmaker.routes.js";
 import { initializeBrowser, closeBrowser } from './core/browser.js';
 import { startPolling } from "./services/provider.service.js";
+import chalk from "chalk";
 import nodeCron from "node-cron";
 
 const PORT = process.env.PORT || 8080;
@@ -37,34 +38,27 @@ async function startDiscordBot() {
 
 // Initializes and starts the background EdgeRunner bot processes.
 async function startEdgeRunnerBot() {
-	console.log('[Bot] Initializing EdgeRunner Bot...');
 	try {
 		await initializeBrowser();
-		// The polling logic starts here, as you designed.
-		if (configurations.USER_ID) {
+		if (configurations.provider.userId) {
 			startPolling();
 		} else {
 			console.log("[Bot] User ID is missing, polling will not start.");
 		}
-		console.log('[Bot] EdgeRunner Bot initialized successfully.');
+		console.log(chalk.green(`[Bot] -> EdgeRunner Initialized [INTERVAL-${configurations.bookmaker.interval}]`));
 	} catch (error) {
-		console.error('[Bot] Failed to initialize the EdgeRunner Bot:', error);
-		// Decide if the whole application should exit if the bot fails to start
+		console.error('[Bot] EdgeRunner Failed:', error);
 		process.exit(1);
 	}
 }
 
-// Schedule keep-alive pings every 10 minutes using node-cron to by pass render limitation
 function startKeepAlive() {
-  const url = configurations.apiBaseUrl;
-  console.log(`[KeepAlive] Scheduling keep-alive pings to ${url} every 10 minutes`);
-
-  // Schedule cron job to run every 5 minutes
-  nodeCron.schedule("*/5 * * * *", async () => {
+  console.log(`[KeepAlive] Scheduling keep-alive pings to ${configurations.apiBaseUrl} every ${configurations.cron.intervalMin} minutes`);
+  nodeCron.schedule(`*/${configurations.cron.intervalMin} * * * *`, async () => {
     try {
-      const response = await fetch(url);
+      const response = await fetch(configurations.apiBaseUrl);
       const data = await response.json();
-      console.log(`[KeepAlive] Ping successful at ${new Date().toISOString()}: ${JSON.stringify(data)}`);
+      console.log(chalk.green(`[KeepAlive] Ping successful at ${new Date().toISOString()}: ${JSON.stringify(data)}`));
     } catch (error) {
       console.error(`[KeepAlive] Ping failed at ${new Date().toISOString()}:`, error.message);
     }

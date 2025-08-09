@@ -1,0 +1,720 @@
+{
+  "providerData": {
+    "id": "1754500208763-1",
+    "sportId": "1",
+    "minDropPercent": "11",
+    "timeIntervalMs": "180000",
+    "maxTimeToMatchStartMs": "21600000",
+    "lowerBoundOdds": "1.4",
+    "upperBoundOdds": "1.7",
+    "nickname": "Low Odds",
+    "includeMoneyline": "1",
+    "includeSpreads": "1",
+    "includeTotals": "1",
+    "percentageChange": "22.390243902439018",
+    "changeFrom": "2.05",
+    "changeTo": "1.591",
+    "eventId": "1612631077",
+    "periodNumber": "0",
+    "lineType": "total",
+    "points": "6.25",
+    "outcome": "under",
+    "timestamp": "1754500208311",
+    "leagueName": "Finland - Kolmonen",
+    "home": "Finnkurd",
+    "away": "HooGee",
+    "noVigPrice": "",
+    "starts": "1754500500000",
+    "type": "oddsDrop",
+    "alertingCriteriaId": "alertingCriteria:oae4bvaw2o9k58fg4h1bets2",
+    "userId": "user_30I2I43w4GgKpp0wHILCzs6HJmU",
+    "lowerBoundLimit": "150",
+    "upperBoundLimit": "1000000",
+    "includeOrExcludeCompetitions": "exclude",
+    "enabled": "1",
+    "changeDirection": "increase",
+    "includePeriod0": "1",
+    "includePeriod1": "1",
+    "priceOver": "2.16",
+    "priceUnder": "1.591",
+    "debug_index": 9,
+    "debug_total": 12
+  },
+  "bookmakerMatch": {
+    "id": 1002723288,
+    "name": "FC Finnkurd - HooGee",
+    "date": "2025-08-06T19:15:00+02:00",
+    "markets": [
+      {
+        "collectionId": 455710891,
+        "selections": [
+          {
+            "specialValue": "0",
+            "specialValueNumber": 0,
+            "specialValueString": "",
+            "name": "1",
+            "typeId": 4,
+            "order": 1,
+            "selectionDescription": "",
+            "odd": {
+              "value": 4.8,
+              "unboostedOddValue": null,
+              "scheduleStatus": 0
+            },
+            "id": 1497684834,
+            "smartCode": 17038,
+            "status": "VALID",
+            "oddCollectionID": 455710891
+          },
+          {
+            "specialValue": "0",
+            "specialValueNumber": 0,
+            "specialValueString": "",
+            "name": "X",
+            "typeId": 2,
+            "order": 2,
+            "selectionDescription": "",
+            "odd": {
+              "value": 6.4,
+              "unboostedOddValue": null,
+              "scheduleStatus": 0
+            },
+            "id": 1497684835,
+            "smartCode": 17038,
+            "status": "VALID",
+            "oddCollectionID": 455710891
+          },
+          {
+            "specialValue": "0",
+            "specialValueNumber": 0,
+            "specialValueString": "",
+            "name": "2",
+            "typeId": 5,
+            "order": 3,
+            "selectionDescription": "",
+            "odd": {
+              "value": 1.36,
+              "unboostedOddValue": null,
+              "scheduleStatus": 0
+            },
+            "id": 1497684836,
+            "smartCode": 17038,
+            "status": "VALID",
+            "oddCollectionID": 455710891
+          }
+        ],
+        "name": "1X2",
+        "typeId": 110,
+        "specialValue": "0",
+        "oddsDescription": "Standard 1X2: Predict the final outcome of the match in regular time. The bet offers three possible outcomes: 1 (home team wins); X (teams draw), 2 (away team wins)\r\n Fantasy 1X2: Predict which team/player will score most goals in their respective matches. If both teams/players score the same number of goals, the winning selection will be X. Both players must start the match. If either or both players do not start Goalscorer bets will be void. Extra-Time and Penalty shoot-out goals do not count.",
+        "isOutright": false,
+        "isGoalScorer": false,
+        "iDGroup": null,
+        "iDGroupMarketType": 110,
+        "templateType": 0,
+        "oddsTypeOrder": 10,
+        "onlyRegularTime": false,
+        "multilineType": 0,
+        "oddCollectionID": 0,
+        "scheduleStatus": 0,
+        "specialBetValue": 0,
+        "combinability": 1,
+        "groupNo": 0,
+        "id": 455710891
+      },
+      {
+        "collectionId": 455711207,
+        "selections": [
+          {
+            "specialValue": "5.5",
+            "specialValueNumber": 5.5,
+            "specialValueString": "5.5",
+            "name": "Over",
+            "typeId": 12,
+            "order": 1,
+            "selectionDescription": "",
+            "odd": {
+              "value": 1.49,
+              "unboostedOddValue": null,
+              "scheduleStatus": 0
+            },
+            "id": 1497685711,
+            "smartCode": 17038,
+            "status": "VALID",
+            "oddCollectionID": 455711207
+          },
+          {
+            "specialValue": "5.5",
+            "specialValueNumber": 5.5,
+            "specialValueString": "5.5",
+            "name": "Under",
+            "typeId": 13,
+            "order": 2,
+            "selectionDescription": "",
+            "odd": {
+              "value": 2.23,
+              "unboostedOddValue": null,
+              "scheduleStatus": 0
+            },
+            "id": 1497685713,
+            "smartCode": 17038,
+            "status": "VALID",
+            "oddCollectionID": 455711207
+          }
+        ],
+        "name": "Total Goals",
+        "typeId": 160,
+        "specialValue": "5.5",
+        "oddsDescription": "Predict whether the number of goals scored in a match will be under/over the value specified.",
+        "isOutright": false,
+        "isGoalScorer": false,
+        "iDGroup": null,
+        "iDGroupMarketType": 160,
+        "templateType": 1,
+        "oddsTypeOrder": 20,
+        "onlyRegularTime": false,
+        "multilineType": 0,
+        "oddCollectionID": 0,
+        "scheduleStatus": 0,
+        "specialBetValue": 5.5,
+        "combinability": 1,
+        "groupNo": 0,
+        "id": 455711207,
+        "spreadMarkets": [
+          {
+            "collectionId": 455711207,
+            "selections": [
+              {
+                "specialValue": "5.5",
+                "specialValueNumber": 5.5,
+                "specialValueString": "5.5",
+                "name": "Over",
+                "typeId": 12,
+                "order": 1,
+                "selectionDescription": "",
+                "odd": {
+                  "value": 1.49,
+                  "unboostedOddValue": null,
+                  "scheduleStatus": 0
+                },
+                "id": 1497685711,
+                "smartCode": 17038,
+                "status": "VALID",
+                "oddCollectionID": 455711207
+              },
+              {
+                "specialValue": "5.5",
+                "specialValueNumber": 5.5,
+                "specialValueString": "5.5",
+                "name": "Under",
+                "typeId": 13,
+                "order": 2,
+                "selectionDescription": "",
+                "odd": {
+                  "value": 2.23,
+                  "unboostedOddValue": null,
+                  "scheduleStatus": 0
+                },
+                "id": 1497685713,
+                "smartCode": 17038,
+                "status": "VALID",
+                "oddCollectionID": 455711207
+              }
+            ],
+            "name": "Total Goals 5.5",
+            "typeId": 160,
+            "specialValue": "5.5",
+            "oddsDescription": "Predict whether the number of goals scored in a match will be under/over the value specified.",
+            "isOutright": false,
+            "isGoalScorer": false,
+            "iDGroup": null,
+            "iDGroupMarketType": 160,
+            "templateType": 1,
+            "oddsTypeOrder": 20,
+            "onlyRegularTime": false,
+            "multilineType": 0,
+            "oddCollectionID": 0,
+            "scheduleStatus": 0,
+            "specialBetValue": 5.5,
+            "combinability": 1,
+            "groupNo": 0,
+            "id": 455711207
+          },
+          {
+            "collectionId": 455826408,
+            "selections": [
+              {
+                "specialValue": "6.5",
+                "specialValueNumber": 6.5,
+                "specialValueString": "6.5",
+                "name": "Over",
+                "typeId": 12,
+                "order": 1,
+                "selectionDescription": "",
+                "odd": {
+                  "value": 1.94,
+                  "unboostedOddValue": null,
+                  "scheduleStatus": 0
+                },
+                "id": 1498041161,
+                "smartCode": 17038,
+                "status": "VALID",
+                "oddCollectionID": 455826408
+              },
+              {
+                "specialValue": "6.5",
+                "specialValueNumber": 6.5,
+                "specialValueString": "6.5",
+                "name": "Under",
+                "typeId": 13,
+                "order": 2,
+                "selectionDescription": "",
+                "odd": {
+                  "value": 1.65,
+                  "unboostedOddValue": null,
+                  "scheduleStatus": 0
+                },
+                "id": 1498041162,
+                "smartCode": 17038,
+                "status": "VALID",
+                "oddCollectionID": 455826408
+              }
+            ],
+            "name": "Total Goals 6.5",
+            "typeId": 160,
+            "specialValue": "6.5",
+            "oddsDescription": "Predict whether the number of goals scored in a match will be under/over the value specified.",
+            "isOutright": false,
+            "isGoalScorer": false,
+            "iDGroup": null,
+            "iDGroupMarketType": 160,
+            "templateType": 1,
+            "oddsTypeOrder": 20,
+            "onlyRegularTime": false,
+            "multilineType": 0,
+            "oddCollectionID": 0,
+            "scheduleStatus": 0,
+            "specialBetValue": 6.5,
+            "combinability": 1,
+            "groupNo": 0,
+            "id": 455826408
+          },
+          {
+            "collectionId": 456036859,
+            "selections": [
+              {
+                "specialValue": "7.5",
+                "specialValueNumber": 7.5,
+                "specialValueString": "7.5",
+                "name": "Over",
+                "typeId": 12,
+                "order": 1,
+                "selectionDescription": "",
+                "odd": {
+                  "value": 2.7,
+                  "unboostedOddValue": null,
+                  "scheduleStatus": 0
+                },
+                "id": 1498684885,
+                "smartCode": 17038,
+                "status": "VALID",
+                "oddCollectionID": 456036859
+              },
+              {
+                "specialValue": "7.5",
+                "specialValueNumber": 7.5,
+                "specialValueString": "7.5",
+                "name": "Under",
+                "typeId": 13,
+                "order": 2,
+                "selectionDescription": "",
+                "odd": {
+                  "value": 1.34,
+                  "unboostedOddValue": null,
+                  "scheduleStatus": 0
+                },
+                "id": 1498684886,
+                "smartCode": 17038,
+                "status": "VALID",
+                "oddCollectionID": 456036859
+              }
+            ],
+            "name": "Total Goals 7.5",
+            "typeId": 160,
+            "specialValue": "7.5",
+            "oddsDescription": "Predict whether the number of goals scored in a match will be under/over the value specified.",
+            "isOutright": false,
+            "isGoalScorer": false,
+            "iDGroup": null,
+            "iDGroupMarketType": 160,
+            "templateType": 1,
+            "oddsTypeOrder": 20,
+            "onlyRegularTime": false,
+            "multilineType": 0,
+            "oddCollectionID": 0,
+            "scheduleStatus": 0,
+            "specialBetValue": 7.5,
+            "combinability": 1,
+            "groupNo": 0,
+            "id": 456036859
+          }
+        ]
+      },
+      {
+        "collectionId": 455710890,
+        "selections": [
+          {
+            "specialValue": "0",
+            "specialValueNumber": 0,
+            "specialValueString": "",
+            "name": "1X",
+            "typeId": 9,
+            "order": 1,
+            "selectionDescription": "",
+            "odd": {
+              "value": 2.45,
+              "unboostedOddValue": null,
+              "scheduleStatus": 0
+            },
+            "id": 1497684837,
+            "smartCode": 17038,
+            "status": "VALID",
+            "oddCollectionID": 455710890
+          },
+          {
+            "specialValue": "0",
+            "specialValueNumber": 0,
+            "specialValueString": "",
+            "name": "12",
+            "typeId": 10,
+            "order": 2,
+            "selectionDescription": "",
+            "odd": {
+              "value": 1.1,
+              "unboostedOddValue": null,
+              "scheduleStatus": 0
+            },
+            "id": 1497684839,
+            "smartCode": 17038,
+            "status": "VALID",
+            "oddCollectionID": 455710890
+          },
+          {
+            "specialValue": "0",
+            "specialValueNumber": 0,
+            "specialValueString": "",
+            "name": "X2",
+            "typeId": 11,
+            "order": 3,
+            "selectionDescription": "",
+            "odd": {
+              "value": 1.14,
+              "unboostedOddValue": null,
+              "scheduleStatus": 0
+            },
+            "id": 1497684841,
+            "smartCode": 17038,
+            "status": "VALID",
+            "oddCollectionID": 455710890
+          }
+        ],
+        "name": "Double Chance",
+        "typeId": 146,
+        "specialValue": "0",
+        "oddsDescription": "Predict the final outcome of the match at regular time. There are 3 possible outcomes: 1X (home team wins or draws), X2 (away team wins or draws), 12 (home team wins or the away team wins).",
+        "isOutright": false,
+        "isGoalScorer": false,
+        "iDGroup": null,
+        "iDGroupMarketType": 146,
+        "templateType": 0,
+        "oddsTypeOrder": 30,
+        "onlyRegularTime": false,
+        "multilineType": 0,
+        "oddCollectionID": 0,
+        "scheduleStatus": 0,
+        "specialBetValue": 0,
+        "combinability": 1,
+        "groupNo": 0,
+        "id": 455710890
+      },
+      {
+        "collectionId": 455711210,
+        "selections": [
+          {
+            "specialValue": "2.5",
+            "specialValueNumber": 2.5,
+            "specialValueString": "2.5",
+            "name": "1 or Over",
+            "typeId": 2354,
+            "order": 1,
+            "selectionDescription": "",
+            "odd": {
+              "value": 1.01,
+              "unboostedOddValue": null,
+              "scheduleStatus": 0
+            },
+            "id": 1497685725,
+            "smartCode": 17038,
+            "status": "VALID",
+            "oddCollectionID": 455711210
+          },
+          {
+            "specialValue": "2.5",
+            "specialValueNumber": 2.5,
+            "specialValueString": "2.5",
+            "name": "X or Over",
+            "typeId": 2352,
+            "order": 2,
+            "selectionDescription": "",
+            "odd": {
+              "value": 1.004,
+              "unboostedOddValue": null,
+              "scheduleStatus": 0
+            },
+            "id": 1497685729,
+            "smartCode": 17038,
+            "status": "VALID",
+            "oddCollectionID": 455711210
+          },
+          {
+            "specialValue": "2.5",
+            "specialValueNumber": 2.5,
+            "specialValueString": "2.5",
+            "name": "2 or Over",
+            "typeId": 2350,
+            "order": 3,
+            "selectionDescription": "",
+            "odd": {
+              "value": 1.004,
+              "unboostedOddValue": null,
+              "scheduleStatus": 0
+            },
+            "id": 1497685731,
+            "smartCode": 17038,
+            "status": "VALID",
+            "oddCollectionID": 455711210
+          },
+          {
+            "specialValue": "2.5",
+            "specialValueNumber": 2.5,
+            "specialValueString": "2.5",
+            "name": "1 or Under",
+            "typeId": 2355,
+            "order": 4,
+            "selectionDescription": "",
+            "odd": {
+              "value": 3.6,
+              "unboostedOddValue": null,
+              "scheduleStatus": 0
+            },
+            "id": 1497685727,
+            "smartCode": 17038,
+            "status": "VALID",
+            "oddCollectionID": 455711210
+          },
+          {
+            "specialValue": "2.5",
+            "specialValueNumber": 2.5,
+            "specialValueString": "2.5",
+            "name": "X or Under",
+            "typeId": 2353,
+            "order": 5,
+            "selectionDescription": "",
+            "odd": {
+              "value": 4.45,
+              "unboostedOddValue": null,
+              "scheduleStatus": 0
+            },
+            "id": 1497685730,
+            "smartCode": 17038,
+            "status": "VALID",
+            "oddCollectionID": 455711210
+          },
+          {
+            "specialValue": "2.5",
+            "specialValueNumber": 2.5,
+            "specialValueString": "2.5",
+            "name": "2 or Under",
+            "typeId": 2351,
+            "order": 6,
+            "selectionDescription": "",
+            "odd": {
+              "value": 1.29,
+              "unboostedOddValue": null,
+              "scheduleStatus": 0
+            },
+            "id": 1497685732,
+            "smartCode": 17038,
+            "status": "VALID",
+            "oddCollectionID": 455711210
+          }
+        ],
+        "name": "Chance Mix Total Goals 2.5",
+        "typeId": 9648,
+        "specialValue": "2.5",
+        "oddsDescription": "Predict the outcome of a match betting on two related bet types. If at least one selection is correct, the bet is winning. In case both selections are correct, the winnings won't be doubled.",
+        "isOutright": false,
+        "isGoalScorer": false,
+        "iDGroup": null,
+        "iDGroupMarketType": 9648,
+        "templateType": 1,
+        "oddsTypeOrder": 40,
+        "onlyRegularTime": false,
+        "multilineType": 0,
+        "oddCollectionID": 0,
+        "scheduleStatus": 0,
+        "specialBetValue": 2.5,
+        "combinability": 1,
+        "groupNo": 0,
+        "id": 455711210
+      },
+      {
+        "collectionId": 455711208,
+        "selections": [
+          {
+            "specialValue": "0",
+            "specialValueNumber": 0,
+            "specialValueString": "",
+            "name": "GG",
+            "typeId": 74,
+            "order": 1,
+            "selectionDescription": "",
+            "odd": {
+              "value": 1.08,
+              "unboostedOddValue": null,
+              "scheduleStatus": 0
+            },
+            "id": 1497685715,
+            "smartCode": 17038,
+            "status": "VALID",
+            "oddCollectionID": 455711208
+          },
+          {
+            "specialValue": "0",
+            "specialValueNumber": 0,
+            "specialValueString": "",
+            "name": "NG",
+            "typeId": 76,
+            "order": 2,
+            "selectionDescription": "",
+            "odd": {
+              "value": 5.2,
+              "unboostedOddValue": null,
+              "scheduleStatus": 0
+            },
+            "id": 1497685717,
+            "smartCode": 17038,
+            "status": "VALID",
+            "oddCollectionID": 455711208
+          }
+        ],
+        "name": "GG/NG",
+        "typeId": 302,
+        "specialValue": "0",
+        "oddsDescription": "Predict if both teams will each score at least one goal each during the match. The bet offers two possible outcomes: GG (both teams will score at least one goal during the match); NG (one or both teams will fail to score a goal during the match).",
+        "isOutright": false,
+        "isGoalScorer": false,
+        "iDGroup": null,
+        "iDGroupMarketType": 302,
+        "templateType": 0,
+        "oddsTypeOrder": 60,
+        "onlyRegularTime": false,
+        "multilineType": 0,
+        "oddCollectionID": 0,
+        "scheduleStatus": 0,
+        "specialBetValue": 0,
+        "combinability": 1,
+        "groupNo": 0,
+        "id": 455711208
+      },
+      {
+        "collectionId": 455710889,
+        "selections": [
+          {
+            "specialValue": "0",
+            "specialValueNumber": 0,
+            "specialValueString": "",
+            "name": "1 DNB",
+            "typeId": 4,
+            "order": 1,
+            "selectionDescription": "",
+            "odd": {
+              "value": 3.75,
+              "unboostedOddValue": null,
+              "scheduleStatus": 0
+            },
+            "id": 1497684838,
+            "smartCode": 17038,
+            "status": "VALID",
+            "oddCollectionID": 455710889
+          },
+          {
+            "specialValue": "0",
+            "specialValueNumber": 0,
+            "specialValueString": "",
+            "name": "2 DNB",
+            "typeId": 5,
+            "order": 2,
+            "selectionDescription": "",
+            "odd": {
+              "value": 1.17,
+              "unboostedOddValue": null,
+              "scheduleStatus": 0
+            },
+            "id": 1497684840,
+            "smartCode": 17038,
+            "status": "VALID",
+            "oddCollectionID": 455710889
+          }
+        ],
+        "name": "Draw No Bet",
+        "typeId": 147,
+        "specialValue": "0",
+        "oddsDescription": "Standard DNB: Predict which team will win a match. Bets placed on this market will be void if the match ends in a draw.\r\n Fantasy DNB: Predict which team/player will score most goals in their respective matches. If both teams/players score the same number of goals, bets will be void. Both players must start the match. If either or both players do not start Goalscorer bets will be void. Extra-Time and Penalty shoot-out goals do not count.",
+        "isOutright": false,
+        "isGoalScorer": false,
+        "iDGroup": null,
+        "iDGroupMarketType": 147,
+        "templateType": 0,
+        "oddsTypeOrder": 100,
+        "onlyRegularTime": false,
+        "multilineType": 0,
+        "oddCollectionID": 0,
+        "scheduleStatus": 0,
+        "specialBetValue": 0,
+        "combinability": 1,
+        "groupNo": 0,
+        "id": 455710889
+      }
+    ],
+    "eventCategory": "F",
+    "smartBetCode": 17038,
+    "extProvIDItem": "59616851",
+    "tournamentId": 25271066,
+    "tournamentName": "Finland Kolmonen",
+    "categoryId": 10001141,
+    "categoryName": "Finland",
+    "matchStatus": 0,
+    "matchTime": 0,
+    "setScores": null,
+    "score": null,
+    "totalOdds": 44,
+    "incompatibleEvents": [],
+    "teams": [
+      {
+        "id": 631949,
+        "name": "FC Finnkurd",
+        "itemOrder": 1,
+        "extProvIDTeam": "290184"
+      },
+      {
+        "id": 704974,
+        "name": "HooGee",
+        "itemOrder": 2,
+        "extProvIDTeam": "283717"
+      }
+    ],
+    "sportId": 1,
+    "sportName": "Football"
+  }
+}

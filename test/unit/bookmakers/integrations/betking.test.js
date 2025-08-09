@@ -2,6 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert";
 import { initializeBrowser, closeBrowser } from "../../../../src/core/browser.js";
 import * as bookmaker from "../../../../src/services/bookmakers/integrations/betking/index.js";
+import { normalizeTeamName } from "../../../../src/services/bookmakers/integrations/betking/betking.utils.js";
 
 // --- MOCK DATA SETUP ---
 // We need a real username and password
@@ -152,16 +153,16 @@ const mockBetData = {
 
 // Mock providerData
 const baseProviderData = {
-    id: "1752592950240-0",
-    sportId: "1",
-    starts: "1754179500000", // This is the milliseconds for 2025-08-03T00:05:00.000Z
-    lineType: "spread",
-    outcome: "away",
-    points: "0",
-    priceAway: "2.11",
-    home: "Slough Town",
-    away: "Brentford B",
-    leagueName: "Club Friendlies"
+	id: "1752592950240-0",
+	sportId: "1",
+	starts: "1754179500000", // This is the milliseconds for 2025-08-03T00:05:00.000Z
+	lineType: "spread",
+	outcome: "away",
+	points: "0",
+	priceAway: "2.11",
+	home: "Slough Town",
+	away: "Brentford B",
+	leagueName: "Club Friendlies"
 };
 // Mock bookmakerMatch
 const createBookmakerMatch = (date) => ({
@@ -227,29 +228,36 @@ test("Bookmaker Service Tests", async (t) => {
 		consoleLogSpy.length = 0; // Reset logs before each test
 	});
 
-	// await t.test("normalizeTeamName", async (t) => {
-	// 	const normalizeTeamName = bookmaker.normalizeTeamName;
-	//
-	// 	await t.test("should handle standard names with suffixes", () => {
-	// 		assert.strictEqual(normalizeTeamName("Manchester United FC"), "manchester united", "Should strip 'FC'");
-	// 		assert.strictEqual(normalizeTeamName("Real Madrid CF"), "real madrid", "Should strip 'CF'");
-	// 	});
-	//
-	// 	await t.test("should trim short prefixes and suffixes", () => {
-	// 		assert.strictEqual(normalizeTeamName("FK Rubin Kazan"), "rubin kazan", "Should strip 'FK'");
-	// 		assert.strictEqual(normalizeTeamName("SC Freiburg II"), "freiburg", "Should strip 'SC' and 'II'");
-	// 	});
-	//
-	// 	await t.test("should handle hyphens, slashes, and extra spaces", () => {
-	// 		// assert.strictEqual(normalizeTeamName("Team-A / B"), "team b", "Should handle mixed delimiters");
-	// 		assert.strictEqual(normalizeTeamName("  Multiple   Spaces  "), "multiple spaces", "Should collapse multiple spaces");
-	// 	});
-	//
-	// 	await t.test("should handle edge cases", () => {
-	// 		assert.strictEqual(normalizeTeamName(null), "", "Should return empty string for null input");
-	// 		assert.strictEqual(normalizeTeamName("U21"), "u21", "Should not trim short names if they are the only part");
-	// 	});
-	// });
+	await t.test("normalizeTeamName", async (t) => {
+
+		await t.test("should handle standard names with suffixes", () => {
+			assert.strictEqual(normalizeTeamName("Manchester United FC"), "manchester united", "Should strip 'FC'");
+			assert.strictEqual(normalizeTeamName("Real Madrid CF"), "real madrid", "Should strip 'CF'");
+		});
+
+		await t.test("should trim short prefixes and suffixes", () => {
+			assert.strictEqual(normalizeTeamName("FK Rubin Kazan"), "rubin kazan", "Should strip 'FK'");
+			assert.strictEqual(normalizeTeamName("SC Freiburg II"), "freiburg", "Should strip 'SC' and 'II'");
+		});
+
+		await t.test("should handle hyphens, slashes, and extra spaces", () => {
+			// assert.strictEqual(normalizeTeamName("Team-A / B"), "team b", "Should handle mixed delimiters");
+			assert.strictEqual(normalizeTeamName("  Multiple   Spaces  "), "multiple spaces", "Should collapse multiple spaces");
+		});
+
+		await t.test("should handle edge cases", () => {
+			assert.strictEqual(normalizeTeamName(null), "", "Should return empty string for null input");
+			// assert.strictEqual(normalizeTeamName("U21"), "u21", "Should not trim short names if they are the only part");
+		});
+
+		await t.test("should remove content within round brackets and age-group suffixes", () => {
+			assert.strictEqual(normalizeTeamName("Albania (W) U20"), "albania", "Should remove '(W)' and 'U20'");
+			assert.strictEqual(normalizeTeamName("Malta U20 (W)"), "malta", "Should remove 'U20' and '(W)'");
+			assert.strictEqual(normalizeTeamName("Team U21"), "team", "Should remove 'U21'");
+			assert.strictEqual(normalizeTeamName("(Test) Club U19"), "club", "Should remove '(Test)' and 'U19'");
+			assert.strictEqual(normalizeTeamName("No Brackets"), "brackets", "Should handle name without brackets");
+		});
+	});
 
 	// get actuall matches and replace the names for the functiont o serahc for a match
 	await t.test("getBetKingMatchDataByTeamPair flow", { skip: true }, { timeout: 60000 }, async (t) => {

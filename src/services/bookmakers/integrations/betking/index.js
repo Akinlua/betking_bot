@@ -38,10 +38,8 @@ export async function getMatchDataByTeamPair(home, away) {
 	try {
 		// Search for both teams in parallel unormalized ---
 		console.log(`[Bookmaker] Starting Searching for both "${home}" and "${away}"`);
-		const [homeResults, awayResults] = await Promise.all([
-			getTeamDataByName(home),
-			getTeamDataByName(away)
-		]);
+		const homeResults = await getTeamDataByName(home); // One page at a time
+		const awayResults = await getTeamDataByName(away);
 
 		// Combine and de-duplicate the search results using the unique event ID.
 		const allMatches = [...(homeResults || []), ...(awayResults || [])];
@@ -65,7 +63,7 @@ export async function getMatchDataByTeamPair(home, away) {
 
 		const fuse = new Fuse(searchableMatches, {
 			includeScore: true,
-			threshold: 0.4,
+			threshold: 0.5,
 			keys: ['combinedEventName']
 		});
 
@@ -93,7 +91,7 @@ export async function getMatchDataByTeamPair(home, away) {
 		const bestResult = results.sort((a, b) => a.score - b.score)[0];
 		const bestResultPercentage = (1 - bestResult.score) * 100;
 
-		if (bestResult.score <= 0.4) {
+		if (bestResult.score <= 0.5) {
 			console.log(chalk.green(`[Bookmaker] Found confident match - score (${bestResultPercentage.toFixed(2)}%): "${bestResult.item.EventName}"`));
 			return bestResult.item;
 		}

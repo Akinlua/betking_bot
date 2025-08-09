@@ -43,7 +43,7 @@ export async function _fetchJsonFromApi(url) {
 			'Pragma': 'no-cache'
 		});
 		// 30s
-		const response = await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
+		const response = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
 		if (!response.ok()) {
 			throw new Error(`Request failed with status: ${response.status()}`);
 		}
@@ -53,6 +53,10 @@ export async function _fetchJsonFromApi(url) {
 		console.error(`[Bookmaker] Error fetching API URL ${url}:`, error.message);
 		return null;
 	} finally {
+		await page.evaluate(() => {
+			window.localStorage.clear();
+			window.sessionStorage.clear();
+		});
 		if (page) await page.close();
 	}
 }

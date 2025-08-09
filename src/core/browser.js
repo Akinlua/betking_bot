@@ -1,5 +1,6 @@
 import puppeteer from 'puppeteer-extra';
 import stealthPlugin from 'puppeteer-extra-plugin-stealth';
+import chalk from 'chalk';
 
 puppeteer.use(stealthPlugin());
 
@@ -10,27 +11,33 @@ let browser = null;
  */
 export async function initializeBrowser() {
 	if (browser) return;
-	console.log('[Browser] Initializing new optimized browser instance...');
 	try {
 		browser = await puppeteer.launch({
 			headless: true,
 			args: [
 				'--no-sandbox',
 				'--disable-setuid-sandbox',
-				'--disable-dev-shm-usage',
+                '--no-zygote', 
+                '--single-process', 
+				'--disable-extensions',
+				'--disable-sync',
+				'--disable-translate',
+				'--mute-audio',
+				'--no-first-run',
 				'--disable-gpu',
+				'--disable-dev-shm-usage',
 				'--disable-http-cache',
-				'--disable-http-cache',
-                '--no-zygote', // Reduce memory overhead
-                '--single-process', // Run Chrome in single process
-                '--disable-background-networking', // Disable background tasks
-                '--disable-features=site-per-process', // Simplify rendering
+                '--disable-background-networking', 
+                '--disable-features=site-per-process', 
+				'--disable-accelerated-2d-canvas',
+				'--disable-background-timer-throttling',
+				'--disable-client-side-phishing-detection'
 			],
-			protocolTimeout: 30000, // 30s timeout for CDP commands
+			protocolTimeout: 60_000, // 60s timeout for CDP commands
 		});
-		console.log('[Browser] Browser initialized successfully.');
+		console.log(chalk.green('[Browser] -> Browser Initialized'));
 	} catch (error) {
-		console.error('[Browser] Failed to launch browser:', error);
+		console.error(chalk.red('[Browser] -> Initialization Failed: ', error));
 		throw error;
 	}
 }
@@ -40,7 +47,7 @@ export async function initializeBrowser() {
  */
 export async function closeBrowser() {
 	if (browser) {
-		console.log('[Browser] Closing browser instance...');
+		console.log('[Browser] Closing browser instance');
 		await browser.close();
 		browser = null;
 	}

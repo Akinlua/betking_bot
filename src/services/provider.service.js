@@ -1,10 +1,9 @@
 import fs from 'fs/promises';
 import path from 'path';
 import configurations from "../../configurations/index.js";
+import chalk from 'chalk';
 import { addGamesToProcessingQueue } from './bot.service.js';
 
-const POLLING_INTERVAL_S = 20;
-const ALERT_API_URL = `https://swordfish-production.up.railway.app/alerts/${configurations.USER_ID}`;
 const DUMP_FILE_PATH = path.join(process.cwd(), 'data', 'provider_dump.json');
 
 const botState = {
@@ -20,20 +19,20 @@ export function startPolling() {
 		console.log("[Provider Service] Polling is already running.");
 		return;
 	}
-	if (!configurations.USER_ID) {
-		console.error("[Provider Service] FATAL: configurations.USER_ID is not set. Polling cannot start.");
+	if (!configurations.provider.userId) {
+		console.error("[Provider Service] -> User Id not set. Polling cannot start.");
 		return;
 	}
 	botState.isRunning = true;
-	console.log("[Provider] --- Starting Polling ---");
-	console.log(`[Provider] Polling URL: ${ALERT_API_URL}`);
+	console.log(chalk.green(`[Provider] -> Polling Started [INTERVAL-${configurations.provider.interval}]`));
+	console.log(chalk.cyan(`[Provider] -> ${configurations.provider.userId}`));
 	poll();
 }
 
 async function poll() {
 	while (botState.isRunning) {
 		try {
-			const url = new URL(ALERT_API_URL);
+			const url = new URL(configurations.provider.alertApiUrl);
 			if (botState.cursor) {
 				url.searchParams.set("dropNotificationsCursor", botState.cursor);
 			}
@@ -52,15 +51,17 @@ async function poll() {
 				botState.alertsFound += notifications.length;
 				botState.statusMessage = `SUCCESS: Received ${notifications.length} new alerts.`;
 
-				try {
-					// Ensure the data/ directory exists
-					const dir = path.dirname(DUMP_FILE_PATH);
-					await fs.mkdir(dir, { recursive: true });
-					await fs.writeFile(DUMP_FILE_PATH, JSON.stringify(notifications, null, 2));
-					console.log(`[Provider Service] Successfully dumped ${notifications.length} alerts to ${DUMP_FILE_PATH}`);
-				} catch (writeError) {
-					console.error('[Provider] Error writing data to dump file:', writeError);
+				if (configurations.provider.storeData) {
+					try {
+						const dir = path.dirname(DUMP_FILE_PATH);
+						await fs.mkdir(dir, { recursive: true });
+						await fs.writeFile(DUMP_FILE_PATH, JSON.stringify(notifications, null, 2));
+						console.log(`[Provider Service] Successfully dumped ${notifications.length} alerts to ${DUMP_FILE_PATH}`);
+					} catch (writeError) {
+						console.error('[Provider] Error writing data to dump file:', writeError);
+					}
 				}
+
 				addGamesToProcessingQueue(notifications);
 
 			} else {
@@ -75,7 +76,7 @@ async function poll() {
 			console.log(`[Provider] ${botState.statusMessage} | Cursor: ${botState.cursor}`);
 		}
 
-		await new Promise(resolve => setTimeout(resolve, POLLING_INTERVAL_S * 1000));
+		await new Promise(resolve => setTimeout(resolve, configurations.provider.interval * 1000));
 	}
 }
 
@@ -151,7 +152,7 @@ export function devigOdds(providerData) {
 
 		return trueOdds;
 	} catch (error) {
-		console.error('[Bot] Error during devigging calculation:', error.message);
+		console.error('[PROVIDER] Error during devigging calculation:', error.message);
 		return null;
 	}
 }
