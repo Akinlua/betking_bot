@@ -24,6 +24,7 @@
     "fuse.js": "^7.1.0",
     "morgan": "^1.10.0",
     "node-cron": "^4.2.1",
+    "pm2": "^6.0.8",
     "puppeteer": "^24.10.2",
     "puppeteer-extra": "^3.3.6",
     "puppeteer-extra-plugin-stealth": "^2.11.2"
