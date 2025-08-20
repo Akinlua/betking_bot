@@ -35,6 +35,12 @@ async function main() {
 		});
 	} catch (error) {
 		console.error('[BotRunner] Failed to start bot:', error);
+		try {
+			await fs.unlink(configPath);
+			console.log(chalk.yellow(`[BotRunner] Cleaned up config for failed bot at ${configPath}`));
+		} catch (cleanupError) {
+			console.error(chalk.red('[BotRunner] Failed to clean up config file:', cleanupError));
+		}
 		process.exit(1);
 	}
 }
