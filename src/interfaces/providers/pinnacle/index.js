@@ -108,7 +108,7 @@ class Provider extends EventEmitter {
 		}
 	}
 
-	devigOdds(odds) {
+	devigOdds(odds, method = 'power') {
 		try {
 			if (!Array.isArray(odds) || odds.length < 2) {
 				throw new Error('Input must be an array of at least two odds.');
@@ -118,23 +118,67 @@ class Provider extends EventEmitter {
 				throw new Error('All items in odds array must be numbers greater than 1.');
 			}
 
-			const impliedProbs = parsedOdds.map(odd => 1 / odd);
-			const totalProb = impliedProbs.reduce((sum, p) => sum + p, 0);
+			const impliedProbs = parsedOdds.map(o => 1 / o);
+			const totalImpliedProb = impliedProbs.reduce((sum, p) => sum + p, 0);
 
-			if (totalProb <= 0) {
-				throw new Error('Total probability is not positive.');
+			if (totalImpliedProb <= 1) {
+				return parsedOdds;
 			}
 
-			const trueProbs = impliedProbs.map(p => p / totalProb);
+			let trueProbs;
+
+			switch (method.toLowerCase()) {
+
+				case 'multiplicative':
+					trueProbs = impliedProbs.map(p => p / totalImpliedProb);
+					break;
+
+				case 'additive':
+					const overround = totalImpliedProb - 1;
+					const adjustment = overround / parsedOdds.length;
+					trueProbs = impliedProbs.map(p => p - adjustment);
+					if (trueProbs.some(p => p <= 0)) {
+						console.warn('[devigOdds] Additive method resulted in a non-positive probability. Falling back to multiplicative.');
+						trueProbs = impliedProbs.map(p => p / totalImpliedProb);
+					}
+					break;
+
+				case 'power':
+				default: 
+					const findK = () => {
+						let low = 1.0;
+						let high = 4.0; 
+						const tolerance = 1e-7;
+						for (let i = 0; i < 100; i++) {
+							let k = (low + high) / 2;
+							let sum = impliedProbs.reduce((acc, p) => acc + Math.pow(p, k), 0);
+							if (Math.abs(sum - 1.0) < tolerance) return k;
+							if (sum > 1) {
+								low = k;
+							} else {
+								high = k;
+							}
+						}
+						return (low + high) / 2; 
+					};
+					const k = findK();
+					const powerProbs = impliedProbs.map(p => Math.pow(p, k));
+					const totalPowerProb = powerProbs.reduce((sum, p) => sum + p, 0);
+					trueProbs = powerProbs.map(p => p / totalPowerProb);
+					break;
+			}
+
 			const noVigOdds = trueProbs.map(p => 1 / p);
 
 			return noVigOdds;
 
 		} catch (error) {
-			console.error('[Provider] Error during devigging calculation:', error.message);
+			console.error('[devigOdds] Error during calculation:', error.message);
 			return null;
 		}
 	}
+
+
 
 	getPollingStatus() {
 		return this.state;

@@ -19,6 +19,7 @@ class EdgeRunner {
 	constructor(config, browser, bookmaker) {
 		this.config = config;
 		this.bankroll = null;
+		this.openBets = null;
 		this.username = config.bookmaker.username;
 		this.password = config.bookmaker.password;
 		this.browser = browser;
@@ -43,11 +44,11 @@ class EdgeRunner {
 	}
 
 	static async #initializeBrowser() {
-		if (this.browser && this.bookmaker) {
-			console.log(chalk.yellow('[EdgeRunner] Already initialized, skipping.'));
-			return;
-		}
 		try {
+			if (this.browser && this.bookmaker) {
+				console.log(chalk.yellow('[EdgeRunner] Already initialized, skipping.'));
+				return;
+			}
 			const browser = await puppeteer.launch({
 				headless: true,
 				args: [
@@ -80,9 +81,35 @@ class EdgeRunner {
 	}
 	#sendLog(message) {
 		// process.send is only available when running as a forked child process
+		// use to log on discord or front end consumer
 		if (process.send) {
 			process.send({ type: 'log', message });
 		}
+	}
+
+	#handleProviderNotifications(providerGames) {
+		if (!providerGames || providerGames.length === 0) {
+			console.log('[Edgerunner] No games received in notification.');
+			return;
+		}
+		if (providerGames.length === 250) {
+			console.log('[Edgerunner] Skipping bulk 250 games.');
+			return;
+		}
+
+		console.log(chalk.cyan(`[Edgerunner] Received ${providerGames.length} games`));
+		providerGames.forEach(game => {
+			if (game.eventId && !this.#processedEventIds.has(game.eventId)) {
+				this.#gameQueue.push(game);
+				this.#processedEventIds.add(game.eventId); // Add the eventId to the set
+				console.log(chalk.cyan(`[Edgerunner] Added game with event ID ${game.eventId} to queue`));
+			} else if (game.eventId) {
+				console.log(chalk.yellow(`[Edgerunner] Skipped duplicate event ID ${game.eventId}`));
+			} else {
+				console.log(chalk.yellow('[Edgerunner] Skipped game with missing eventId:', JSON.stringify(game)));
+			}
+		});
+		this.#processQueue();
 	}
 
 	async #saveSuccessfulMatch(matchData, providerData) {
@@ -139,22 +166,45 @@ class EdgeRunner {
 				}, { outcomeKeys: [], oddsArray: [] });
 				if (oddsArray.length < 2) return { ...matchedBet, value: -Infinity };
 				const noVigOddsArray = this.provider.devigOdds(oddsArray);
+
 				if (!noVigOddsArray) return { ...matchedBet, value: -Infinity };
 				const noVigOdds = Object.fromEntries(outcomeKeys.map((key, i) => [key, noVigOddsArray[i]]));
 				const trueOdd = noVigOdds[provider.matchedOutcome.name];
+
 				if (!trueOdd) return { ...matchedBet, value: -Infinity };
 				const value = (bookmaker.selection.odd.value / trueOdd - 1) * 100;
+
 				return { ...matchedBet, value, trueOdd };
 			};
 
 			for (const marketName in groupedMatches) {
 				const marketGroup = groupedMatches[marketName];
 				const valuedBets = marketGroup.map(calculateValue);
+				if (!valuedBets || valuedBets.length === 0 || !valuedBets[0]) { continue; }
+
 				const bestBetInGroup = valuedBets.reduce((best, current) => {
 					return (current.value > best.value) ? current : best;
 				}, valuedBets[0]);
+				if (!bestBetInGroup || bestBetInGroup.value === -Infinity) { continue; }
 
-				if (bestBetInGroup && bestBetInGroup.value > (this.edgerunnerConf.minValueBetPercentage || 0)) {
+				// -- DIAGNOSTIC LOG ---
+				let diagnosticLog = `[Edgerunner] Market Analysis: ${marketName}\n`;
+				for (const bet of valuedBets) {
+					const isBest = (bet.bookmaker.selection.id === bestBetInGroup.bookmaker.selection.id);
+					const icon = isBest ? '✅' : '➖';
+					const selectionName = bet.bookmaker.selection.name;
+					const valueText = `Value: ${bet.value.toFixed(2)}%`;
+					const oddsText = `@ ${bet.bookmaker.selection.odd.value}`;
+					diagnosticLog += `  ${icon} ${selectionName.padEnd(15)} ${oddsText.padEnd(8)} ${valueText}\n`;
+				}
+				this.#sendLog(diagnosticLog);
+				console.log(chalk.gray(diagnosticLog));
+
+				const bookmakerOdds = bestBetInGroup.bookmaker.selection.odd.value;
+				const meetsValuePercentage = bestBetInGroup.value > (this.edgerunnerConf.minValueBetPercentage || 0);
+				const meetsValueOdds = bookmakerOdds >= (this.edgerunnerConf.minValueBetOdds || 1) && bookmakerOdds <= (this.edgerunnerConf.maxValueBetOdds || Infinity);
+
+				if (bestBetInGroup && meetsValuePercentage && meetsValueOdds) {
 					valueBets.push({
 						market: bestBetInGroup.bookmaker.market,
 						selection: bestBetInGroup.bookmaker.selection,
@@ -274,6 +324,7 @@ class EdgeRunner {
 					throw new Error('Failed to fetch account info');
 				}
 				this.bankroll = accountInfo.balance;
+				this.openBets = accountInfo.openBetsCount;
 			} catch (error) {
 				if (error instanceof AuthenticationError) {
 					console.log(chalk.yellow(`[Edgerunner] Auth error: ${error.message}. Attempting to sign in...`));
@@ -282,6 +333,7 @@ class EdgeRunner {
 						const accountInfo = await this.bookmaker.getAccountInfo(this.username);
 						if (accountInfo) {
 							this.bankroll = accountInfo.balance;
+							this.openBets = accountInfo.openBetsCount;
 						}
 					}
 				} else {
@@ -357,9 +409,11 @@ class EdgeRunner {
 				this.#sendLog(`[Edgerunner] Found ${valueBets.length} value opportunities.`);
 				for (const valueBet of valueBets) {
 					const valueBetMessage = `📈 **Value Bet Found**\n` +
+						`> **Sport:** ${detailedBookmakerData.eventCategory}\n` +
 						`> **Match:** ${detailedBookmakerData.name}\n` +
 						`> **Market:** ${valueBet.market.name}\n` +
 						`> **Selection:** ${valueBet.selection.name}\n` +
+						`> **Points:** ${valueBet.market.specialValue || "none"}\n` +
 						`> **Odds:** ${valueBet.selection.odd.value}\n` +
 						`> **Value:** ${valueBet.value.toFixed(2)}%`;
 					this.#sendLog(valueBetMessage);
@@ -381,7 +435,6 @@ class EdgeRunner {
 							}
 						};
 						console.log(chalk.greenBright('[Edgerunner] Placing Bet:'), summary.data);
-						this.#sendLog(JSON.stringify(summary));
 
 						try {
 							const betPayload = this.bookmaker.constructBetPayload(
@@ -394,10 +447,12 @@ class EdgeRunner {
 							await this.bookmaker.placeBet(this.username, betPayload);
 							console.log(chalk.bold.magenta('[Edgerunner] Bet placed successfully'));
 							const successMessage = `✅ **Bet Placed Successfully!**\n`
+								+ `> **Sport:** ${detailedBookmakerData.eventCategory}\n`
 								+ `> **Stake:** $${stakeAmount.toFixed(2)}\n`
 								+ `> **Match:** ${detailedBookmakerData.name}\n`
 								+ `> **Market:** ${valueBet.market.name}\n`
 								+ `> **Selection:** ${valueBet.selection.name}\n`
+								+`> **Points:** ${valueBet.market.specialValue || "none"}\n` 
 								+ `> **Odds:** ${valueBet.selection.odd.value}`;
 							this.#sendLog(successMessage);
 
@@ -444,33 +499,11 @@ class EdgeRunner {
 		console.log(chalk.green(`[Edgerunner] Starting bot: ${this.edgerunnerConf.name}`));
 		this.#sendLog(`🚀 **Bot Started** for **${this.edgerunnerConf.name}**.`);
 		this.provider.startPolling();
-		this.provider.on('notifications', (games) => {
-			if (!games || games.length === 0) {
-				console.log('[Edgerunner] No games received in notification.');
-				return;
-			}
-			if (games.length === 250) {
-				console.log('[Edgerunner] Skipping bulk 250 games.');
-				return;
-			}
-
-			console.log(chalk.cyan(`[Edgerunner] Received ${games.length} games`));
-			games.forEach(game => {
-				if (game.eventId && !this.#processedEventIds.has(game.eventId)) {
-					this.#gameQueue.push(game);
-					this.#processedEventIds.add(game.eventId); // Add the eventId to the set
-					console.log(chalk.cyan(`[Edgerunner] Added game with event ID ${game.eventId} to queue`));
-				} else if (game.eventId) {
-					console.log(chalk.yellow(`[Edgerunner] Skipped duplicate event ID ${game.eventId}`));
-				} else {
-					console.log(chalk.yellow('[Edgerunner] Skipped game with missing eventId:', JSON.stringify(game)));
-				}
-			});
-			this.#processQueue();
-		});
+		this.provider.on('notifications', this.#handleProviderNotifications.bind(this));
 	}
 
 	async stop() {
+		this.provider.off('notifications', this.#handleProviderNotifications.bind(this));
 		this.provider.stopPolling();
 		this.#isWorkerRunning = false;
 		this.#gameQueue.length = 0;
@@ -489,9 +522,12 @@ class EdgeRunner {
 		return {
 			isBotActive: this.#isBotActive,
 			bankroll: this.bankroll,
+			openBets: this.openBets,
 			queueLength: this.#gameQueue.length,
 			isWorkerRunning: this.#isWorkerRunning,
-			browserActive: !!this.browser
+			browserActive: !!this.browser,
+			minValueBetOdds: this.edgerunnerConf.minValueBetOdds,
+			maxValueBetOdds: this.edgerunnerConf.maxValueBetOdds,
 		};
 	}
 }

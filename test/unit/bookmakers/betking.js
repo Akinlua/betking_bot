@@ -6,7 +6,7 @@ import { normalizeTeamName } from "../../../../src/services/bookmakers/integrati
 
 // --- MOCK DATA SETUP ---
 // We need a real username and password
-const mockUsername = "07033054766";
+const mockUsername = "";
 // This is the mock payload for the bet. It's based on a real request.
 // For a unit test, the data just needs to be in the correct format that the function expects.
 // we want to get this data from the actual bet site and then structure to test our function

@@ -8,5 +8,6 @@ router.post("/config/:id", edgeRunnerController.updateConfig);
 router.post("/stop/:id", edgeRunnerController.stopBot);
 router.get("/list", edgeRunnerController.listBots);
 router.get("/status/:id", edgeRunnerController.getBotStatus);
+router.delete("/delete/:id", edgeRunnerController.deleteBot);
 
 export default router;

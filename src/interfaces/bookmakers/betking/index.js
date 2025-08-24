@@ -39,9 +39,16 @@ class BetKingBookmaker {
 					'1': {
 						'*': { label: 'Handicap', outcome: { home: "Home", away: "Away" } },
 						bridge: {
-							"-3.0": "0 : 3",
-							"-2.0": "0 : 2",
-							"-1.0": "0 : 1",
+							"-5.5": "0 : 5",
+							"-4.5": "0 : 4",
+							"-3.5": "0 : 3",
+							"-2.5": "0 : 2",
+							"-1.5": "0 : 1",
+							"+1.5": "2 : 0",
+							"+2.5": "3 : 0",
+							"+3.5": "4 : 0",
+							"+4.5": "5 : 0",
+							"+5.5": "6 : 0",
 							specials: {
 								"0.0": { name: "Draw No Bet", outcome: { home: "1 DNB", away: "2 DNB" } },
 								"0.5": { name: "Double Chance", outcome: { home: "1X", away: "X2" } },
@@ -418,18 +425,16 @@ class BetKingBookmaker {
 				}
 			});
 
-			await browser.setCookie(...cookies);
+			await page.setCookie(...cookies);
 			await page.setJavaScriptEnabled(false);
-			await page.goto('https://m.betking.com', { waitUntil: 'domcontentloaded' });
 
-			const headerIsland = await page.waitForSelector('astro-island[component-export="Header"]');
-			if (!headerIsland) throw new Error("Could not find the header's astro-island element.");
+			await page.goto('https://m.betking.com', { waitUntil: 'domcontentloaded' });
 
 			const propsString = await page.$eval(
 				'astro-island[component-export="Header"]',
 				(island) => island.getAttribute('props')
 			);
-			if (!propsString) throw new Error("Could not find the props attribute.");
+			if (!propsString) throw new Error("Could not find the Header props attribute.");
 
 			const props = JSON.parse(propsString, (key, value) => {
 				if (Array.isArray(value) && value.length === 2 && typeof value[0] === 'number') {
@@ -438,9 +443,23 @@ class BetKingBookmaker {
 				return value;
 			});
 
-			if (props.balance !== undefined) {
+			const contextContent = await page.evaluate(() => {
+				const scripts = Array.from(document.querySelectorAll('script'));
+				const contextScript = scripts.find(s => s.textContent.includes('__remixContext'));
+				return contextScript ? contextScript.textContent : null;
+			});
+
+			if (!contextContent) throw new Error("Could not find the Remix context script.");
+
+			const jsonString = contextContent.substring(contextContent.indexOf('{'), contextContent.lastIndexOf('}') + 1);
+			const remixContext = JSON.parse(jsonString);
+
+			const openBetsCount = remixContext?.state?.loaderData?.root?.betsCount;
+
+			if (props.balance !== undefined && openBetsCount !== undefined) {
 				const accountInfo = {
 					balance: parseFloat(props.balance),
+					openBetsCount: parseInt(openBetsCount, 10), 
 					accessToken: props.accessToken,
 					freeBets: props.freeBets,
 					unreadMessageCount: props.unreadMessageCount,
@@ -449,13 +468,13 @@ class BetKingBookmaker {
 				console.log(`[Bookmaker] Successfully extracted account info for ${username}`);
 				return accountInfo;
 			} else {
-				throw new Error('Account info (balance) not found in props object.');
+				throw new Error('Account info (balance or openBetsCount) not found in page data.');
 			}
 		} catch (error) {
 			console.error(`[Bookmaker] Error getting account info:`, error.message);
 			return null;
 		} finally {
-			await page.close();
+			if (page) await page.close();
 		}
 	}
 

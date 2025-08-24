@@ -1,36 +1,62 @@
-import { SlashCommandBuilder, MessageFlags } from "discord.js";
+import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
 import configurations from "../../../../configurations/index.js";
 
 const apiBase = `${configurations.apiBaseUrl}/edgerunner`;
 
-export default
-	{
-		data: new SlashCommandBuilder()
-			.setName("runner-status")
-			.setDescription("Get status of a bot")
-			.addStringOption(opt => opt.setName("username").setDescription("The boookmaker account username of the bot to stop").setRequired(true)),
-		async execute(interaction) {
-			await interaction.deferReply({ ephemeral: MessageFlags.Ephemeral });
-			const pm_id = interaction.options.getString("username");
-			try {
-				const response = await fetch(`${apiBase}/status/${pm_id}`);
-				const result = await response.json();
-				if (response.ok) {
-					await interaction.editReply(
-						`ℹ️ Bot ${pm_id} status:\n` +
-						`Bot Active: ${result.isBotActive}\n` + 
-						`Bankroll: ${result.bankroll}\n` +
-						`Queue Length: ${result.queueLength}\n` +
-						`Worker Running: ${result.isWorkerRunning}\n` +
-						`Browser Active: ${result.browserActive}`
-					);
-				} else {
-					await interaction.editReply(`❌ Failed: ${result.error}`);
-				}
+export default {
+    data: new SlashCommandBuilder()
+        .setName("runner-status")
+        .setDescription("Gets the live status of a running bot.")
+        .addStringOption(opt => 
+            opt.setName("username")
+               .setDescription("The bookmaker account username of the bot.")
+               .setRequired(true)),
 
-			} catch (err) {
-				console.error(err);
-				await interaction.editReply("❌ Error fetching bot status.");
-			}
-		}
-	}
+    async execute(interaction) {
+        await interaction.deferReply({ ephemeral: true });
+        
+        const pm_id = interaction.options.getString("username");
+
+        try {
+            const response = await fetch(`${apiBase}/status/${pm_id}`);
+            const result = await response.json();
+
+            if (response.ok) {
+                const {
+                    isBotActive,
+                    bankroll,
+                    openBets,
+                    queueLength,
+                    isWorkerRunning,
+                    browserActive,
+                    minValueBetOdds,
+                    maxValueBetOdds
+                } = result;
+
+                const statusEmbed = new EmbedBuilder()
+                    .setTitle(`Status for Bot: ${pm_id}`)
+                    .setColor(isBotActive ? '#57F287' : '#ED4245') 
+                    .addFields(
+                        { name: 'Status', value: isBotActive ? '✅ Active' : '🛑 Inactive', inline: true },
+                        { name: 'Worker', value: isWorkerRunning ? '🏃 Running' : '💤 Idle', inline: true },
+                        { name: 'Browser', value: browserActive ? '🌐 Open' : '🔒 Closed', inline: true },
+                        { name: 'Bankroll', value: `₦${bankroll?.toFixed(2) ?? 'N/A'}`, inline: true },
+                        { name: 'Open Bets', value: `${openBets ?? 'N/A'}`, inline: true },
+                        { name: 'Game Queue', value: `${queueLength ?? 0} games`, inline: true },
+                        { name: 'Odds Range', value: `Min: ${minValueBetOdds ?? 'N/A'} | Max: ${maxValueBetOdds ?? 'N/A'}`, inline: false },
+                    )
+                    .setTimestamp()
+                    .setFooter({ text: 'EdgeRunner Bot Status' });
+
+                await interaction.editReply({ embeds: [statusEmbed] });
+
+            } else {
+                await interaction.editReply(`❌ **Failed to get status:** ${result.error}`);
+            }
+
+        } catch (err) {
+            console.error(err);
+            await interaction.editReply("❌ An error occurred while connecting to the bot server.");
+        }
+    }
+}

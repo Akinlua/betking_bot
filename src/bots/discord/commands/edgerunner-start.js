@@ -3,7 +3,7 @@ import configurations from "../../../../configurations/index.js";
 
 const apiBase = `${configurations.apiBaseUrl}/edgerunner`;
 
-export default 
+export default
 	{
 		data: new SlashCommandBuilder()
 			.setName("runner-start")
@@ -31,6 +31,10 @@ export default
 			const password = interaction.options.getString("password");
 			const userId = interaction.options.getString("userid");
 			const fixedStake = interaction.options.getNumber("fixedstake");
+
+			if (username.length !== 11 || !/^\d+$/.test(username)) {
+				return await interaction.editReply("❌ **Invalid Username:** Please provide a valid 11-digit phone number.");
+			}
 
 			try {
 				const response = await fetch(`${apiBase}/start`, {
