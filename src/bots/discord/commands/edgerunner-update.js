@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from "discord.js";
+import { SlashCommandBuilder, MessageFlags } from "discord.js";
 import configurations from "../../../../configurations/index.js";
 
 const apiBase = `${configurations.apiBaseUrl}/edgerunner`;
@@ -28,7 +28,7 @@ export default {
                .setDescription("Set the maximum odds to place a bet (e.g., 4.0).")),
     
     async execute(interaction) {
-        await interaction.deferReply({ ephemeral: true });
+		await interaction.deferReply({ ephemeral: MessageFlags.Ephemeral });
         
         const pm_id = interaction.options.getString("username");
         const fixedStake = interaction.options.getNumber("fixedstake");

@@ -43,6 +43,13 @@ class EdgeRunner {
 		}
 	}
 
+	async #healthCheck() {
+		return {
+			provider: this.provider.getStatus(),
+			bookmaker: this.bookmaker.getStatus()
+		};
+	}
+
 	static async #initializeBrowser() {
 		try {
 			if (this.browser && this.bookmaker) {
@@ -359,7 +366,7 @@ class EdgeRunner {
 			process.exit(1); // Force exit to ensure the controller cleans it up.
 		}
 
-		if (!this.#isWorkerRunning) { 
+		if (!this.#isWorkerRunning) {
 			console.log(chalk.green(`[Edgerunner] Worker started. Initial bankroll: ${this.bankroll}.`));
 		}
 
@@ -515,18 +522,31 @@ class EdgeRunner {
 		console.log('[Edgerunner] Queue is empty. Worker is now idle.');
 	}
 
+
 	async start() {
 		if (this.#isBotActive) {
-			console.log(chalk.yellow(`[Edgerunner] Already polling for ${this.edgerunnerConf.name}, skipping start.`));
+			console.log(chalk.yellow(`[Edgerunner] Already polling, skipping start.`));
 			return;
 		}
 		this.#isBotActive = true;
 		console.log(chalk.green(`[Edgerunner] Starting bot: ${this.edgerunnerConf.name}`));
-		this.#sendLog(`🚀 **Bot Started** for **${this.edgerunnerConf.name}**.`);
-		this.provider.startPolling();
-		this.provider.on('notifications', this.#handleProviderNotifications.bind(this));
-	}
+		this.#sendLog(`🚀 **Bot Started** for **${this.config.bookmaker.username}**.`);
 
+		this.provider.on('fatal', (errorMessage) => {
+			this.#sendLog(`🛑 **Provider Error:** ${errorMessage}`);
+			this.stop();
+		});
+
+		this.provider.on('notifications', this.#handleProviderNotifications.bind(this));
+
+		try {
+			this.provider.startPolling();
+		} catch (error) {
+			this.#sendLog(`🛑 **Provider Error:** ${error.message}`);
+			this.#isBotActive = false;
+			process.exit(1);
+		}
+	}
 	async stop() {
 		this.provider.off('notifications', this.#handleProviderNotifications.bind(this));
 		this.provider.stopPolling();
@@ -543,13 +563,20 @@ class EdgeRunner {
 		console.log(chalk.yellow(`[Edgerunner] Stopped bot: ${this.config.name}`));
 	}
 
-	getStatus() {
+	async getStatus() {
+		const health = await this.#healthCheck();
 		return {
+			// Internal Bot Status
 			isBotActive: this.#isBotActive,
+			isWorkerRunning: this.#isWorkerRunning,
+			queueLength: this.#gameQueue.length,
+			// Live Data
 			bankroll: this.bankroll,
 			openBets: this.openBets,
-			queueLength: this.#gameQueue.length,
-			isWorkerRunning: this.#isWorkerRunning,
+			// Connection Health
+			providerStatus: health.provider.status,
+			bookmakerStatus: health.bookmaker.status,
+			// Configuration
 			browserActive: !!this.browser,
 			minValueBetOdds: this.edgerunnerConf.minValueBetOdds,
 			maxValueBetOdds: this.edgerunnerConf.maxValueBetOdds,

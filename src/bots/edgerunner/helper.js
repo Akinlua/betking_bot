@@ -1,14 +1,14 @@
 const baseConfig = {
 	provider: {
 		name: "pinnacle",
-		storeData: true,
+		storeData: false,
 		interval: 10,
 		userId: "",
 		alertApiUrl: "",
 	},
 	bookmaker: {
 		name: "betking",
-		storeData: true,
+		storeData: false,
 		interval: 10,
 		username: "",
 		password: ""

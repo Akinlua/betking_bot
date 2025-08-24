@@ -9,6 +9,10 @@ class BetKingBookmaker {
 	constructor(config, browser) {
 		this.config = config;
 		this.browser = browser;
+		this.state = {
+			status: 'INITIALIZING',
+			message: 'Bot has just started'
+		};
 		// Note: Sport IDs are defined for the provider's system.
 		// - sportId=1: Football
 		// - sportId=3: Basketball (provider); corresponds to bookmaker sportId=2
@@ -169,6 +173,10 @@ class BetKingBookmaker {
 		// console.log(`[Bookmaker] Final normalized name: "${normalized}"`);
 		return normalized;
 	};
+
+	getStatus() {
+		return this.state;
+	}
 
 	async getTeamDataById(matchId) {
 		if (!matchId || typeof matchId !== 'string') return null;
@@ -388,12 +396,14 @@ class BetKingBookmaker {
 
 			const cookies = await page.cookies();
 			await this.#saveCookies(username, cookies);
+			this.state = { status: 'AUTHENTICATED', message: 'Sign-in successful.' };
 
 			return {
 				success: true,
 				cookies: cookies,
 			};
 		} catch (error) {
+			this.state = { status: 'LOGIN FAILED', message: error.message };
 			console.error(`[Bookmaker] Error logging in to ${signinData.url}:`, error.message);
 			return { success: false, error: error.message };
 		} finally {
@@ -458,20 +468,26 @@ class BetKingBookmaker {
 			if (props.balance !== undefined && openBetsCount !== undefined) {
 				const accountInfo = {
 					balance: parseFloat(props.balance),
-					openBetsCount: parseInt(openBetsCount, 10), 
+					openBetsCount: parseInt(openBetsCount, 10),
 					accessToken: props.accessToken,
 					freeBets: props.freeBets,
 					unreadMessageCount: props.unreadMessageCount,
 					isAuth: props.auth
 				};
 				console.log(`[Bookmaker] Successfully extracted account info for ${username}`);
+				this.state = { status: 'AUTHENTICATED', message: 'Session is active.' };
 				return accountInfo;
 			} else {
 				throw new Error('Account info (balance or openBetsCount) not found in page data.');
 			}
 		} catch (error) {
+			if (error instanceof AuthenticationError) {
+				this.state = { status: 'UNAUTHENTICATED', message: error.message };
+			} else {
+				this.state = { status: 'ERROR', message: error.message };
+			}
 			console.error(`[Bookmaker] Error getting account info:`, error.message);
-			return null;
+			throw error; 
 		} finally {
 			if (page) await page.close();
 		}
@@ -736,129 +752,6 @@ class BetKingBookmaker {
 		};
 	}
 
-	// translateProviderData(providerData) {
-	// 	const mapping = this.lineTypeMapper[providerData.lineType];
-	// 	if (!mapping) {
-	// 		console.log(`[Bot - BOOKMAKER] Unsupported line type: ${providerData.lineType}`);
-	// 		return null;
-	// 	}
-	//
-	// 	const providerOutcomeKey = providerData.outcome.toLowerCase();
-	// 	const selectionName = mapping.outcome[providerOutcomeKey];
-	// 	if (!selectionName) {
-	// 		console.error(`[Bot] Unknown outcome: ${providerData.outcome} for line type ${providerData.lineType}`);
-	// 		return null;
-	// 	}
-	//
-	// 	const providerOutcomeName = `price${providerOutcomeKey.charAt(0).toUpperCase() + providerOutcomeKey.slice(1)}`;
-	// 	const odds = providerData[providerOutcomeName];
-	// 	if (!odds || isNaN(parseFloat(odds))) {
-	// 		console.error(`[Bot] Invalid odds for outcome: ${providerOutcomeKey}`);
-	// 		return null;
-	// 	}
-	//
-	// 	if (providerData.sportId === '1') {
-	// 		const sportMarkets = mapping.marketsBySport?.['1'] || {
-	// 			'0': providerData.lineType === 'total' ? 'Total Goals' : 'Handicap'
-	// 		};
-	// 		const marketName = providerData.lineType === 'total' ? sportMarkets['0'] : mapping.name;
-	// 		let betkingMarketName = providerData.lineType === 'total' ? `${marketName} ${providerData.points}` : marketName;
-	// 		let betkingSelectionName = selectionName;
-	// 		let betkingSpecialValue = providerData.lineType === 'total' ? providerData.points : null;
-	//
-	// 		if (providerData.lineType === 'spread') {
-	// 			const points = parseFloat(providerData.points);
-	// 			if (!isNaN(points)) {
-	// 				if (points === 0) {
-	// 					betkingMarketName = 'Draw No Bet';
-	// 					betkingSelectionName = providerOutcomeKey === 'home' ? '1 DNB' : '2 DNB';
-	// 					betkingSpecialValue = '0';
-	// 				} else if (points === 0.5) {
-	// 					betkingMarketName = 'Double Chance';
-	// 					betkingSelectionName = providerOutcomeKey === 'home' ? '1X' : 'X2';
-	// 					betkingSpecialValue = '0';
-	// 				} else {
-	// 					if (Number.isInteger(points)) {
-	// 						if (providerOutcomeKey === 'home') {
-	// 							betkingSpecialValue = points < 0 ? `0:${-points}` : `${points}:0`;
-	// 							betkingSelectionName = 'Home';
-	// 						} else {
-	// 							betkingSpecialValue = points < 0 ? `${-points}:0` : `0:${points}`;
-	// 							betkingSelectionName = 'Away';
-	// 						}
-	// 						betkingMarketName = `Handicap ${points}`;
-	// 					} else {
-	// 						console.log(`[Bot] Quarter-goal handicap (${points}) not supported yet.`);
-	// 						return null;
-	// 					}
-	// 				}
-	// 			}
-	// 		}
-	//
-	// 		return {
-	// 			marketName: betkingMarketName,
-	// 			selectionName: betkingSelectionName,
-	// 			points: providerData.points,
-	// 			specialValue: betkingSpecialValue,
-	// 			odds
-	// 		};
-	// 	}
-	// 	else if (providerData.sportId === '3') {
-	// 		if (!['total', 'spread'].includes(providerData.lineType)) {
-	// 			console.log(`[Bot] Unsupported basketball line type: ${providerData.lineType}. Only total and spread bets supported.`);
-	// 			return null;
-	// 		}
-	//
-	// 		const sportMarkets = mapping.marketsBySport?.['3'] || {
-	// 			'0': providerData.lineType === 'total' ? 'Total (Incl. Overtime)' : 'Handicap (Incl. Overtime)'
-	// 		};
-	// 		const periodNumber = providerData.periodNumber || '0';
-	// 		if (periodNumber !== '0') {
-	// 			console.log(`[Bot] Unsupported basketball period: ${periodNumber}. Only full-game (period 0) supported.`);
-	// 			return null;
-	// 		}
-	// 		let betkingMarketName = providerData.lineType === 'total' ? `${sportMarkets[periodNumber]} ${providerData.points}` : sportMarkets[periodNumber];
-	// 		let betkingSelectionName = selectionName;
-	// 		let betkingSpecialValue = providerData.lineType === 'total' ? providerData.points : null;
-	//
-	// 		if (providerData.lineType === 'spread') {
-	// 			const points = parseFloat(providerData.points);
-	// 			if (!isNaN(points)) {
-	// 				if (points === 0) {
-	// 					betkingMarketName = 'DNB RT';
-	// 					betkingSelectionName = providerOutcomeKey === 'home' ? '1 DNB' : '2 DNB';
-	// 					betkingSpecialValue = '0';
-	// 				} else {
-	// 					betkingMarketName = `Handicap (Incl. Overtime) ${points}`;
-	// 					if (providerOutcomeKey === 'home') {
-	// 						betkingSpecialValue = points < 0 ? `0 : ${Math.abs(points)}` : `${Math.abs(points)} : 0`;
-	// 						betkingSelectionName = '1 AH';
-	// 					} else {
-	// 						betkingSpecialValue = points < 0 ? `${Math.abs(points)} : 0` : `0 : ${Math.abs(points)}`;
-	// 						betkingSelectionName = '2 AH';
-	// 					}
-	// 				}
-	// 			}
-	// 		}
-	//
-	// 		return {
-	// 			marketName: betkingMarketName,
-	// 			selectionName: betkingSelectionName,
-	// 			points: providerData.points,
-	// 			periodNumber: periodNumber,
-	// 			specialValue: betkingSpecialValue,
-	// 			odds
-	// 		};
-	// 	}
-	//
-	// 	console.log(`[Bot] Unsupported sportId: ${providerData.sportId}. Using generic mapping.`);
-	// 	return {
-	// 		marketName: mapping.name,
-	// 		selectionName: selectionName,
-	// 		points: providerData.points,
-	// 		odds: odds,
-	// 	};
-	// }
 	translateProviderData({ lineType, outcome, sportId, points, periodNumber, odds }) {
 		const mapping = this.lineTypeMapper[lineType];
 		if (!mapping) {
