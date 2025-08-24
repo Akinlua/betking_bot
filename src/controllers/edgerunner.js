@@ -13,118 +13,99 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const bots = new Map();
 
 export async function startBot(req, res) {
-	const config = createEdgeRunnerConfig(req.body);
-	if (!config.provider.userId || !config.bookmaker.username || !config.bookmaker.password) {
-		return res.status(400).json({ error: "Missing required fields: userId, username, password" });
-	}
+    const config = createEdgeRunnerConfig(req.body);
+    if (!config.provider.userId || !config.bookmaker.username || !config.bookmaker.password) {
+        return res.status(400).json({ error: "Missing required fields: userId, username, password" });
+    }
 
-	const { username } = config.bookmaker;
-	if (username.length !== 11 || !/^\d+$/.test(username)) {
-		return res.status(400).json({ error: "Invalid username: Must be an 11-digit number." });
-	}
+    const botId = config.bookmaker.username;
 
-	const botId = config.bookmaker.username;
-	const configPath = path.join(__dirname, `../../data/edgerunner/${botId}.json`);
+    if (bots.has(botId)) {
+        console.warn(`[Bot] Start request failed: A bot for user [${botId}] is already running or starting.`);
+        return res.status(409).json({ error: `A bot for this user is already running or in the process of starting.` });
+    }
 
-	if (bots.has(botId)) {
-		console.warn(`[Bot] Start request failed: Bot is already running for user [${botId}]`);
-		return res.status(409).json({ error: `Bot is already running for user ${botId}` });
-	}
+    const maxAllowedBots = parseInt(configurations.MAX_EDGERUNNER_INSTANCES) || 5;
+    if (bots.size >= maxAllowedBots) {
+        console.warn(`[Bot] Start request failed: Maximum number of bots reached [${maxAllowedBots}]`);
+        return res.status(429).json({ error: `Server has reached its maximum capacity of running bots [${maxAllowedBots}]` });
+    }
 
-	const maxAllowedBots = parseInt(configurations.MAX_EDGERUNNER_INSTANCES) || 5;
-	if (bots.size >= maxAllowedBots) {
-		const warningMessage = `Server has reached its max capacity of running bots [${maxAllowedBots}]`;
-		console.warn(`[Bot] Start request failed: ${warningMessage}`);
-		try {
-			const adminChannel = await client.channels.fetch(configurations.DISCORD_ADMIN_CHANNEL_ID);
-			if (adminChannel) {
-				await adminChannel.send(`⚠️ **Bot Start Failed:** ${warningMessage}. Request for user \`${botId}\` was rejected.`);
-			}
-		} catch (err) {
-			console.error(`[Bot] Failed to send max capacity alert to Discord:`, err);
-		}
-		return res.status(429).json({ error: warningMessage });
-	}
+    bots.set(botId, { status: 'starting' }); // Lock the botId immediately
 
-	try {
-		await fs.access(configPath);
-		const errorMessage = `Bookmaker username ${botId} already has a configuration and is not running. Please stop the bot first if you need to restart.`;
-		console.warn(`[Bot] Start request failed: ${errorMessage}`);
-		return res.status(400).json({ error: errorMessage });
-	} catch (error) {
-		// This is the desired outcome: file does not exist, so we can proceed.
-	}
+    const configPath = path.join(__dirname, `../../data/edgerunner/${botId}.json`);
+    let channel = null;
 
-	let channel = null;
-	let configWritten = false;
-	try {
-		const configDir = path.dirname(configPath);
+    try {
+        try {
+            await fs.access(configPath);
+            const errorMessage = `Bookmaker username ${botId} already has a configuration file. Please delete the bot first.`;
+            console.warn(`[Bot] Start request failed: ${errorMessage}`);
+            bots.delete(botId); // Release the lock
+            return res.status(400).json({ error: errorMessage });
+        } catch (error) {
+            // File does not exist, which is good.
+        }
 
-		const guild = await client.guilds.fetch(configurations.DISCORD_GUILD_ID);
-		const category = await guild.channels.fetch(configurations.DISCORD_BOTS_CATEGORY_ID);
+        const configDir = path.dirname(configPath);
+        const guild = await client.guilds.fetch(configurations.DISCORD_GUILD_ID);
+        const category = await guild.channels.fetch(configurations.DISCORD_BOTS_CATEGORY_ID);
+        
+        channel = await guild.channels.create({
+            name: `bot-${botId}`,
+            type: ChannelType.GuildText,
+            parent: category,
+            topic: `Logs and status for bot running on account ${botId}.`
+        });
+        config.discordChannelId = channel.id;
 
-		channel = await guild.channels.create({
-			name: `bot-${botId}`,
-			type: ChannelType.GuildText,
-			parent: category,
-			topic: `Logs and status for bot running on account ${botId}.`
-		});
-		console.log(`[Discord] Created channel #${channel.name} for bot ${botId}`);
-		config.discordChannelId = channel.id;
+        await fs.mkdir(configDir, { recursive: true });
+        await fs.writeFile(configPath, JSON.stringify(config, null, 2));
 
-		await fs.mkdir(configDir, { recursive: true });
-		await fs.writeFile(configPath, JSON.stringify(config, null, 2));
-		configWritten = true;
-		console.log(`[Bot ${botId}] Config written to ${configPath}`);
+        const child = fork(path.join(__dirname, "../bots/edgerunner/instance.js"), [], {
+            env: { CONFIG_PATH: configPath },
+            stdio: ['pipe', 'pipe', 'pipe', 'ipc']
+        });
 
-		const child = fork(path.join(__dirname, "../bots/edgerunner/instance.js"), [], {
-			env: { CONFIG_PATH: configPath },
-			stdio: ['pipe', 'pipe', 'pipe', 'ipc']
-		});
+        child.on('message', async (msg) => {
+            if (msg.type?.toLowerCase() === 'log' && msg.message) {
+                try {
+                    const logChannel = await client.channels.fetch(config.discordChannelId);
+                    if (logChannel) await logChannel.send(msg.message);
+                } catch (err) {
+                    console.error(`[Bot ${botId}] Failed to send log:`, err.message);
+                }
+            }
+        });
 
-		child.on('message', async (msg) => {
-			if (msg.type?.toLowerCase() === 'log' && msg.message) {
-				try {
-					const logChannel = await client.channels.fetch(config.discordChannelId);
-					if (logChannel) await logChannel.send(msg.message);
-				} catch (err) {
-					console.error(`[Bot ${botId}] Failed to send log to Discord channel:`, err);
-				}
-			}
-		});
+        child.stdout.on('data', (data) => console.log(`[Bot ${botId}] stdout: ${data.toString().trim()}`));
+        child.stderr.on('data', (data) => console.error(`[Bot ${botId}] stderr: ${data.toString().trim()}`));
+        child.on('error', (err) => console.error(`[Bot ${botId}] Process error:`, err));
+        
+        child.on('exit', async (code) => {
+            console.log(`[Bot ${botId}] Process exited with code ${code}`);
+            bots.delete(botId);
+            try {
+                await fs.unlink(configPath);
+            } catch (err) {
+                // Ignore if file is already gone
+            }
+        });
+        
+        bots.set(botId, child); // Replace placeholder with the real child process
+        return res.json({ message: "Bot started", pm_id: botId, name: `edgerunner-${botId}` });
 
-		child.stdout.on('data', (data) => console.log(`[Bot ${botId}] stdout: ${data.toString().trim()}`));
-		child.stderr.on('data', (data) => console.error(`[Bot ${botId}] stderr: ${data.toString().trim()}`));
-		child.on('error', (err) => console.error(`[Bot ${botId}] Process error:`, err));
+    } catch (error) {
+        console.error(`[Bot] Failed to start bot [${botId}]:`, error);
+        bots.delete(botId); // Release the lock on failure
+        if (channel) {
+            await channel.delete().catch(err => {});
+        }
+        // Attempt to clean up config file if it was written before the crash
+        try { await fs.unlink(configPath); } catch (e) {}
 
-		child.on('exit', async (code) => {
-			console.log(`[Bot ${botId}] Process exited with code ${code}`);
-			bots.delete(botId);
-			try {
-				await fs.unlink(configPath);
-				console.log(`[Bot ${botId}] Cleaned up config file.`);
-			} catch (err) {
-				console.error(`[Bot ${botId}] Failed to clean up config file on exit:`, err);
-			}
-		});
-
-		bots.set(botId, child);
-		return res.json({ message: "Bot started", pm_id: botId, name: `edgerunner-${botId}` });
-
-	} catch (error) {
-		console.error(`[Bot] Failed to start bot [${botId}]:`, error);
-
-		if (channel) {
-			console.log(`[Bot] Cleaning up orphaned Discord channel for failed start [${botId}]`);
-			await channel.delete().catch(err => console.error(`[Bot] Failed to delete orphaned channel ${channel.id}:`, err));
-		}
-		if (configWritten) {
-			console.log(`[Bot] Cleaning up orphaned config file for failed start [${botId}]`);
-			await fs.unlink(configPath).catch(err => console.error(`[Bot] Failed to delete orphaned config file ${configPath}:`, err));
-		}
-
-		return res.status(500).json({ error: "Failed to start bot. " + error.message });
-	}
+        return res.status(500).json({ error: "Failed to start bot. " + error.message });
+    }
 }
 
 export async function updateConfig(req, res) {

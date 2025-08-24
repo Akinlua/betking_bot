@@ -14,7 +14,7 @@ class EdgeRunner {
 	#processedEventIds = new Set();
 	#isWorkerRunning = false;
 	#isBotActive = false;
-	#CORRELATED_DUMP_PATH = path.join(process.cwd(), 'data', 'correlated_matches.json');
+	#CORRELATED_DUMP_PATH = path.join(process.cwd(), 'data/logs', 'provider_bookmaker_correlated.json');
 
 	constructor(config, browser, bookmaker) {
 		this.config = config;

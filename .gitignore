@@ -23,10 +23,11 @@ Thumbs.db
 .idea/
 .vscode/
 
-data/provider_dump.json
-data/correlated_matches.json
 data/logs/*
 data/cookies/*
+data/edgerunner/*
+
 !data/.gitkeep
 !data/logs/.gitkeep
 !data/cookies/.gitkeep
+!data/edgerunner/.gitkeep

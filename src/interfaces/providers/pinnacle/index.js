@@ -8,7 +8,7 @@ class Provider extends EventEmitter {
 		super();
 		this.config = config;
 		this.dumpFilePathName = 'provider_dump.json';
-		this.dumpFilePath = path.join(process.cwd(), 'data', this.dumpFilePathName);
+		this.dumpFilePath = path.join(process.cwd(), 'data/logs', this.dumpFilePathName);
 		this.state = {
 			isRunning: false,
 			statusMessage: 'Idle',
