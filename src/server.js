@@ -101,8 +101,6 @@ async function startDiscordBot() {
 	// Register slash commands activate on prod
 	try {
 		const rest = new REST().setToken(configurations.DISCORD_TOKEN);
-
-		// The put method is used to fully refresh all commands in the guild with the current set
 		const data = await rest.put(
 			Routes.applicationGuildCommands(configurations.DISCORD_CLIENT_ID, configurations.DISCORD_GUILD_ID),
 			{ body: commands },

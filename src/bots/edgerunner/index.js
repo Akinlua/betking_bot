@@ -5,6 +5,7 @@ import stealthPlugin from 'puppeteer-extra-plugin-stealth';
 import { getBookmakerInterface } from '../../interfaces/bookmakers/index.js';
 import { getProviderInterface } from '../../interfaces/providers/index.js';
 import chalk from 'chalk';
+import Logger from '../../core/logger.js';
 import { AuthenticationError } from '../../core/errors.js';
 
 puppeteer.use(stealthPlugin());
@@ -25,6 +26,7 @@ class EdgeRunner {
 		this.browser = browser;
 		this.bookmaker = bookmaker;
 		this.provider = getProviderInterface(config.provider.name, config.provider);
+		this.logger = new Logger(this.#sendLog.bind(this));
 		this.edgerunnerConf = config.edgerunner;
 	}
 
@@ -41,13 +43,6 @@ class EdgeRunner {
 			console.error(chalk.red('[EdgeRunner] Failed to create instance:', error));
 			throw error;
 		}
-	}
-
-	async #healthCheck() {
-		return {
-			provider: this.provider.getStatus(),
-			bookmaker: this.bookmaker.getStatus()
-		};
 	}
 
 	static async #initializeBrowser() {
@@ -90,6 +85,55 @@ class EdgeRunner {
 		}
 	}
 
+	async #ensureAuthenticated() {
+		console.log('[Edgerunner] Verifying authentication status...');
+		try {
+			// We use getAccountInfo as a heartbeat to check if we're logged in.
+			const accountInfo = await this.bookmaker.getAccountInfo(this.username);
+			if (accountInfo) {
+				console.log('[Edgerunner] Authentication is still valid.');
+				this.#sendLog('✔️ Authentication is still valid.');
+				this.bankroll = accountInfo.balance; // Keep bankroll updated
+				return true;
+			}
+			throw new AuthenticationError('Session expired or not logged in.');
+		} catch (error) {
+			console.log(chalk.yellow('[Edgerunner] Authentication check failed. Attempting to sign in...'));
+			this.#sendLog(`⚠️ **Authentication Required:** Attempting to sign in...`);
+
+			const signInResult = await this.bookmaker.signin(this.username, this.password);
+			if (signInResult.success) {
+				console.log('[Edgerunner] Sign-in successful.');
+				this.#sendLog('✅ Sign-in successful.');
+				// Verify by fetching account info again
+				const newAccountInfo = await this.bookmaker.getAccountInfo(this.username);
+				if (newAccountInfo) {
+					this.bankroll = newAccountInfo.balance;
+					return true;
+				}
+			}
+
+			const failureMsg = `Could not re-authenticate. Reason: ${signInResult.reason || 'Failed to get account info after sign-in.'}`;
+			this.#sendLog(`❌ **Critical Failure:** ${failureMsg}`);
+			throw new AuthenticationError(failureMsg);
+		}
+	}
+
+	async #performAuthenticatedAction(action) {
+		try {
+			return await action();
+		} catch (error) {
+			if (error instanceof AuthenticationError) {
+				console.log(chalk.yellow(`[Edgerunner] Authentication error during action. Re-authenticating...`));
+				await this.#ensureAuthenticated();
+
+				console.log('[Edgerunner] Retrying original action...');
+				return await action();
+			}
+			throw error;
+		}
+	}
+
 	#handleProviderNotifications(providerGames) {
 		if (!providerGames || providerGames.length === 0) {
 			console.log('[Edgerunner] No games received in notification.');
@@ -112,6 +156,12 @@ class EdgeRunner {
 				console.log(chalk.yellow('[Edgerunner] Skipped game with missing eventId:', JSON.stringify(game)));
 			}
 		});
+
+		if (this.#processedEventIds.size > 100) {
+			const newIds = Array.from(this.#processedEventIds).slice(50);
+			this.#processedEventIds = new Set(newIds);
+			console.log('[Edgerunner] Cleaned up old event IDs to prevent memory leak.');
+		}
 		this.#processQueue();
 	}
 
@@ -208,30 +258,7 @@ class EdgeRunner {
 			}
 
 			// -- DIAGNOSTIC LOG ---
-			if (bestBetsForTable.length > 0) {
-				let tableLog = `\n[Edgerunner] BEST\n`;
-
-				bestBetsForTable.forEach(best => {
-					if (!best || !isFinite(best.value)) return;
-
-					let logSelectionName = best.bookmaker.selection.name;
-					const specialValue = best.bookmaker.market.specialValue;
-					if (specialValue && specialValue != 0) {
-						logSelectionName = `${logSelectionName} ${specialValue}`;
-					}
-
-					const marketCol = best.marketName.padEnd(20);
-					const selectionCol = logSelectionName.padEnd(18);
-					const oddsCol = `@ ${best.bookmaker.selection.odd.value.toFixed(2)}`.padEnd(8);
-					const valueColor = best.value > 0 ? chalk.green : chalk.red;
-					const valueCol = `Value: ${best.value.toFixed(2)}%`;
-
-					tableLog += `⭐️ ${marketCol}${selectionCol}${oddsCol}${valueColor(valueCol)}\n`;
-				});
-
-				console.log(chalk.gray(tableLog));
-				this.#sendLog(tableLog);
-			}
+			this.logger.logBestInMarket(bestBetsForTable);
 
 			valueBets.sort((a, b) => b.value - a.value);
 			return valueBets;
@@ -246,19 +273,36 @@ class EdgeRunner {
 		try {
 			const normalizeProvider = (d) => ({ ...d, money_line: d.money_line ? { main: d.money_line } : undefined });
 			const normalizedProviderMarkets = normalizeProvider(providerMarkets);
-
 			const sportId = providerMarkets.sportId || '1';
 
-			const bookmakerSelections = bookmakerMarkets.flatMap(market =>
-				market.selections.map(selection => ({
+			const bookmakerSelections = bookmakerMarkets.flatMap(market => {
+				// Start with the selections from the parent market itself
+				let allSelections = market.selections.map(selection => ({
 					searchable: {
 						name: market.name,
 						outcome: selection.name,
 						specialValue: market.specialValue
 					},
 					original: { market, selection }
-				}))
-			);
+				}));
+
+				// If a nested spreadMarkets array exists, process its contents too
+				if (market.spreadMarkets && Array.isArray(market.spreadMarkets)) {
+					const nestedSelections = market.spreadMarkets.flatMap(nestedMarket =>
+						nestedMarket.selections.map(selection => ({
+							searchable: {
+								name: nestedMarket.name,
+								outcome: selection.name,
+								specialValue: nestedMarket.specialValue
+							},
+							original: { market: nestedMarket, selection }
+						}))
+					);
+					allSelections = allSelections.concat(nestedSelections);
+				}
+
+				return allSelections;
+			});
 
 			const groupedMatches = {};
 
@@ -293,7 +337,7 @@ class EdgeRunner {
 							const s = sel.searchable;
 							const nameMatches = useExactNameMatch ? s.name.toLowerCase() === searchName.toLowerCase() : s.name.toLowerCase().startsWith(searchName.toLowerCase());
 							const outcomeMatches = s.outcome.toLowerCase() === searchOutcome.toLowerCase();
-							const specialValueMatches = needsSpecialValueCheck ? s.specialValue === valueToMatch : true;
+							const specialValueMatches = needsSpecialValueCheck ? String(s.specialValue) === String(valueToMatch) : true;
 							return nameMatches && outcomeMatches && specialValueMatches;
 						});
 
@@ -319,34 +363,8 @@ class EdgeRunner {
 				}
 			}
 
-			let summaryLog = `[Edgerunner] BRIDGED\n`;
-			if (Object.keys(groupedMatches).length > 0) {
-				for (const marketName in groupedMatches) {
-					const marketGroup = groupedMatches[marketName];
-					summaryLog += `  └── ${chalk.bold.white(marketName)}\n`;
-
-					marketGroup.forEach(bet => {
-						const valuedBet = this.calculateValue(bet);
-
-						let logSelectionName = bet.bookmaker.selection.name;
-						const specialValue = bet.bookmaker.market.specialValue;
-						if (specialValue && specialValue != 0) {
-							logSelectionName = `${logSelectionName} ${specialValue}`;
-						}
-
-						const providerOdd = valuedBet.provider.matchedOutcome.odd;
-						const bookmakerOdd = valuedBet.bookmaker.selection.odd.value;
-
-						const valueText = isFinite(valuedBet.value) ? valuedBet.value.toFixed(2) + '%' : 'N/A';
-						const valueColor = valuedBet.value > 0 ? chalk.green : chalk.red;
-						summaryLog += `      ├── ${logSelectionName.padEnd(15)} | ${chalk.cyan('P:')} ${providerOdd.toFixed(2).padEnd(6)} | ${chalk.yellow('B:')} ${bookmakerOdd.toFixed(2).padEnd(6)} | Value: ${valueColor(valueText)}\n`;
-					});
-				}
-			} else {
-				summaryLog += `  └── No markets were successfully bridged.`;
-			}
-			this.#sendLog(summaryLog);
-			console.log(chalk.gray(summaryLog));
+			// --- START: Unified Minimalist Log ---
+			this.logger.logBridgedMarkets(groupedMatches, this.calculateValue.bind(this));
 
 			return groupedMatches;
 
@@ -356,230 +374,162 @@ class EdgeRunner {
 		}
 	}
 
+
 	async #processQueue() {
 		if (this.#isWorkerRunning) return;
 		this.#isWorkerRunning = true;
 
-		if (this.bankroll === null) {
-			try {
-				console.log('[Edgerunner] Fetching initial account info');
-				if (!this.bookmaker) {
-					throw new Error('Bookmaker not initialized');
-				}
-				const accountInfo = await this.bookmaker.getAccountInfo(this.username);
-				if (!accountInfo) {
-					throw new AuthenticationError('Failed to fetch account info, likely not logged in.');
-				}
-				this.bankroll = accountInfo.balance;
-				this.openBets = accountInfo.openBetsCount;
-			} catch (error) {
-				if (error instanceof AuthenticationError) {
-					console.log(chalk.yellow(`[Edgerunner] Auth error: ${error.message}. Attempting to sign in...`));
-					this.#sendLog(`⚠️ **Authentication Error:** Attempting to sign in...`);
-
-					const signInResult = await this.bookmaker.signin(this.username, this.password);
-					if (signInResult.success) {
-						console.log('[Edgerunner] Sign-in successful, re-fetching account info...');
-						this.#sendLog('✅ Sign-in successful');
-						const accountInfo = await this.bookmaker.getAccountInfo(this.username);
-						if (accountInfo) {
-							this.bankroll = accountInfo.balance;
-							this.openBets = accountInfo.openBetsCount;
-						} else {
-							this.#sendLog('❌ **Critical Failure:** Signed in, but could not read account info from the page.');
-						}
-					} else {
-						this.#sendLog(`❌ **Critical Failure:** Could not sign in. Please check credentials. Reason: ${signInResult.reason || 'Unknown'}`);
-					}
-				} else {
-					console.error('[Edgerunner] An unexpected error occurred while fetching account info:', error);
-					this.#sendLog(`❌ **Critical Failure:** An unexpected error occurred during startup: ${error.message}`);
+		try {
+			if (this.bankroll === null) {
+				try {
+					await this.#ensureAuthenticated();
+				} catch (error) {
+					const finalErrorMessage = '🛑 **Bot Stopping:** Could not establish initial bankroll. Please check credentials or website status.';
+					console.error(chalk.red(`[Edgerunner] ${finalErrorMessage}`), error);
+					this.#sendLog(finalErrorMessage);
+					this.#isWorkerRunning = false;
+					process.exit(1);
 				}
 			}
-		}
 
-		if (this.bankroll === null) {
-			const finalErrorMessage = '🛑 **Bot Stopping:** Could not establish bankroll after attempting to sign in. Please check credentials or website status.';
-			console.error(chalk.red(`[Edgerunner] ${finalErrorMessage}`));
-			this.#sendLog(finalErrorMessage);
-			this.#isWorkerRunning = false;
-			process.exit(1); // Force exit to ensure the controller cleans it up.
-		}
-
-		if (!this.#isWorkerRunning) {
-			console.log(chalk.green(`[Edgerunner] Worker started. Initial bankroll: ${this.bankroll}.`));
-		}
-
-		while (this.#gameQueue.length > 0) {
-			const providerData = this.#gameQueue.shift(); // FIFO
 			try {
-				console.log(chalk.blueBright(`\n--- Processing: ${providerData.home} vs ${providerData.away} ---`));
+				console.log(chalk.blue('[Edgerunner] Refreshing account info before processing queue...'));
+				await this.#ensureAuthenticated();
+			} catch (error) {
+				console.error(chalk.red('[Edgerunner] Could not refresh bankroll. Staking might be based on stale data.'));
+				this.#sendLog('⚠️ **Warning:** Could not refresh bankroll before processing.');
+			}
 
-				const potentialMatch = await this.bookmaker.getMatchDataByTeamPair(providerData.home, providerData.away);
-				if (!potentialMatch) {
-					console.log(`[Edgerunner] Match not found for ${providerData.home} vs ${providerData.away}`);
-					continue;
-				}
-				console.log(`[Edgerunner] Potential Match Found: ${potentialMatch.EventName}`);
+			console.log(chalk.green(`[Edgerunner] Worker processing queue. Current bankroll: ${this.bankroll}.`));
 
-				const detailedBookmakerData = await this.bookmaker.getMatchDetailsByEvent(
-					potentialMatch.IDEvent,
-					potentialMatch.EventName
-				);
-				if (!detailedBookmakerData) {
-					console.log(`[Edgerunner] Failed to fetch full bookmaker data.`);
-					continue;
-				}
+			while (this.#gameQueue.length > 0) {
+				const providerData = this.#gameQueue.shift(); // FIFO
+				try {
+					console.log(chalk.blueBright(`\n[EDGERUNNER] Processing: ${providerData.home} vs ${providerData.away}`));
 
-				const bookmakerTime = detailedBookmakerData.date;
-				const providerTime = providerData.starts;
-				const isMatchVerified = await this.bookmaker.verifyMatch(bookmakerTime, providerTime);
-				if (!isMatchVerified) {
-					console.log(`[Edgerunner] Match Time Mismatch Discarded: ${detailedBookmakerData.name}`);
-					continue;
-				}
-				console.log('[Edgerunner] Match Time Verified For:', detailedBookmakerData.name);
+					const potentialMatch = await this.bookmaker.getMatchDataByTeamPair(providerData.home, providerData.away);
+					if (!potentialMatch) {
+						console.log(`[Edgerunner] Match not found for ${providerData.home} vs ${providerData.away}`);
+						continue;
+					}
+					console.log(`[Edgerunner] Potential Match Found: ${potentialMatch.EventName}`);
 
-				await this.#saveSuccessfulMatch(detailedBookmakerData, providerData);
-
-				const detailedProviderPayload = await this.provider.getDetailedInfo(providerData.eventId);
-				if (!detailedProviderPayload?.data?.periods?.num_0) {
-					console.log(`[Edgerunner] Main market data not found in detailed provider info.`);
-					continue;
-				}
-				const providerMainMarket = detailedProviderPayload.data.periods.num_0;
-
-				const bookmakerMarkets = detailedBookmakerData.markets;
-				const providerMarkets = {
-					money_line: providerMainMarket.money_line,
-					spreads: providerMainMarket.spreads,
-					totals: providerMainMarket.totals,
-					team_total: providerMainMarket.team_total,
-					sportId: providerData.sportId,
-					periodNumber: 0
-				};
-
-
-				const sportIdMap = {
-					'1': '⚽️ SOCCER',
-					'3': '🏀 BASKETBALL',
-				};
-				const sportName = sportIdMap[providerData.sportId] || '❓ UNKNOWN SPORT';
-				const gameHeader = `
-						=====================================================================
-  						${sportName.padEnd(18)} ${providerData.home} vs ${providerData.away}
-						=====================================================================`;
-				this.#sendLog(`\n\`\`\`\n${gameHeader}\n\`\`\``);
-				const valueBets = await this.evaluateMarket(bookmakerMarkets, providerMarkets);
-
-				if (!valueBets || valueBets.length === 0) {
-					const noValueMessage = `No value opportunities found for this match.`;
-					console.log(`[Edgerunner] ${noValueMessage}`);
-					this.#sendLog(noValueMessage);
-					continue;
-				}
-
-				let summaryLog = `\n[Edgerunner] ✅[${valueBets.length}] VALUE OPPORTUNITIES FOUND\n`;
-				valueBets.forEach(bet => {
-					let logSelectionName = bet.selection.name;
-					const specialValue = bet.market.specialValue;
-					if (specialValue && specialValue !== 0) {
-						logSelectionName = `${logSelectionName} ${specialValue}`;
+					const detailedBookmakerData = await this.bookmaker.getMatchDetailsByEvent(
+						potentialMatch.IDEvent,
+						potentialMatch.EventName
+					);
+					if (!detailedBookmakerData) {
+						console.log(`[Edgerunner] Failed to fetch full bookmaker data.`);
+						continue;
 					}
 
-					const marketCol = bet.market.name.padEnd(20);
-					const selectionCol = logSelectionName.padEnd(18);
-					const oddsCol = `@ ${bet.bookmakerOdds.toFixed(2)}`.padEnd(8);
-					const valueCol = `Value: ${bet.value.toFixed(2)}%`;
+					const bookmakerTime = detailedBookmakerData.date;
+					const providerTime = providerData.starts;
+					const isMatchVerified = await this.bookmaker.verifyMatch(bookmakerTime, providerTime);
+					if (!isMatchVerified) {
+						console.log(`[Edgerunner] Match Time Mismatch Discarded: ${detailedBookmakerData.name}`);
+						continue;
+					}
+					console.log('[Edgerunner] Match Time Verified For:', detailedBookmakerData.name);
 
-					summaryLog += `  ${marketCol}${selectionCol}${oddsCol}${chalk.green(valueCol)}\n`;
-				});
-				console.log(chalk.gray(summaryLog));
-				this.#sendLog(summaryLog);
+					await this.#saveSuccessfulMatch(detailedBookmakerData, providerData);
 
-				for (const valueBet of valueBets) {
-					const valueBetMessage = `📈 **Value Bet Found**\n` +
-						`> **Sport:** ${detailedBookmakerData.eventCategory}\n` +
-						`> **Match:** ${detailedBookmakerData.name}\n` +
-						`> **Market:** ${valueBet.market.name}\n` +
-						`> **Selection:** ${valueBet.selection.name}\n` +
-						`> **Points:** ${valueBet.market.specialValue || "none"}\n` +
-						`> **Odds:** ${valueBet.selection.odd.value}\n` +
-						`> **Value:** ${valueBet.value.toFixed(2)}%`;
-					this.#sendLog(valueBetMessage);
+					const detailedProviderPayload = await this.provider.getDetailedInfo(providerData.eventId);
+					if (!detailedProviderPayload?.data?.periods?.num_0) {
+						console.log(`[Edgerunner] Main market data not found in detailed provider info.`);
+						continue;
+					}
+					const providerMainMarket = detailedProviderPayload.data.periods.num_0;
 
-					const stakeAmount = this.edgerunnerConf.fixedStake.enabled
-						? this.edgerunnerConf.fixedStake.value
-						: this.#calculateStake(valueBet.trueOdd, valueBet.bookmakerOdds, this.bankroll);
+					const bookmakerMarkets = detailedBookmakerData.markets;
+					const providerMarkets = {
+						money_line: providerMainMarket.money_line,
+						spreads: providerMainMarket.spreads,
+						totals: providerMainMarket.totals,
+						team_total: providerMainMarket.team_total,
+						sportId: providerData.sportId,
+						periodNumber: 0
+					};
 
-					if (stakeAmount > 0) {
-						const summary = {
-							type: 'bet',
-							data: {
-								match: detailedBookmakerData.name,
-								market: valueBet.market.name,
-								selection: valueBet.selection.name,
-								odds: valueBet.selection.odd.value,
-								stake: stakeAmount,
-								value: `${valueBet.value.toFixed(2)}%`
-							}
-						};
-						console.log(chalk.greenBright('[Edgerunner] Placing Bet:'), summary.data);
+					// log header
+					this.logger.logGameHeader(providerData, this.bookmaker.sportIdMapper);
 
-						try {
-							const betPayload = this.bookmaker.constructBetPayload(
-								detailedBookmakerData,
-								valueBet.market,
-								valueBet.selection,
-								stakeAmount,
-								providerData
-							);
-							await this.bookmaker.placeBet(this.username, betPayload);
-							console.log(chalk.bold.magenta('[Edgerunner] Bet placed successfully'));
-							const successMessage = `✅ **Bet Placed Successfully!**\n`
-								+ `> **Sport:** ${detailedBookmakerData.eventCategory}\n`
-								+ `> **Stake:** ₦${stakeAmount.toFixed(2)}\n`
-								+ `> **Match:** ${detailedBookmakerData.name}\n`
-								+ `> **Market:** ${valueBet.market.name}\n`
-								+ `> **Selection:** ${valueBet.selection.name}\n`
-								+ `> **Points:** ${valueBet.market.specialValue || "none"}\n`
-								+ `> **Odds:** ${valueBet.selection.odd.value}`;
-							this.#sendLog(successMessage);
+					const valueBets = await this.evaluateMarket(bookmakerMarkets, providerMarkets);
+					if (!valueBets || valueBets.length === 0) {
+						const noValueMessage = `No value opportunities found for this match.`;
+						console.log(`[Edgerunner] ${noValueMessage}`);
+						this.#sendLog(noValueMessage);
+						continue;
+					}
 
-							const updatedAccountInfo = await this.bookmaker.getAccountInfo(this.username);
-							if (updatedAccountInfo) {
-								this.bankroll = updatedAccountInfo.balance;
-								console.log(chalk.cyan(`[Edgerunner] Bankroll updated to: ${this.bankroll}`));
-							}
-						} catch (betError) {
-							if (betError instanceof AuthenticationError) {
-								console.log(chalk.yellow(`[Edgerunner] Auth error during bet placement: ${betError.message}. Re-signing in...`));
-								this.#sendLog(`⚠️ **Bet Failed:** Authentication error during placement. Re-signing in...`);
-								const signInResult = await this.bookmaker.signin(this.username, this.password);
-								if (signInResult.success) {
-									console.log('[Edgerunner] Sign-in successful. Retrying bet placement...');
-									await this.bookmaker.placeBet(this.username, betPayload);
+					// log values
+					this.logger.logValueOpportunities(valueBets);
+
+					for (const valueBet of valueBets) {
+						// bet found
+						this.logger.logPendingBet({ detailedBookmakerData, valueBet, stakeAmount });
+
+						const stakeAmount = this.edgerunnerConf.fixedStake.enabled
+							? this.edgerunnerConf.fixedStake.value
+							: this.#calculateStake(valueBet.trueOdd, valueBet.bookmakerOdds, this.bankroll);
+
+						if (stakeAmount > 0) {
+							const summary = {
+								type: 'bet',
+								data: {
+									match: detailedBookmakerData.name,
+									market: valueBet.market.name,
+									selection: valueBet.selection.name,
+									odds: valueBet.selection.odd.value,
+									stake: stakeAmount,
+									value: `${valueBet.value.toFixed(2)}%`
 								}
-							} else {
+							};
+							console.log(chalk.greenBright('[Edgerunner] Placing Bet:'), summary.data);
+
+							try {
+								const betPayload = this.bookmaker.constructBetPayload(
+									detailedBookmakerData,
+									valueBet.market,
+									valueBet.selection,
+									stakeAmount,
+									providerData
+								);
+								await this.#performAuthenticatedAction(async () => {
+									await this.bookmaker.placeBet(this.username, betPayload);
+								});
+								console.log(chalk.bold.magenta('[Edgerunner] Bet placed successfully'));
+								// log succesfully
+								this.logger.logSuccess({ detailedBookmakerData, valueBet, stakeAmount });
+
+								const updatedAccountInfo = await this.bookmaker.getAccountInfo(this.username);
+								if (updatedAccountInfo) {
+									this.bankroll = updatedAccountInfo.balance;
+									console.log(chalk.cyan(`[Edgerunner] Bankroll updated to: ${this.bankroll}`));
+								}
+							} catch (betError) {
+								console.error(chalk.red(`[Edgerunner] Failed to place bet after retry:`), betError);
 								this.#sendLog(`❌ **Bet Failed:** An unexpected error occurred. Reason: ${betError.message}`);
-								throw betError;
 							}
+						} else {
+							console.log('[Edgerunner] Stake is zero or less, skipping bet for:', valueBet.market.name, valueBet.selection.name);
 						}
-					} else {
-						console.log('[Edgerunner] Stake is zero or less, skipping bet for:', valueBet.market.name, valueBet.selection.name);
 					}
+
+				} catch (error) {
+					console.error(`[Edgerunner] Error processing provider data ${providerData.id}:`, error);
+				} finally {
+					await new Promise(resolve => setTimeout(resolve, this.config.bookmaker.interval * 1000));
 				}
-
-			} catch (error) {
-				console.error(`[Edgerunner] Error processing provider data ${providerData.id}:`, error);
-			} finally {
-				await new Promise(resolve => setTimeout(resolve, this.config.bookmaker.interval * 1000));
 			}
+		} catch (error) {
+			console.error(chalk.red('[Edgerunner] A fatal, unexpected error occurred in the queue processor:'), error);
+			this.#sendLog(`🛑 **Fatal Worker Error:** The queue processor has crashed. Check logs.`);
+		} finally {
+			this.#isWorkerRunning = false;
+			console.log('[Edgerunner] Queue processing cycle finished. Worker is now idle.');
 		}
-		this.#isWorkerRunning = false;
-		console.log('[Edgerunner] Queue is empty. Worker is now idle.');
 	}
-
 
 	async start() {
 		if (this.#isBotActive) {
@@ -622,8 +572,12 @@ class EdgeRunner {
 	}
 
 	async getStatus() {
-		const health = await this.#healthCheck();
-		return {
+		// Explicitly get the status objects first
+		const providerStatusObject = this.provider.getStatus();
+		const bookmakerStatusObject = this.bookmaker.getStatus();
+
+		// Create the final status object that will be returned
+		const finalStatus = {
 			// Internal Bot Status
 			isBotActive: this.#isBotActive,
 			isWorkerRunning: this.#isWorkerRunning,
@@ -631,14 +585,19 @@ class EdgeRunner {
 			// Live Data
 			bankroll: this.bankroll,
 			openBets: this.openBets,
-			// Connection Health
-			providerStatus: health.provider.status,
-			bookmakerStatus: health.bookmaker.status,
+			// Connection Health - Using the objects from above
+			provider: providerStatusObject,
+			bookmaker: bookmakerStatusObject,
 			// Configuration
 			browserActive: !!this.browser,
 			minValueBetOdds: this.edgerunnerConf.minValueBetOdds,
 			maxValueBetOdds: this.edgerunnerConf.maxValueBetOdds,
 		};
+
+		// THIS IS THE MOST IMPORTANT LOG
+		// It will show us the exact object right before it gets sent.
+		console.log(chalk.magenta('[DEBUG] Final status object constructed:'), JSON.stringify(finalStatus, null, 2));
+		return finalStatus;
 	}
 }
 

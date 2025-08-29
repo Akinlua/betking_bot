@@ -37,8 +37,8 @@ export default {
 						{ name: 'Browser', value: result.browserActive ? '🌐 Open' : '🔒 Closed', inline: true },
 
 						// Connection Health
-						{ name: 'Provider', value: `\`${result.providerHealth?.status ?? 'N/A'}\``, inline: false },
-						{ name: 'Bookmaker', value: `\`${result.bookmakerHealth?.status ?? 'N/A'}\``, inline: false },
+						{ name: 'Provider', value: `\`${JSON.stringify(result.provider?.status) ?? 'N/A'}\``, inline: false },
+						{ name: 'Bookmaker', value: `\`${JSON.stringify(result.bookmaker?.status) ?? 'N/A'}\``, inline: false },
 
 						// Configuration
 						{ name: 'Min/Max Odds', value: `${result.minValueBetOdds ?? 'N/A'} / ${result.maxValueBetOdds ?? 'N/A'}`, inline: false }
