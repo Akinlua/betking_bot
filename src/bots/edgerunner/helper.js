@@ -1,15 +1,18 @@
+import pkg from 'lodash';
+const { merge } = pkg;
+
 const baseConfig = {
 	provider: {
 		name: "pinnacle",
 		storeData: false,
-		interval: 10,
+		interval: 30,
 		userId: "",
 		alertApiUrl: "",
 	},
 	bookmaker: {
 		name: "betking",
 		storeData: false,
-		interval: 10,
+		interval: 30,
 		username: "",
 		password: ""
 	},
@@ -20,30 +23,13 @@ const baseConfig = {
 		minValueBetPercentage: 6,
 		minValueBetOdds: 1.45,
 		maxValueBetOdds: 4.00,
+		delay: 30
 
 	}
 };
 
-function deepMerge(target, source) {
-	const output = { ...target };
-
-	if (typeof target === 'object' && target !== null && typeof source === 'object' && source !== null) {
-		for (const key in source) {
-			if (Object.prototype.hasOwnProperty.call(source, key)) {
-				if (typeof target[key] === 'object' && target[key] !== null && typeof source[key] === 'object' && source[key] !== null) {
-					output[key] = deepMerge(target[key], source[key]);
-				} else {
-					output[key] = source[key];
-				}
-			}
-		}
-	}
-
-	return output;
-}
-
 function createEdgeRunnerConfig(partial = {}) {
-    const config = deepMerge(JSON.parse(JSON.stringify(baseConfig)), partial);
+	const config = merge({}, baseConfig, partial);
 
     if (config.provider.userId) {
         config.provider.alertApiUrl = `https://swordfish-production.up.railway.app/alerts/${config.provider.userId}`;

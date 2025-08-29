@@ -16,9 +16,9 @@ class Logger {
 
 			for (const marketName in groupedMatches) {
 				const marketGroup = groupedMatches[marketName];
-				const header = `${marketName.toUpperCase()}${'─'.repeat(44 - marketName.length)}\n`;
+				const header = `${marketName.toUpperCase()}${'─'.repeat(50 - marketName.length)}\n`;
 				const subHeader = `Sel.             B-Odds   P-Odds   Value\n`;
-				const divider = `${'─'.repeat(44)}\n`;
+				const divider = `${'─'.repeat(50)}\n`;
 
 				let marketLogContent = '';
 				let consoleMarketLogContent = '';
@@ -34,9 +34,9 @@ class Logger {
 					const pOdd = valuedBet.provider.matchedOutcome.odd.toFixed(2);
 					const value = isFinite(valuedBet.value) ? valuedBet.value.toFixed(2) + '%' : 'N/A';
 
-					const selectionCol = logSelectionName.padEnd(16);
-					const bOddsCol = `@ ${bOdd}`.padEnd(8);
-					const pOddsCol = pOdd.padEnd(8);
+					const selectionCol = logSelectionName.padEnd(18);
+					const bOddsCol = `@ ${bOdd}`.padEnd(9);
+					const pOddsCol = pOdd.padEnd(9);
 
 					marketLogContent += `${selectionCol} ${bOddsCol} ${pOddsCol} ${value}\n`;
 					const valueColor = valuedBet.value > 0 ? chalk.green : chalk.red;
@@ -65,29 +65,38 @@ class Logger {
 	logBestInMarket(bestBetsForTable) {
 		const intro = `[Edgerunner] **BEST IN EACH MARKET**\n`;
 		let tableLog = '```\n';
-		tableLog += `Mkt         Sel              Val\n`;
-		tableLog += `----------- ---------------- ---------\n`;
+		tableLog += `Mkt         Sel                Val\n`; 
+		tableLog += `─────────── ────────────────── ─────────\n`;
 
 		bestBetsForTable.forEach(best => {
 			if (!best || !isFinite(best.value)) return;
+
 			let logSelectionName = best.bookmaker.selection.name;
 			const specialValue = best.bookmaker.market.specialValue;
 			if (specialValue && specialValue != 0) {
 				logSelectionName = `${logSelectionName} ${specialValue}`;
 			}
-			const marketCol = best.marketName.padEnd(11);
-			const selectionCol = logSelectionName.padEnd(16);
+
+			// Truncate long names to prevent breaking the layout
+			const safeMarketName = best.marketName.length > 11 ? best.marketName.substring(0, 8) + '...' : best.marketName;
+			const safeSelectionName = logSelectionName.length > 18 ? logSelectionName.substring(0, 15) + '...' : logSelectionName;
+
+			const marketCol = safeMarketName.padEnd(11);
+			const selectionCol = safeSelectionName.padEnd(18);
 			const valueCol = `${best.value.toFixed(2)}%`;
+
 			tableLog += `${marketCol} ${selectionCol} ${valueCol}\n`;
 		});
 		tableLog += '```';
 
 		this.sender(intro + tableLog);
-		console.log(intro + tableLog);
+		// (Your console log block can be removed if you just want to see the plain version)
+		console.log(chalk.gray(intro + tableLog.replace(/`/g, '')));
 	}
 
 	logGameHeader(providerData, sportIdMapper) {
 		const sportName = sportIdMapper[providerData.sportId] || '❓ UNKNOWN SPORT';
+		this.sender(`\n${'─'.repeat(60)}\n`);
 		let gameHeader = '----------------------------------------\n';
 		gameHeader += `Sport : ${sportName}\n`;
 		gameHeader += `Match : ${providerData.home} vs ${providerData.away}\n`;
@@ -134,7 +143,7 @@ class Logger {
 		const { detailedBookmakerData, valueBet, stakeAmount } = details;
 		const intro = `[Edgerunner] 📈 **PENDING BET**\n`;
 		let log = '```\n';
-		
+
 		let logSelectionName = valueBet.selection.name;
 		const specialValue = valueBet.market.specialValue;
 		if (specialValue && specialValue !== 0) {

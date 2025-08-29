@@ -92,7 +92,6 @@ class EdgeRunner {
 			const accountInfo = await this.bookmaker.getAccountInfo(this.username);
 			if (accountInfo) {
 				console.log('[Edgerunner] Authentication is still valid.');
-				this.#sendLog('✔️ Authentication is still valid.');
 				this.bankroll = accountInfo.balance; // Keep bankroll updated
 				return true;
 			}
@@ -144,17 +143,29 @@ class EdgeRunner {
 			return;
 		}
 
-		console.log(chalk.cyan(`[Edgerunner] Received ${providerGames.length} games`));
+		console.log(chalk.cyan(`[Edgerunner] Received ${providerGames.length} games to schedule...`));
+		const fixedDelay = (this.edgerunnerConf.delay || 60) * 1000;
+
 		providerGames.forEach(game => {
-			if (game.eventId && !this.#processedEventIds.has(game.eventId)) {
-				this.#gameQueue.push(game);
-				this.#processedEventIds.add(game.eventId); // Add the eventId to the set
-				console.log(chalk.cyan(`[Edgerunner] Added game with event ID ${game.eventId} to queue`));
-			} else if (game.eventId) {
-				console.log(chalk.yellow(`[Edgerunner] Skipped duplicate event ID ${game.eventId}`));
-			} else {
-				console.log(chalk.yellow('[Edgerunner] Skipped game with missing eventId:', JSON.stringify(game)));
+			if (!game.eventId || this.#processedEventIds.has(game.eventId)) {
+				if (game.eventId) {
+					console.log(chalk.yellow(`[Edgerunner] Skipped duplicate event ID ${game.eventId}`));
+				} else {
+					console.log(chalk.yellow('[Edgerunner] Skipped game with missing eventId:', JSON.stringify(game)));
+				}
+				return;
 			}
+			setTimeout(() => {
+				this.#gameQueue.push(game);
+				this.#processedEventIds.add(game.eventId);
+				console.log(chalk.cyan(`[Edgerunner] Added game with event ID ${game.eventId} to queue.`));
+				if (!this.#isWorkerRunning) {
+					this.#processQueue();
+				}
+			}, fixedDelay); 
+
+			const waitTime = Math.round(fixedDelay / 1000);
+			console.log(chalk.yellow(`[Edgerunner] Scheduling game ${game.eventId} to be queued in ${waitTime}s.`));
 		});
 
 		if (this.#processedEventIds.size > 100) {
@@ -162,7 +173,6 @@ class EdgeRunner {
 			this.#processedEventIds = new Set(newIds);
 			console.log('[Edgerunner] Cleaned up old event IDs to prevent memory leak.');
 		}
-		this.#processQueue();
 	}
 
 	async #saveSuccessfulMatch(matchData, providerData) {
@@ -238,7 +248,7 @@ class EdgeRunner {
 
 				const bestBetInGroup = valuedBets.reduce((best, current) => {
 					return (current.value > best.value) ? current : best;
-				}, valuedBets[0]);
+				}, { value: -Infinity });
 				bestBetsForTable.push({ marketName, ...bestBetInGroup });
 				if (!bestBetInGroup || bestBetInGroup.value === -Infinity) { continue; }
 
@@ -467,11 +477,11 @@ class EdgeRunner {
 
 					for (const valueBet of valueBets) {
 						// bet found
-						this.logger.logPendingBet({ detailedBookmakerData, valueBet, stakeAmount });
-
 						const stakeAmount = this.edgerunnerConf.fixedStake.enabled
 							? this.edgerunnerConf.fixedStake.value
 							: this.#calculateStake(valueBet.trueOdd, valueBet.bookmakerOdds, this.bankroll);
+
+						this.logger.logPendingBet({ detailedBookmakerData, valueBet, stakeAmount });
 
 						if (stakeAmount > 0) {
 							const summary = {
