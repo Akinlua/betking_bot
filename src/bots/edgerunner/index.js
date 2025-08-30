@@ -93,6 +93,7 @@ class EdgeRunner {
 			if (accountInfo) {
 				console.log('[Edgerunner] Authentication is still valid.');
 				this.bankroll = accountInfo.balance; // Keep bankroll updated
+				this.openBets = accountInfo.openBetsCount;
 				return true;
 			}
 			throw new AuthenticationError('Session expired or not logged in.');
@@ -108,6 +109,7 @@ class EdgeRunner {
 				const newAccountInfo = await this.bookmaker.getAccountInfo(this.username);
 				if (newAccountInfo) {
 					this.bankroll = newAccountInfo.balance;
+					this.openBets = newAccountInfo.openBetsCount;
 					return true;
 				}
 			}
@@ -155,14 +157,14 @@ class EdgeRunner {
 				}
 				return;
 			}
+			this.#processedEventIds.add(game.eventId);
 			setTimeout(() => {
 				this.#gameQueue.push(game);
-				this.#processedEventIds.add(game.eventId);
 				console.log(chalk.cyan(`[Edgerunner] Added game with event ID ${game.eventId} to queue.`));
 				if (!this.#isWorkerRunning) {
 					this.#processQueue();
 				}
-			}, fixedDelay); 
+			}, fixedDelay);
 
 			const waitTime = Math.round(fixedDelay / 1000);
 			console.log(chalk.yellow(`[Edgerunner] Scheduling game ${game.eventId} to be queued in ${waitTime}s.`));
