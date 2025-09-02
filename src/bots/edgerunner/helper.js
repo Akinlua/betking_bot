@@ -27,7 +27,7 @@ const baseConfig = {
 	},
 	proxy: {
 		enabled: true, 
-		ip: "109.107.54.237:6000",
+		ip: "109.107.54.237:6001",
 		password: "11453606",
 		username: "UKwokPecgB"
 	}

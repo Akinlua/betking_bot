@@ -84,9 +84,9 @@ class EdgeRunner {
 
 			if (proxyConf && proxyConf.enabled) {
 				console.log(chalk.yellow('[Proxy Test] -> Validating proxy connection...'));
-				let testPage; 
+				let testPage;
 				try {
-					testPage = await browser.newPage(); 
+					testPage = await browser.newPage();
 					if (proxyConf.username && proxyConf.password) {
 						await testPage.authenticate({
 							username: proxyConf.username,
@@ -97,17 +97,30 @@ class EdgeRunner {
 						timeout: 15000,
 						waitUntil: 'domcontentloaded'
 					});
-					console.log(chalk.green.bold('[Proxy Test] -> ✅ Proxy connection successful!'));
+
+					const detectedIp = await testPage.evaluate(() => document.body.innerText);
+					const expectedIp = proxyConf.ip.split(':')[0];
+
+					if (detectedIp.includes(expectedIp)) {
+						console.log(chalk.green.bold(`[Proxy Test] -> ✅ Proxy connection successful! IP: ${detectedIp}`));
+					} else {
+						console.log(chalk.red.bold(`[Proxy Test] -> ⚠️ PROXY MISMATCH! Connection is live, but IP is wrong.`));
+						console.log(chalk.red(`   Expected: ${expectedIp} | Detected: ${detectedIp}`));
+						throw new Error('Proxy connected but IP did not match configuration.');
+					}
+
 					await testPage.close();
 
 				} catch (error) {
 					console.error(chalk.red.bold('[Proxy Test] -> ❌ Proxy connection FAILED.'));
-					console.error(chalk.red('Error: The proxy may be offline, IP is incorrect, or credentials failed.'));
+					if (!error.message.includes('Proxy connected but IP did not match')) {
+						console.error(chalk.red('Error: The proxy may be offline, IP is incorrect, or credentials failed.'));
+					}
 					if (testPage) {
 						await testPage.close();
 					}
 					await browser.close();
-					throw new Error('Proxy validation failed. Bot will not start.');
+					throw new Error(`Proxy validation failed: ${error.message}`);
 				}
 			}
 
