@@ -16,19 +16,12 @@ const providerFootballMarket = {
 	},
 	"spreads": {
 		"-3.5": { "hdp": -3.5, "home": 4.50, "away": 1.15 },
-		"-3.0": { "hdp": -3.0, "home": 3.80, "away": 1.22 },
 		"-2.5": { "hdp": -2.5, "home": 3.20, "away": 1.30 },
-		"-2.0": { "hdp": -2.0, "home": 2.70, "away": 1.40 },
 		"-1.5": { "hdp": -1.5, "home": 2.30, "away": 1.55 },
-		"-1.0": { "hdp": -1.0, "home": 2.00, "away": 1.70 },
-		"-0.5": { "hdp": -0.5, "home": 1.80, "away": 1.90 },
 		"0.0": { "hdp": 0.0, "home": 1.62, "away": 2.15 },
 		"0.5": { "hdp": 0.5, "home": 1.48, "away": 2.50 },
-		"1.0": { "hdp": 1.0, "home": 1.35, "away": 2.95 },
 		"1.5": { "hdp": 1.5, "home": 1.26, "away": 3.50 },
-		"2.0": { "hdp": 2.0, "home": 1.18, "away": 4.10 },
 		"2.5": { "hdp": 2.5, "home": 1.12, "away": 5.00 },
-		"3.0": { "hdp": 3.0, "home": 1.06, "away": 6.00 },
 		"3.5": { "hdp": 3.5, "home": 1.02, "away": 7.00 }
 	},
 	"totals": {
@@ -2392,11 +2385,11 @@ test("Bot Service Tests", async (t) => {
 	await t.test("Evaluate function for football", async (t) => {
 		const result = edgerunner.bridgeMarket(bookmakerFootballMarket, providerFootballMarket);
 		console.log("================ FOOTBALL ================");
-		console.log(JSON.stringify(result, null, 2));
+		// console.log(JSON.stringify(result, null, 2));
 		console.log("===========================================");
 	});
 
-	await t.test("Evaluate function for basketball", { skip: true }, async (t) => {
+	await t.test("Evaluate function for basketball", async (t) => {
 		const result = edgerunner.bridgeMarket(bookmakerBasketballMarket, providerBasketballMarket);
 		console.log("================ BASKETBALL ===============");
 		// console.log(JSON.stringify(result, null, 2));

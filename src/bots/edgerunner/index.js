@@ -334,7 +334,6 @@ class EdgeRunner {
 			return [];
 		}
 	}
-
 	bridgeMarket(bookmakerMarkets, providerMarkets) {
 		try {
 			const normalizeProvider = (d) => ({ ...d, money_line: d.money_line ? { main: d.money_line } : undefined });
@@ -342,86 +341,95 @@ class EdgeRunner {
 			const sportId = providerMarkets.sportId || '1';
 
 			const bookmakerSelections = bookmakerMarkets.flatMap(market => {
-				// Start with the selections from the parent market itself
-				let allSelections = market.selections.map(selection => ({
-					searchable: {
-						name: market.name,
-						outcome: selection.name,
-						specialValue: market.specialValue
-					},
+				let allSelections = (market.selections || []).map(selection => ({
+					searchable: { name: market.name, outcome: selection.name, specialValue: market.specialValue },
 					original: { market, selection }
 				}));
-
-				// If a nested spreadMarkets array exists, process its contents too
 				if (market.spreadMarkets && Array.isArray(market.spreadMarkets)) {
 					const nestedSelections = market.spreadMarkets.flatMap(nestedMarket =>
-						nestedMarket.selections.map(selection => ({
-							searchable: {
-								name: nestedMarket.name,
-								outcome: selection.name,
-								specialValue: nestedMarket.specialValue
-							},
+						(nestedMarket.selections || []).map(selection => ({
+							searchable: { name: nestedMarket.name, outcome: selection.name, specialValue: nestedMarket.specialValue },
 							original: { market: nestedMarket, selection }
 						}))
 					);
 					allSelections = allSelections.concat(nestedSelections);
 				}
-
 				return allSelections;
 			});
 
 			const groupedMatches = {};
 
 			for (const [line, submarkets] of Object.entries(normalizedProviderMarkets)) {
-				const mapping = this.bookmaker.lineTypeMapper[line];
-				if (!mapping || !submarkets) continue;
+				const mappingConfig = this.bookmaker.lineTypeMapper[line];
+				if (!mappingConfig || !submarkets) continue;
 
-				const sportMapping = mapping.sport[sportId];
-				const sportConfig = sportMapping?.['*'] || mapping.sport['*']?.['*'];
+				const sportMapping = mappingConfig.sport[sportId];
+				if (!sportMapping) continue;
 
+				// --- Logic for markets WITH a detailed bridge (SPREADS) ---
+				if (sportMapping.bridge) {
+					const bridge = sportMapping.bridge;
+					for (const [subKey, outcomes] of Object.entries(submarkets)) {
+						const mapping = bridge[subKey];
+						if (!mapping) continue;
+
+						for (const side of ['home', 'away']) {
+							const sideMapping = mapping[side];
+							if (sideMapping && typeof outcomes[side] === 'number') {
+								const gameFound = bookmakerSelections.find(sel => {
+									const s = sel.searchable;
+									if (sideMapping.marketName) { // For DNB special case
+										return s.name === sideMapping.marketName && s.outcome === sideMapping.outcome;
+									}
+									return s.specialValue === sideMapping.specialValue && s.outcome === sideMapping.outcome;
+								});
+
+								if (gameFound) {
+									const groupKey = `Spread ${subKey}`;
+									if (!groupedMatches[groupKey]) groupedMatches[groupKey] = [];
+									groupedMatches[groupKey].push({
+										bookmaker: gameFound.original,
+										provider: {
+											lineType: line, lineValue: subKey, matchedOutcome: { name: side, odd: outcomes[side] },
+											fullLineData: outcomes, sportId: providerMarkets.sportId, periodNumber: providerMarkets.periodNumber
+										}
+									});
+								}
+							}
+						}
+					}
+					// After processing this market type, continue to the next one
+					continue;
+				}
+
+				// --- Logic for simple markets WITHOUT a bridge (MONEY LINE, TOTALS) ---
+				const sportConfig = sportMapping['*'];
 				if (!sportConfig) continue;
 
-				const bridge = sportMapping.bridge || {};
-
 				for (const [subKey, outcomes] of Object.entries(submarkets)) {
-					for (const [outcome, odd] of Object.entries(outcomes)) {
+					for (const outcome of Object.keys(outcomes)) {
+						if (typeof outcomes[outcome] !== 'number' || !sportConfig.outcome[outcome]) continue;
 
-						const specialMapping = bridge.specials?.[subKey];
+						const searchName = sportConfig.label;
+						const searchOutcome = sportConfig.outcome[outcome];
+						const valueToMatch = (line === 'totals') ? subKey : undefined;
 
-						const outcomeMap = specialMapping?.outcome || sportConfig.outcome;
-						if (!outcomeMap[outcome]) continue;
-
-						const searchName = specialMapping?.name || sportConfig.label || mapping.name;
-						const searchOutcome = outcomeMap[outcome];
-						const useExactNameMatch = !!specialMapping;
-						const needsSpecialValueCheck = !specialMapping && line !== 'money_line';
-						const valueToMatch = needsSpecialValueCheck
-							? (bridge[subKey] ?? bridge[String(parseFloat(subKey))] ?? subKey)
-							: null;
-
-						const gameFound = bookmakerSelections.find((sel) => {
+						const gameFound = bookmakerSelections.find(sel => {
 							const s = sel.searchable;
-							const nameMatches = useExactNameMatch ? s.name.toLowerCase() === searchName.toLowerCase() : s.name.toLowerCase().startsWith(searchName.toLowerCase());
+							const nameMatches = s.name.toLowerCase().startsWith(searchName.toLowerCase());
 							const outcomeMatches = s.outcome.toLowerCase() === searchOutcome.toLowerCase();
-							const specialValueMatches = needsSpecialValueCheck ? String(s.specialValue) === String(valueToMatch) : true;
+							const specialValueMatches = valueToMatch ? s.specialValue === valueToMatch : true;
 							return nameMatches && outcomeMatches && specialValueMatches;
 						});
 
 						if (gameFound) {
-							const groupKey = gameFound.searchable.name.toLowerCase();
-							if (!groupedMatches[groupKey]) {
-								groupedMatches[groupKey] = [];
-							}
-
+							const groupKey = gameFound.searchable.name;
+							if (!groupedMatches[groupKey]) groupedMatches[groupKey] = [];
 							groupedMatches[groupKey].push({
 								bookmaker: gameFound.original,
 								provider: {
-									lineType: line,
-									lineValue: subKey,
-									matchedOutcome: { name: outcome, odd: odd },
-									fullLineData: { ...outcomes, lineType: line },
-									sportId: providerMarkets.sportId,
-									periodNumber: providerMarkets.periodNumber
+									lineType: line, lineValue: subKey, matchedOutcome: { name: outcome, odd: outcomes[outcome] },
+									fullLineData: outcomes, sportId: providerMarkets.sportId, periodNumber: providerMarkets.periodNumber
 								}
 							});
 						}
@@ -429,9 +437,7 @@ class EdgeRunner {
 				}
 			}
 
-			// --- START: Unified Minimalist Log ---
 			this.logger.logBridgedMarkets(groupedMatches, this.calculateValue.bind(this));
-
 			return groupedMatches;
 
 		} catch (error) {
