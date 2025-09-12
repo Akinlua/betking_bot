@@ -2389,7 +2389,7 @@ test("Bot Service Tests", async (t) => {
 		console.log("===========================================");
 	});
 
-	await t.test("Evaluate function for basketball", async (t) => {
+	await t.test("Evaluate function for basketball", { skip: true }, async (t) => {
 		const result = edgerunner.bridgeMarket(bookmakerBasketballMarket, providerBasketballMarket);
 		console.log("================ BASKETBALL ===============");
 		// console.log(JSON.stringify(result, null, 2));

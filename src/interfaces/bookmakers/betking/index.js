@@ -42,28 +42,161 @@ class BetKingBookmaker {
 					'1': {
 						'*': { label: 'Handicap', outcome: { home: "Home", away: "Away" } },
 						bridge: {
-							// --- Positive Asian Handicaps (+ AH) --- CORRECT
-							"0.5": { home: { specialValue: "1 : 0", outcome: "Home" }, away: { specialValue: "0 : 1", outcome: "Away" } },
-							"1.5": { home: { specialValue: "2 : 0", outcome: "Home" }, away: { specialValue: "0 : 2", outcome: "Away" } },
-							"2.5": { home: { specialValue: "3 : 0", outcome: "Home" }, away: { specialValue: "0 : 3", outcome: "Away" } },
-							"3.5": { home: { specialValue: "4 : 0", outcome: "Home" }, away: { specialValue: "0 : 4", outcome: "Away" } },
-							"4.5": { home: { specialValue: "5 : 0", outcome: "Home" }, away: { specialValue: "0 : 5", outcome: "Away" } },
-							"5.5": { home: { specialValue: "6 : 0", outcome: "Home" }, away: { specialValue: "0 : 6", outcome: "Away" } },
-							"6.5": { home: { specialValue: "7 : 0", outcome: "Home" }, away: { specialValue: "0 : 7", outcome: "Away" } },
-
-							// --- Negative Asian Handicaps (- AH) --- CORRECTED
-							"-1.5": { home: { specialValue: "0 : 1", outcome: "Home" }, away: { specialValue: "1 : 0", outcome: "Away" } },
-							"-2.5": { home: { specialValue: "0 : 2", outcome: "Home" }, away: { specialValue: "2 : 0", outcome: "Away" } },
-							"-3.5": { home: { specialValue: "0 : 3", outcome: "Home" }, away: { specialValue: "3 : 0", outcome: "Away" } },
-							"-4.5": { home: { specialValue: "0 : 4", outcome: "Home" }, away: { specialValue: "4 : 0", outcome: "Away" } },
-							"-5.5": { home: { specialValue: "0 : 5", outcome: "Home" }, away: { specialValue: "5 : 0", outcome: "Away" } },
-							"-6.5": { home: { specialValue: "0 : 6", outcome: "Home" }, away: { specialValue: "6 : 0", outcome: "Away" } },
-
-							// --- Special Cases --- CORRECT
-							"0.0": {
-								home: { marketName: "Draw No Bet", outcome: "1 DNB" },
-								away: { marketName: "Draw No Bet", outcome: "2 DNB" }  // <-- CORRECTED
+							// --- Positive Asian Handicaps (+ AH) ---
+							"0.5": {
+								home: {
+									provider: { line: "0.5", outcome: "home" },
+									bookmaker: { specialValue: "1:0", outcome: "Home" }
+								},
+								away: {
+									provider: { line: "-1.5", outcome: "home" },
+									bookmaker: { specialValue: "1:0", outcome: "Away" }
+								}
 							},
+							"1.5": {
+								home: {
+									provider: { line: "1.5", outcome: "home" },
+									bookmaker: { specialValue: "2:0", outcome: "Home" }
+								},
+								away: {
+									provider: { line: "-2.5", outcome: "home" },
+									bookmaker: { specialValue: "2:0", outcome: "Away" }
+								}
+							},
+							"2.5": {
+								home: {
+									provider: { line: "2.5", outcome: "home" },
+									bookmaker: { specialValue: "3:0", outcome: "Home" }
+								},
+								away: {
+									provider: { line: "-3.5", outcome: "home" },
+									bookmaker: { specialValue: "3:0", outcome: "Away" }
+								}
+							},
+							"3.5": {
+								home: {
+									provider: { line: "3.5", outcome: "home" },
+									bookmaker: { specialValue: "4:0", outcome: "Home" }
+								},
+								away: {
+									provider: { line: "-4.5", outcome: "home" },
+									bookmaker: { specialValue: "4:0", outcome: "Away" }
+								}
+							},
+							"4.5": {
+								home: {
+									provider: { line: "4.5", outcome: "home" },
+									bookmaker: { specialValue: "5:0", outcome: "Home" }
+								},
+								away: {
+									provider: { line: "-5.5", outcome: "home" },
+									bookmaker: { specialValue: "5:0", outcome: "Away" }
+								}
+							},
+							"5.5": {
+								home: {
+									provider: { line: "5.5", outcome: "home" },
+									bookmaker: { specialValue: "6:0", outcome: "Home" }
+								},
+								away: {
+									provider: { line: "-6.5", outcome: "home" },
+									bookmaker: { specialValue: "6:0", outcome: "Away" }
+								}
+							},
+							"6.5": {
+								home: {
+									provider: { line: "6.5", outcome: "home" },
+									bookmaker: { specialValue: "7:0", outcome: "Home" }
+								},
+								away: {
+									provider: { line: "-7.5", outcome: "home" },
+									bookmaker: { specialValue: "7:0", outcome: "Away" }
+								}
+							},
+
+							// --- Negative Asian Handicaps (- AH) ---
+							"-1.5": {
+								home: {
+									provider: { line: "-1.5", outcome: "home" },
+									bookmaker: { specialValue: "0:1", outcome: "Home" }
+								},
+								away: {
+									provider: { line: "0.5", outcome: "away" },
+									bookmaker: { specialValue: "0:1", outcome: "Away" }
+								}
+							},
+							"-2.5": {
+								home: {
+									provider: { line: "-2.5", outcome: "home" },
+									bookmaker: { specialValue: "0:2", outcome: "Home" }
+								},
+								away: {
+									provider: { line: "1.5", outcome: "away" },
+									bookmaker: { specialValue: "0:2", outcome: "Away" }
+								}
+							},
+							"-3.5": {
+								home: {
+									provider: { line: "-3.5", outcome: "home" },
+									bookmaker: { specialValue: "0:3", outcome: "Home" }
+								},
+								away: {
+									provider: { line: "2.5", outcome: "away" },
+									bookmaker: { specialValue: "0:3", outcome: "Away" }
+								}
+							},
+							"-4.5": {
+								home: {
+									provider: { line: "-4.5", outcome: "home" },
+									bookmaker: { specialValue: "0:4", outcome: "Home" }
+								},
+								away: {
+									provider: { line: "3.5", outcome: "away" },
+									bookmaker: { specialValue: "0:4", outcome: "Away" }
+								}
+							},
+							"-5.5": {
+								home: {
+									provider: { line: "-5.5", outcome: "home" },
+									bookmaker: { specialValue: "0:5", outcome: "Home" }
+								},
+								away: {
+									provider: { line: "4.5", outcome: "away" },
+									bookmaker: { specialValue: "0:5", outcome: "Away" }
+								}
+							},
+							"-6.5": {
+								home: {
+									provider: { line: "-6.5", outcome: "home" },
+									bookmaker: { specialValue: "0:6", outcome: "Home" }
+								},
+								away: {
+									provider: { line: "5.5", outcome: "away" },
+									bookmaker: { specialValue: "0:6", outcome: "Away" }
+								}
+							},
+
+							// --- Special Cases ---
+							"0.0": {
+								home: {
+									provider: { line: "0.0", outcome: "home" },
+									bookmaker: { marketName: "Draw No Bet", outcome: "1 DNB" }
+								},
+								away: {
+									provider: { line: "0.0", outcome: "away" },
+									bookmaker: { marketName: "Draw No Bet", outcome: "2 DNB" }
+								}
+							},
+							// "-0.5": {
+							// 	home: {
+							// 		provider: { line: "-0.5", outcome: "home" },
+							// 		bookmaker: { marketName: "1X2", outcome: "1" } 
+							// 	},
+							// 	away: {
+							// 		provider: { line: "-0.5", outcome: "away" },
+							// 		bookmaker: { marketName: "Double Chance", outcome: "X2" } 
+							// 	}
+							// }
 						}
 					},
 					'3': {

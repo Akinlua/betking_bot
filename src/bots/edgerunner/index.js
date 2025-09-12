@@ -334,6 +334,7 @@ class EdgeRunner {
 			return [];
 		}
 	}
+
 	bridgeMarket(bookmakerMarkets, providerMarkets) {
 		try {
 			const normalizeProvider = (d) => ({ ...d, money_line: d.money_line ? { main: d.money_line } : undefined });
@@ -366,72 +367,83 @@ class EdgeRunner {
 				const sportMapping = mappingConfig.sport[sportId];
 				if (!sportMapping) continue;
 
-				// --- Logic for markets WITH a detailed bridge (SPREADS) ---
-				if (sportMapping.bridge) {
+				if (line === 'spreads') {
 					const bridge = sportMapping.bridge;
+					if (!bridge) continue;
+
 					for (const [subKey, outcomes] of Object.entries(submarkets)) {
 						const mapping = bridge[subKey];
 						if (!mapping) continue;
 
 						for (const side of ['home', 'away']) {
-							const sideMapping = mapping[side];
-							if (sideMapping && typeof outcomes[side] === 'number') {
-								const gameFound = bookmakerSelections.find(sel => {
-									const s = sel.searchable;
-									if (sideMapping.marketName) { // For DNB special case
-										return s.name === sideMapping.marketName && s.outcome === sideMapping.outcome;
-									}
-									return s.specialValue === sideMapping.specialValue && s.outcome === sideMapping.outcome;
-								});
+							const sideRule = mapping[side];
+							if (!sideRule) continue;
 
-								if (gameFound) {
-									const groupKey = `Spread ${subKey}`;
-									if (!groupedMatches[groupKey]) groupedMatches[groupKey] = [];
-									groupedMatches[groupKey].push({
-										bookmaker: gameFound.original,
-										provider: {
-											lineType: line, lineValue: subKey, matchedOutcome: { name: side, odd: outcomes[side] },
-											fullLineData: outcomes, sportId: providerMarkets.sportId, periodNumber: providerMarkets.periodNumber
-										}
-									});
+							const providerLineToUse = sideRule.provider.line;
+							const providerOutcomeToUse = sideRule.provider.outcome;
+							const providerDataForCalc = submarkets[providerLineToUse];
+
+							if (!providerDataForCalc) continue;
+							const providerOddForCalc = providerDataForCalc[providerOutcomeToUse];
+							if (typeof providerOddForCalc !== 'number') continue;
+
+							const bookmakerRule = sideRule.bookmaker;
+							const gameFound = bookmakerSelections.find(sel => {
+								const s = sel.searchable;
+								if (bookmakerRule.marketName) {
+									return s.name.replace(/\s/g, '') === bookmakerRule.marketName.replace(/\s/g, '') && s.outcome === bookmakerRule.outcome;
 								}
+								return s.specialValue.replace(/\s/g, '') === bookmakerRule.specialValue.replace(/\s/g, '') && s.outcome === bookmakerRule.outcome;
+							});
+
+							if (gameFound) {
+								const groupKey = gameFound.searchable.name.toLowerCase();
+								if (!groupedMatches[groupKey]) groupedMatches[groupKey] = [];
+
+								groupedMatches[groupKey].push({
+									bookmaker: gameFound.original,
+									provider: {
+										lineType: line, lineValue: subKey,
+										matchedOutcome: { name: side, odd: providerOddForCalc },
+										fullLineData: providerDataForCalc,
+										sportId: providerMarkets.sportId, periodNumber: providerMarkets.periodNumber
+									}
+								});
 							}
 						}
 					}
-					// After processing this market type, continue to the next one
-					continue;
 				}
+				else if (line === 'money_line' || line === 'totals') {
+					const sportConfig = sportMapping['*'];
+					if (!sportConfig) continue;
 
-				// --- Logic for simple markets WITHOUT a bridge (MONEY LINE, TOTALS) ---
-				const sportConfig = sportMapping['*'];
-				if (!sportConfig) continue;
+					for (const [subKey, outcomes] of Object.entries(submarkets)) {
+						for (const outcome of Object.keys(outcomes)) {
+							if (typeof outcomes[outcome] !== 'number' || !sportConfig.outcome[outcome]) continue;
 
-				for (const [subKey, outcomes] of Object.entries(submarkets)) {
-					for (const outcome of Object.keys(outcomes)) {
-						if (typeof outcomes[outcome] !== 'number' || !sportConfig.outcome[outcome]) continue;
+							const searchName = sportConfig.label;
+							const searchOutcome = sportConfig.outcome[outcome];
+							const valueToMatch = (line === 'totals') ? subKey : undefined;
 
-						const searchName = sportConfig.label;
-						const searchOutcome = sportConfig.outcome[outcome];
-						const valueToMatch = (line === 'totals') ? subKey : undefined;
-
-						const gameFound = bookmakerSelections.find(sel => {
-							const s = sel.searchable;
-							const nameMatches = s.name.toLowerCase().startsWith(searchName.toLowerCase());
-							const outcomeMatches = s.outcome.toLowerCase() === searchOutcome.toLowerCase();
-							const specialValueMatches = valueToMatch ? s.specialValue === valueToMatch : true;
-							return nameMatches && outcomeMatches && specialValueMatches;
-						});
-
-						if (gameFound) {
-							const groupKey = gameFound.searchable.name;
-							if (!groupedMatches[groupKey]) groupedMatches[groupKey] = [];
-							groupedMatches[groupKey].push({
-								bookmaker: gameFound.original,
-								provider: {
-									lineType: line, lineValue: subKey, matchedOutcome: { name: outcome, odd: outcomes[outcome] },
-									fullLineData: outcomes, sportId: providerMarkets.sportId, periodNumber: providerMarkets.periodNumber
-								}
+							const gameFound = bookmakerSelections.find(sel => {
+								const s = sel.searchable;
+								const nameMatches = s.name.toLowerCase().startsWith(searchName.toLowerCase());
+								const outcomeMatches = s.outcome.toLowerCase() === searchOutcome.toLowerCase();
+								const specialValueMatches = valueToMatch ? s.specialValue === valueToMatch : true;
+								return nameMatches && outcomeMatches && specialValueMatches;
 							});
+
+							if (gameFound) {
+								const groupKey = gameFound.searchable.name;
+								if (!groupedMatches[groupKey]) groupedMatches[groupKey] = [];
+								groupedMatches[groupKey].push({
+									bookmaker: gameFound.original,
+									provider: {
+										lineType: line, lineValue: subKey, matchedOutcome: { name: outcome, odd: outcomes[outcome] },
+										fullLineData: outcomes, sportId: providerMarkets.sportId, periodNumber: providerMarkets.periodNumber
+									}
+								});
+							}
 						}
 					}
 				}
