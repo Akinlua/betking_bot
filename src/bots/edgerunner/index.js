@@ -377,7 +377,7 @@ class EdgeRunner {
 
 						for (const side of ['home', 'away']) {
 							const sideRule = mapping[side];
-							if (!sideRule) continue;
+							if (!sideRule || !sideRule.provider) continue;
 
 							const providerLineToUse = sideRule.provider.line;
 							const providerOutcomeToUse = sideRule.provider.outcome;
