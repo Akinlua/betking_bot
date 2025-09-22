@@ -22,7 +22,7 @@ async function main() {
 
 		process.on('message', async (msg) => {
 			if (msg.type === 'config') {
-				bot.edgerunner = { ...bot.edgerunner, ...msg.data.config };
+				bot.edgerunnerConf = { ...bot.edgerunnerConf, ...msg.data.config };
 				console.log(chalk.cyan(`[BotRunner] Config updated:`, bot.edgerunner));
 			} else if (msg.type === 'stop') {
 				await bot.stop();
