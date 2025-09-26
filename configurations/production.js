@@ -1,5 +1,5 @@
 const configurations = {
-	apiBaseUrl: "https://edge-runner-p35d.onrender.com",
+	apiBaseUrl: "http://46.202.194.108:9090",
 	cron: {
 		intervalMin: 10
 	}

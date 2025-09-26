@@ -1,23 +1,19 @@
-# Use the 'slim' version of Node 18 for better Puppeteer compatibility
-FROM node:18-slim
+FROM ghcr.io/puppeteer/puppeteer:latest
 
-# Set the working directory inside the container
-WORKDIR /app
+WORKDIR /home/pptruser/app
 
-# Set the environment to production
-ENV NODE_ENV=production
+COPY --chown=pptruser:pptruser package*.json ./
 
-# Copy package files first to use Docker's caching
-COPY package*.json ./
-
-# Install all dependencies and run the postinstall script to download Chrome
 RUN npm install
 
-# Copy the rest of your application's source code
-COPY . .
+ENV PUPPETEER_CACHE_DIR=/home/pptruser/app/.cache/puppeteer
 
-# Expose the port the application runs on
+# Install Chrome into the specified cache directory
+RUN npx puppeteer browsers install chrome
+
+COPY --chown=pptruser:pptruser . .
+
 EXPOSE 9090
 
-# Command to run the application
 CMD ["node", "src/server.js"]
+

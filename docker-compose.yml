@@ -1,20 +1,20 @@
 version: "3.8"
 
 services:
-  # Define the single service for your application
   edgerunner-app:
-    # Build the Docker image from the Dockerfile in the current directory
     build: .
-    # Set a consistent name for the container
     container_name: edgerunner-app
-    # Map port 9090 on your machine to port 9090 in the container
     ports:
       - "9090:9090"
-    # Mount a volume to persist the /data directory
     volumes:
       - ./data:/app/data
-    # Load environment variables from the .env.production file
+      - puppeteer-cache:/home/pptruser/app/.cache/puppeteer
     env_file:
       - ./env/.env.production
-    # Always restart the container if it stops
+    environment:
+      - PUPPETEER_CACHE_DIR=/home/pptruser/app/.cache/puppeteer
     restart: always
+
+volumes:
+  puppeteer-cache:
+
