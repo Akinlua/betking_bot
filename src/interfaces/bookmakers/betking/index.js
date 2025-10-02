@@ -2281,7 +2281,7 @@ class BetKingBookmaker {
       });
       const response = await page.goto(url, {
         waitUntil: "domcontentloaded",
-        timeout: 30000,
+        timeout: 60_000,
       });
       if (!response.ok()) {
         throw new Error(`Request failed with status: ${response.status()}`);
@@ -2557,7 +2557,7 @@ class BetKingBookmaker {
         domain: "m.betking.com",
       });
 
-      await page.goto(url, { timeout: 30000, waitUntil: "domcontentloaded" });
+      await page.goto(url, { timeout: 60_000, waitUntil: "domcontentloaded" });
 
       const remixContentDetails = await page.evaluate(() => {
         if (window.__remixContext) {
@@ -2642,7 +2642,7 @@ class BetKingBookmaker {
 
       await page.goto("https://m.betking.com", {
         waitUntil: "domcontentloaded",
-        timeout: 30000,
+        timeout: 60_000,
       });
 
       // Get props from the Header component for other account details
@@ -2742,21 +2742,21 @@ class BetKingBookmaker {
         }
       });
 
-      await page.goto(signinData.url, { waitUntil: "load", timeout: 30000 });
+      await page.goto(signinData.url, { waitUntil: "load", timeout: 60_000 });
 
-      await page.waitForSelector("#username", { timeout: 10000 }).catch(() => {
+      await page.waitForSelector("#username", { timeout: 60_000 }).catch(() => {
         throw new Error("Username field not found. Verify selector.");
       });
       await page.type("#username", signinData.username);
 
-      await page.waitForSelector("#password", { timeout: 10000 }).catch(() => {
+      await page.waitForSelector("#password", { timeout: 60_000 }).catch(() => {
         throw new Error("Password field not found. Verify selector.");
       });
       await page.type("#password", signinData.password);
 
       await page.keyboard.press("Enter");
 
-      await page.waitForNavigation({ waitUntil: "load", timeout: 30000 });
+      await page.waitForNavigation({ waitUntil: "load", timeout: 60_000 });
       if (page.url().startsWith(signinData.signedInUrl)) {
         console.log(`[Bookmaker] Logged in ${username}`);
       } else {

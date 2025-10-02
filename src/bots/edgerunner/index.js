@@ -93,6 +93,7 @@ class EdgeRunner {
           "--disable-background-timer-throttling",
           "--disable-client-side-phishing-detection",
         ],
+		defaultTimeout: 60_000, // let it take it time to avoid slow network
         protocolTimeout: 60_000,
       };
 
@@ -130,7 +131,7 @@ class EdgeRunner {
             });
           }
           await testPage.goto("https://api.ipify.org", {
-            timeout: 15000,
+            timeout: 60_000, // let it take it time to avoid slow network
             waitUntil: "domcontentloaded",
           });
 
