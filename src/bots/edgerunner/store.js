@@ -3,10 +3,17 @@ import { Low } from "lowdb";
 import { JSONFile } from "lowdb/node";
 import fs from "fs/promises";
 import pkg from "lodash";
-const { merge } = pkg; 
+const { merge } = pkg;
 
 const defaultEdgerunnerState = {
-  edgerunner: {},
+  edgerunner: {
+    stats: {
+      totalBetsPlaced: 0,
+      betsPlacedToday: 0,
+      startingBalToday: null,
+      lastBetDate: new Date().toISOString().slice(0, 10),
+    },
+  },
   bookmaker: {
     session: {
       balance: 0,
@@ -25,11 +32,7 @@ export class Store {
    * @param {string} baseDir The root data directory (defaults to a 'data' folder next to the project root).
    */
 
-  constructor(
-    username,
-    botType = "edgerunner",
-    baseDir = path.join(process.cwd(), "data"),
-  ) {
+  constructor(username, botType = "edgerunner", baseDir = path.join(process.cwd(), "data")) {
     // Example path: <project_root>/data/edgerunner/07033054766.json
     const dataDir = path.join(baseDir, botType);
     this.#configPath = path.resolve(dataDir, `${username}.json`);
@@ -70,6 +73,15 @@ export class Store {
     } else {
       console.warn(`[BotDataStore] Attempted to update unknown key: ${key}`);
     }
+  }
+
+  getEdgerunnerStats() {
+    return this.#db.data.edgerunner.stats || defaultEdgerunnerState.edgerunner.stats;
+  }
+
+  async setEdgerunnerStats(newStats) {
+    const currentStats = this.getEdgerunnerStats();
+    await this.updateAndWrite("edgerunner", { stats: { ...currentStats, ...newStats } });
   }
 
   /**
@@ -137,16 +149,11 @@ export class Store {
   async deleteStoreFile() {
     try {
       await fs.unlink(this.#configPath);
-      console.log(
-        `[BotDataStore] Cleaned up data store file: ${this.#configPath}`,
-      );
+      console.log(`[BotDataStore] Cleaned up data store file: ${this.#configPath}`);
     } catch (error) {
       if (error.code !== "ENOENT") {
         // Ignore if file already doesn't exist
-        console.error(
-          `[BotDataStore] Failed to delete store file ${this.#configPath}:`,
-          error,
-        );
+        console.error(`[BotDataStore] Failed to delete store file ${this.#configPath}:`, error);
         throw error;
       }
     }

@@ -12,6 +12,8 @@ debug.log
 .env
 .env.development
 .env.production
+.env.work
+.env.personal
 
 # Data files
 # data/captured_data.json

@@ -17,12 +17,9 @@ class EdgeRunner {
   #isWorkerRunning = false;
   #isBotActive = false;
   #CORRELATED_DUMP_PATH = path.join(process.cwd(), "data/logs", "provider_bookmaker_correlated.json");
-  #totalBetsPlaced = 0;
-  #betsPlacedToday = 0;
-  #lastBetDate = new Date().toISOString().slice(0, 10);
   #boundHandleProviderNotifications = this.#handleProviderNotifications.bind(this);
 
-  constructor(config, browser, bookmaker) {
+  constructor(config, browser, bookmaker, store) {
     this.config = config;
     this.username = config.bookmaker.username;
     this.password = config.bookmaker.password;
@@ -31,6 +28,7 @@ class EdgeRunner {
     this.provider = getProviderInterface(config.provider.name, config.provider);
     this.logger = new Logger(this.#sendLog.bind(this));
     this.edgerunnerConf = config.edgerunner;
+    this.store = store;
   }
 
   static async create(config) {
@@ -49,7 +47,7 @@ class EdgeRunner {
 
       const bookmaker = getBookmakerInterface(config.bookmaker.name, config.bookmaker, browser, edgeRunnerStore);
 
-      return new EdgeRunner(config, browser, bookmaker);
+      return new EdgeRunner(config, browser, bookmaker, edgeRunnerStore);
     } catch (error) {
       console.error(chalk.red("[EdgeRunner] Failed to create instance:", error));
       throw error;
@@ -175,8 +173,6 @@ class EdgeRunner {
 
         console.log("[Edgerunner] Sign-in successful.");
         this.#sendLog("✅ Sign-in successful.");
-
-        await this.bookmaker.getAccountInfo(this.username);
 
         console.log("[Edgerunner] Retrying original action...");
         return await action();
@@ -484,6 +480,12 @@ class EdgeRunner {
       if (!accountInfo) {
         throw new AuthenticationError("Failed to get account info after successful sign-in/check.");
       }
+
+      const stats = this.store.getEdgerunnerStats();
+      if (stats.startingBalToday === null) {
+        await this.store.setEdgerunnerStats({ startingBalToday: accountInfo.balance });
+        console.log(chalk.blue(`[EdgeRunner] Initial persistent starting balance set to: ${accountInfo.balance}`));
+      }
       return accountInfo;
     } catch (error) {
       const finalErrorMessage = "🛑 **Bot Stopping:** Could not establish initial bankroll or re-authenticate.";
@@ -493,30 +495,41 @@ class EdgeRunner {
     }
   }
 
-  #checkAndResetDailyCounter() {
+  async #checkAndResetDailyCounter() {
     const today = new Date().toISOString().slice(0, 10);
-    if (this.#lastBetDate !== today) {
-      console.log(chalk.blue("[EdgeRunner] New day detected. Resetting daily bet counter."));
-      this.#betsPlacedToday = 0;
-      this.#lastBetDate = today;
+    const stats = this.store.getEdgerunnerStats();
+
+    if (stats.lastBetDate !== today) {
+      console.log(chalk.blue("[EdgeRunner] New day detected. Resetting daily bet counter and starting balance."));
+      const liveBalance = await this.#performAuthenticatedAction(() => this.bookmaker.getLiveBalance()); //  Use store setter to persist the reset
+
+      await this.store.setEdgerunnerStats({
+        startingBalToday: liveBalance,
+        betsPlacedToday: 0,
+        lastBetDate: today,
+      });
+      console.log(chalk.blue(`[EdgeRunner] Daily starting balance reset to: ${liveBalance}`));
     }
   }
 
   async #placeValueBets(valueBets, detailedBookmakerData, providerData) {
-    const bookmakerAccountInfo = await this.bookmaker.getAccountInfo(this.username);
+    let bookmakerBalance = await this.#performAuthenticatedAction(() => this.bookmaker.getLiveBalance());
+    // console.log(`[EdgeRunner] Fetched live balance via API: ${bookmakerBalance}`);
     for (const valueBet of valueBets) {
-      const stakeAmount = this.edgerunnerConf.fixedStake.enabled ? this.edgerunnerConf.fixedStake.value : this.#calculateStake(valueBet.trueOdd, valueBet.bookmakerOdds, bookmakerAccountInfo.balance);
+      const stakeAmount = this.edgerunnerConf.fixedStake.enabled ? this.edgerunnerConf.fixedStake.value : this.#calculateStake(valueBet.trueOdd, valueBet.bookmakerOdds, bookmakerBalance);
 
       if (stakeAmount <= 0) {
         console.log("[Edgerunner] Stake is zero or less, skipping bet.");
         continue;
       }
 
-      this.logger.logPendingBet({
-        detailedBookmakerData,
-        valueBet,
-        stakeAmount,
-      });
+      if (bookmakerBalance < stakeAmount) {
+        console.log(chalk.yellow(`[EdgeRunner] Insufficient balance. Have: ${bookmakerBalance}, Need: ${stakeAmount}. Skipping bet.`));
+        this.#sendLog(`⚠️ **Insufficient Balance:** Balance: ${bookmakerBalance} Stake: ${stakeAmount}, Skipping bet`);
+        continue;
+      }
+
+      this.logger.logPendingBet({ detailedBookmakerData, valueBet, stakeAmount });
 
       try {
         const betPayload = this.bookmaker.constructBetPayload(detailedBookmakerData, valueBet.market, valueBet.selection, stakeAmount, providerData);
@@ -526,6 +539,8 @@ class EdgeRunner {
         });
 
         console.log(chalk.bold.magenta("[Edgerunner] Bet placed successfully"));
+        // Update the local balance after a SUCCESSFUL bet
+        bookmakerBalance -= stakeAmount;
         this.logger.logSuccess({
           detailedBookmakerData,
           valueBet,
@@ -533,9 +548,13 @@ class EdgeRunner {
         });
 
         this.#checkAndResetDailyCounter();
-        this.#totalBetsPlaced++;
-        this.#betsPlacedToday++;
-        console.log(chalk.green(`[Stats] Bets Today: ${this.#betsPlacedToday}, Total Bets: ${this.#totalBetsPlaced}`));
+        const currentStats = this.store.getEdgerunnerStats();
+        await this.store.setEdgerunnerStats({
+          totalBetsPlaced: currentStats.totalBetsPlaced + 1,
+          betsPlacedToday: currentStats.betsPlacedToday + 1,
+        });
+        const updatedStats = this.store.getEdgerunnerStats();
+        console.log(chalk.green(`[Stats] Bets Today: ${updatedStats.betsPlacedToday}, Total Bets: ${updatedStats.totalBetsPlaced}`));
       } catch (betError) {
         console.error(chalk.red(`[Edgerunner] Failed to place bet:`), betError);
         this.#sendLog(`❌ **Bet Failed:** ${betError.message}`);
@@ -636,7 +655,7 @@ class EdgeRunner {
       this.stop();
     });
 
-    this.provider.on("notifications",  this.#boundHandleProviderNotifications);
+    this.provider.on("notifications", this.#boundHandleProviderNotifications);
 
     try {
       this.provider.startPolling();
@@ -647,7 +666,7 @@ class EdgeRunner {
     }
   }
   async stop() {
-	this.provider.off("notifications", this.#boundHandleProviderNotifications);
+    this.provider.off("notifications", this.#boundHandleProviderNotifications);
     this.provider.stopPolling();
     this.#isWorkerRunning = false;
     this.#gameQueue.length = 0;
@@ -663,49 +682,80 @@ class EdgeRunner {
   }
 
   async getStatus() {
-    let providerInfo = { status: null };
-    let bookmakerInfo = { status: null, balance: null, openBets: null };
+    const edgerunnerStats = this.store.getEdgerunnerStats();
+    const { startingBalToday, totalBetsPlaced, betsPlacedToday } = edgerunnerStats;
+    const { fixedStake, minValueBetOdds, maxValueBetOdds, minValueBetPercentage } = this.edgerunnerConf;
 
+    let currentBalance = null;
+    let openBetsCount = null;
+    let bookmakerStatus = this.bookmaker.getStatus();
+    let providerStatus = this.provider.getStatus();
+
+    // Fetch Live Bookmaker Data
     try {
-      const bookmakerAccountInfo = await this.bookmaker.getAccountInfo(this.username);
-
-      providerInfo = {
-        status: this.provider.getStatus(),
-      };
-
-      bookmakerInfo = {
-        status: this.bookmaker.getStatus(),
-        balance: bookmakerAccountInfo.balance,
-        openBets: bookmakerAccountInfo.openBetsCount,
-      };
+      // Fetch full info as openBetsCount is only available here.
+      const accountInfo = await this.bookmaker.getAccountInfo(this.username);
+      currentBalance = accountInfo.balance;
+      openBetsCount = accountInfo.openBetsCount;
     } catch (error) {
-      console.warn(chalk.yellow("[EdgeRunner] Could not fetch live account info for status update.", error));
-      providerInfo.status = this.provider.getStatus();
-      bookmakerInfo.status = this.bookmaker.getStatus();
+      console.warn(chalk.yellow("[EdgeRunner] Could not fetch live account info for status update. Using cached statuses."), error.message);
+      // On failure, currentBalance and openBetsCount remain null.
     }
 
-    const finalStatus = {
+    // Calculate Dynamic EdgeRunner Stats
+    let possibleBets = 0;
+    let dailyBalanceChange = 0;
+    let dailyChangePercent = 0;
+
+    if (currentBalance !== null) {
+      // Calculate Possible Bets (Fixed Stake Logic)
+      const fixedStakeValue = fixedStake.value;
+
+      if (fixedStake.enabled && fixedStakeValue > 0) {
+        possibleBets = Math.floor(currentBalance / fixedStakeValue);
+      }
+
+      // Calculate Daily Change
+      if (startingBalToday !== null) {
+        dailyBalanceChange = currentBalance - startingBalToday;
+        if (startingBalToday > 0) {
+          dailyChangePercent = (dailyBalanceChange / startingBalToday) * 100;
+        }
+      }
+    }
+
+    return {
+      // Grouped Connection Health & Data
+      provider: {
+        status: providerStatus,
+      },
+      bookmaker: {
+        status: bookmakerStatus,
+        balance: currentBalance, 
+        openBets: openBetsCount,
+      },
       // Internal Bot Status
       edgerunner: {
-        // edgerunnner state
+        // State
         isActive: this.#isBotActive,
         isWorkerRunning: this.#isWorkerRunning,
         queueLength: this.#gameQueue.length,
-        // edgerunnner status
-        totalBetsPlaced: this.#totalBetsPlaced,
-        betsPlacedToday: this.#betsPlacedToday,
-        // edgerunnner config
         browserActive: !!this.browser,
-        minValueBetOdds: this.edgerunnerConf.minValueBetOdds,
-        maxValueBetOdds: this.edgerunnerConf.maxValueBetOdds,
-        stakeAmount: this.edgerunnerConf.fixedStake.value,
-        minValueBetPercentage: this.edgerunnerConf.minValueBetPercentage,
+
+        // Stats
+        possibleBetsCount: possibleBets,
+        totalBetsPlaced: totalBetsPlaced,
+        betsPlacedToday: betsPlacedToday,
+        dailyBalanceChange: dailyBalanceChange.toFixed(2),
+        dailyChangePercent: dailyChangePercent.toFixed(2),
+
+        // Config
+        minValueBetOdds,
+        maxValueBetOdds,
+        stakeAmount: fixedStake.value,
+        minValueBetPercentage,
       },
-      // Grouped Connection Health & Data
-      provider: providerInfo,
-      bookmaker: bookmakerInfo,
     };
-    return finalStatus;
   }
 }
 
