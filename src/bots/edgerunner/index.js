@@ -53,26 +53,52 @@ class EdgeRunner {
       throw error;
     }
   }
-
   static async #initializeBrowser(config) {
     try {
+      const localIp = await (await fetch("https://api.ipify.org")).text();
+      console.log(chalk.gray(`[Local IP] -> ${localIp}`));
+
       const launchOptions = {
         headless: true,
-        args: ["--no-sandbox", "--disable-setuid-sandbox", "--no-zygote", "--single-process", "--disable-extensions", "--disable-sync", "--disable-translate", "--mute-audio", "--no-first-run", "--disable-gpu", "--disable-dev-shm-usage", "--disable-http-cache", "--disable-background-networking", "--disable-features=site-per-process", "--disable-accelerated-2d-canvas", "--disable-background-timer-throttling", "--disable-client-side-phishing-detection"],
+        args: [
+          "--no-sandbox",
+          "--disable-setuid-sandbox",
+          "--no-zygote",
+          "--single-process",
+          "--disable-extensions",
+          "--disable-sync",
+          "--disable-translate",
+          "--mute-audio",
+          "--no-first-run",
+          "--disable-gpu",
+          "--disable-dev-shm-usage",
+          "--disable-http-cache",
+          "--disable-background-networking",
+          "--disable-features=site-per-process",
+          "--disable-accelerated-2d-canvas",
+          "--disable-background-timer-throttling",
+          "--disable-client-side-phishing-detection",
+        ],
         defaultTimeout: 60_000, // let it take it time to avoid slow network
         protocolTimeout: 60_000,
       };
 
       const proxyConf = config.proxy;
       if (proxyConf && proxyConf.enabled && proxyConf.ip) {
-        console.log(chalk.blue(`[Browser] -> Attempting to use proxy ip: ${proxyConf.ip}`));
+        console.log(
+          chalk.blue(
+            `[Browser] -> Attempting to use proxy ip: ${proxyConf.ip}`,
+          ),
+        );
         launchOptions.args.push(`--proxy-server=${proxyConf.ip}`);
       }
 
       const browser = await puppeteer.launch(launchOptions);
 
       if (proxyConf && proxyConf.enabled) {
-        console.log(chalk.yellow("[Proxy Test] -> Validating proxy connection..."));
+        console.log(
+          chalk.yellow("[Proxy Test] -> Validating proxy connection..."),
+        );
         let testPage;
         try {
           testPage = await browser.newPage();
@@ -87,22 +113,40 @@ class EdgeRunner {
             waitUntil: "domcontentloaded",
           });
 
-          const detectedIp = await testPage.evaluate(() => document.body.innerText);
-          const expectedIp = proxyConf.ip.split(":")[0];
+          const detectedIp = await testPage.evaluate(() =>
+            document.body.innerText.trim(),
+          );
+          const normalize = (ip) => ip.trim().replace(/^::ffff:/, "");
 
-          if (detectedIp.includes(expectedIp)) {
-            console.log(chalk.green.bold(`[Proxy Test] -> ✅ Proxy connection successful! IP: ${detectedIp}`));
+          if (detectedIp && normalize(detectedIp) !== normalize(localIp)) {
+            console.log(
+              chalk.green.bold(
+                `[Proxy Test] -> Proxy connection successful! Exit IP: ${normalize(detectedIp)}`,
+              ),
+            );
           } else {
-            console.log(chalk.red.bold(`[Proxy Test] -> ⚠️ PROXY MISMATCH! Connection is live, but IP is wrong.`));
-            console.log(chalk.red(`   Expected: ${expectedIp} | Detected: ${detectedIp}`));
-            throw new Error("Proxy connected but IP did not match configuration.");
+            console.log(
+              chalk.red.bold(
+                `[Proxy Test] -> Proxy validation failed — IP not changed.`,
+              ),
+            );
+            console.log(chalk.red(`Local IP: ${localIp}`));
+            console.log(chalk.red(`Detected via proxy: ${detectedIp}`));
+
+            throw new Error("Proxy did not mask IP correctly.");
           }
 
           await testPage.close();
         } catch (error) {
-          console.error(chalk.red.bold("[Proxy Test] -> ❌ Proxy connection FAILED."));
+          console.error(
+            chalk.red.bold("[Proxy Test] -> Proxy connection FAILED."),
+          );
           if (!error.message.includes("Proxy connected but IP did not match")) {
-            console.error(chalk.red("Error: The proxy may be offline, IP is incorrect, or credentials failed."));
+            console.error(
+              chalk.red(
+                "Error: The proxy may be offline, IP is incorrect, or credentials failed.",
+              ),
+            );
           }
           if (testPage) {
             await testPage.close();
@@ -112,13 +156,20 @@ class EdgeRunner {
         }
       }
 
-      console.log(chalk.green("[Edgerunner - Browser] -> Browser Initialized for EdgeRunner"));
+      console.log(
+        chalk.green(
+          "[Edgerunner - Browser] -> Browser Initialized for EdgeRunner",
+        ),
+      );
       return browser;
     } catch (error) {
-      console.error(chalk.red("[Edgerunner - Browser] -> Initialization Failed:", error));
+      console.error(
+        chalk.red("[Edgerunner - Browser] -> Initialization Failed:", error),
+      );
       throw error;
     }
   }
+
   #sendLog(message) {
     // process.send is only available when running as a forked child process
     // use to log on discord or front end consumer
@@ -760,3 +811,4 @@ class EdgeRunner {
 }
 
 export default EdgeRunner;
+

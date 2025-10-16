@@ -1,5 +1,5 @@
 const configurations = {
-	apiBaseUrl: "http://148.230.114.97:9090",
+	apiBaseUrl: "http://185.172.57.171:9090",
 	cron: {
 		intervalMin: 10
 	}
