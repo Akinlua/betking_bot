@@ -10,7 +10,8 @@
     "test": "node --test test/unit",
     "test:bookmaker": "node --test test/unit/bookmakers/betking.js",
     "test:provider": "node --test test/unit/providers/pinnacle.js",
-    "test:edgerunner": "node --test test/unit/edgerunner/index.js"
+    "test:edgerunner": "node --test test/unit/edgerunner/index.js",
+    "test:betking:teams": "node scripts/test-betking-placebet-by-teams.js"
   },
   "keywords": [],
   "author": "",

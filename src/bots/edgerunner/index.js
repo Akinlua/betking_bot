@@ -317,7 +317,10 @@ class EdgeRunner {
         const bookmakerOdds = bestBetInGroup.bookmaker.selection.odd.value;
         const meetsValuePercentage = bestBetInGroup.value > (this.edgerunnerConf.minValueBetPercentage || 0);
         const meetsValueOdds = bookmakerOdds >= (this.edgerunnerConf.minValueBetOdds || 1) && bookmakerOdds <= (this.edgerunnerConf.maxValueBetOdds || Infinity);
-
+        if (!meetsValueOdds) {
+          console.log(`[Edgerunner] Market ${marketName} - Selection ${bestBetInGroup.bookmaker.selection.name} does not meet value odds requirements.`);
+          // continue;
+        }
         if (bestBetInGroup && meetsValuePercentage && meetsValueOdds) {
           valueBets.push({
             market: bestBetInGroup.bookmaker.market,
@@ -518,27 +521,88 @@ class EdgeRunner {
         stakeAmount,
       });
 
-      try {
-        const betPayload = this.bookmaker.constructBetPayload(detailedBookmakerData, valueBet.market, valueBet.selection, stakeAmount, providerData);
+      const placement = this.edgerunnerConf?.betPlacement || { single: false, multiple: true };
 
-        await this.#performAuthenticatedAction(async () => {
-          await this.bookmaker.placeBet(this.username, betPayload);
-        });
+      // Place single bet if enabled
+      if (placement.single) {
+        try {
+          const singlePayload = this.bookmaker.constructBetPayload(
+            detailedBookmakerData,
+            valueBet.market,
+            valueBet.selection,
+            stakeAmount,
+            providerData,
+          );
 
-        console.log(chalk.bold.magenta("[Edgerunner] Bet placed successfully"));
-        this.logger.logSuccess({
-          detailedBookmakerData,
-          valueBet,
-          stakeAmount,
-        });
+          await this.#performAuthenticatedAction(async () => {
+            await this.bookmaker.placeBet(this.username, singlePayload);
+          });
 
-        this.#checkAndResetDailyCounter();
-        this.#totalBetsPlaced++;
-        this.#betsPlacedToday++;
-        console.log(chalk.green(`[Stats] Bets Today: ${this.#betsPlacedToday}, Total Bets: ${this.#totalBetsPlaced}`));
-      } catch (betError) {
-        console.error(chalk.red(`[Edgerunner] Failed to place bet:`), betError);
-        this.#sendLog(`❌ **Bet Failed:** ${betError.message}`);
+          console.log(chalk.bold.magenta("[Edgerunner] Single bet placed successfully"));
+          this.logger.logSuccess({ detailedBookmakerData, valueBet, stakeAmount });
+          this.#checkAndResetDailyCounter();
+          this.#totalBetsPlaced++;
+          this.#betsPlacedToday++;
+          console.log(chalk.green(`[Stats] Bets Today: ${this.#betsPlacedToday}, Total Bets: ${this.#totalBetsPlaced}`));
+        } catch (betError) {
+          console.error(chalk.red(`[Edgerunner] Failed to place SINGLE bet:`), betError);
+          this.#sendLog(`❌ **Bet Failed (Single):** ${betError.message}`);
+        }
+      }
+
+      // Place multiple bet if enabled with up to 3 fallback FootballGO low-odds candidates
+      if (placement.multiple) {
+        try {
+          const candidates = await this.bookmaker.selectLowOddsCandidatesFromOverview(1.2, 3);
+          if (!candidates || candidates.length === 0) {
+            console.log(chalk.yellow("[Edgerunner] Skipping multiple bet: no FootballGO low-odds candidates."));
+          } else {
+            let placed = false;
+            for (let i = 0; i < candidates.length; i++) {
+              const candidate = candidates[i];
+              try {
+                const multiPayload = await this.bookmaker.constructMultiSlipPayloadWithLowOdd(
+                  detailedBookmakerData,
+                  valueBet.market,
+                  valueBet.selection,
+                  stakeAmount,
+                  providerData,
+                  1.2,
+                  candidate,
+                );
+
+                if (multiPayload?.betCoupon?.couponTypeId !== 2) {
+                  console.log(chalk.yellow(`[Edgerunner] Candidate ${i + 1} did not produce a multiple payload; skipping.`));
+                  continue;
+                }
+
+                await this.#performAuthenticatedAction(async () => {
+                  await this.bookmaker.placeBet(this.username, multiPayload);
+                });
+
+                console.log(chalk.bold.magenta(`[Edgerunner] Multiple bet placed successfully (candidate ${i + 1})`));
+                this.logger.logSuccess({ detailedBookmakerData, valueBet, stakeAmount });
+                this.#checkAndResetDailyCounter();
+                this.#totalBetsPlaced++;
+                this.#betsPlacedToday++;
+                console.log(chalk.green(`[Stats] Bets Today: ${this.#betsPlacedToday}, Total Bets: ${this.#totalBetsPlaced}`));
+                placed = true;
+                break;
+              } catch (betError) {
+                console.error(chalk.red(`[Edgerunner] Multiple bet attempt ${i + 1} failed:`), betError);
+                this.#sendLog(`❌ **Bet Failed (Multiple candidate ${i + 1}):** ${betError.message}`);
+                // try next candidate immediately
+              }
+            }
+
+            if (!placed) {
+              console.log(chalk.yellow("[Edgerunner] All multiple bet attempts failed; no bet placed."));
+            }
+          }
+        } catch (error) {
+          console.error(chalk.red(`[Edgerunner] Failed to orchestrate MULTIPLE bet with fallbacks:`), error);
+          this.#sendLog(`❌ **Bet Failed (Multiple orchestration):** ${error.message}`);
+        }
       }
     }
   }
