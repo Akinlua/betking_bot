@@ -11,6 +11,7 @@ debug.log
 # Environment variables
 .env
 .env.development
+.env.example
 .env.production
 .env.work
 .env.personal
