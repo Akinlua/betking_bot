@@ -25,6 +25,14 @@ export default
 					.setDescription("Fixed stake value")
 					.setRequired(true))
 			.addBooleanOption(option =>
+				option.setName("placement-single")
+					.setDescription("Enable placing single bets (default: true)")
+					.setRequired(false))
+			.addBooleanOption(option =>
+				option.setName("placement-multiple")
+					.setDescription("Enable placing multiple bets (default: true)")
+					.setRequired(false))
+			.addBooleanOption(option =>
 				option.setName("use-proxy")
 					.setDescription("Enable to use a proxy for this bot (default: false)")
 					.setRequired(false)) // Optional
@@ -48,7 +56,8 @@ export default
 			const userId = interaction.options.getString("userid");
 			const fixedStake = interaction.options.getNumber("fixedstake");
 			const useProxy = interaction.options.getBoolean("use-proxy") ?? false;
-
+			const placementSingle = interaction.options.getBoolean("placement-single");
+			const placementMultiple = interaction.options.getBoolean("placement-multiple");
 
 			const payload = {
 				provider: { userId },
@@ -60,6 +69,13 @@ export default
         			}
     			}
 			};
+
+			const betPlacement = {};
+			if (placementSingle !== null) betPlacement.single = placementSingle;
+			if (placementMultiple !== null) betPlacement.multiple = placementMultiple;
+			if (Object.keys(betPlacement).length > 0) {
+				payload.edgerunner.betPlacement = betPlacement;
+			}
 
 			if (useProxy) {
 				const proxyIp = interaction.options.getString("proxy-ip");
