@@ -2864,6 +2864,404 @@ class BetKingBookmaker {
   }
 
   /**
+   * Fetch the FootballGO live overview payload and return parsed JSON.
+   * Uses the current authenticated session cookies to make the request from within the page context.
+   */
+  async fetchFootballGoOverview() {
+    let page;
+    try {
+      const cookies = this.botStore.getBookmakerCookies();
+      if (!cookies || cookies.length === 0) {
+        throw new AuthenticationError("No saved cookies found.");
+      }
+      // Validate cookies quickly; if invalid, propagate auth error
+      if (!(await this.#areCookiesValid(cookies))) {
+        throw new AuthenticationError("Cookies have expired.");
+      }
+
+      page = await this.browser.newPage();
+      await page.setRequestInterception(true);
+      page.on("request", (req) => {
+        const rt = req.resourceType();
+        if (["image", "stylesheet", "font", "media"].includes(rt)) {
+          req.abort();
+        } else {
+          req.continue();
+        }
+      });
+      await page.setCookie(...cookies);
+
+      // Land on domain to ensure cookie scope, then request overview
+      await page.goto("https://m.betking.com/", {
+        waitUntil: "domcontentloaded",
+        timeout: 60_000,
+      });
+
+      const overviewUrl =
+        "https://m.betking.com/sports/live/api/overview/8?includeTranslations=false&_data=routes%2F%28%24locale%29.sports.live.api.overview.%24sportId";
+
+      const result = await page.evaluate(async (url) => {
+        try {
+          const res = await fetch(url, {
+            method: "GET",
+            headers: {
+              Accept: "application/json",
+              Referer: "https://m.betking.com/sports/live/football",
+            },
+          });
+          const text = await res.text();
+          if (!res.ok) {
+            return { error: true, status: res.status, text };
+          }
+          try {
+            return { error: false, data: JSON.parse(text) };
+          } catch (e) {
+            return { error: true, status: 200, text: `Failed JSON parse: ${text}` };
+          }
+        } catch (err) {
+          return { error: true, status: 0, text: err.message };
+        }
+      }, overviewUrl);
+
+      if (result.error) {
+        throw new Error(
+          `Overview request failed (status ${result.status}): ${result.text}`,
+        );
+      }
+      return result.data;
+    } catch (error) {
+      console.error("[Bookmaker] fetchFootballGoOverview error:", error.message);
+      throw error;
+    } finally {
+      if (page) await page.close();
+    }
+  }
+
+  /**
+   * From FootballGO overview, pick all selections with odds <= maxOdd,
+   * find the minimum odd among them, then randomly select one from those minimums.
+   * Returns the tuple { event, market, selection } for payload assembly.
+   */
+  async selectRandomLowestOddFromOverview(maxOdd = 1.2) {
+    const data = await this.fetchFootballGoOverview();
+    const sportBlocks = Array.isArray(data?.sportData) ? data.sportData : [];
+    // Prefer the FootballGO block (id:8 or name:"FootballGO")
+    const footballGo = sportBlocks.find(
+      (s) => s?.id === 8 || String(s?.name).toLowerCase().includes("footballgo"),
+    );
+    if (!footballGo) {
+      throw new Error("FootballGO overview block not found");
+    }
+
+    const candidates = [];
+    for (const tournament of footballGo.tournaments || []) {
+      for (const event of tournament.events || []) {
+        for (const market of event.markets || []) {
+          for (const selection of market.selections || []) {
+            const oddVal = selection?.odd?.value;
+            if (typeof oddVal === "number" && oddVal <= maxOdd) {
+              candidates.push({ event, market, selection, oddValue: oddVal });
+            }
+          }
+        }
+      }
+    }
+
+    if (candidates.length === 0) {
+      return null; // No low-odd candidates found
+    }
+
+    const minOdd = candidates.reduce(
+      (acc, c) => (c.oddValue < acc ? c.oddValue : acc),
+      candidates[0].oddValue,
+    );
+    const minGroup = candidates.filter((c) => c.oddValue === minOdd);
+    const choice = minGroup[Math.floor(Math.random() * minGroup.length)];
+    return choice;
+  }
+
+  /**
+   * Return up to `limit` random FootballGO low-odds candidates (odd <= maxOdd).
+   * Each candidate is an object: { event, market, selection, oddValue }.
+   */
+  async selectLowOddsCandidatesFromOverview(maxOdd = 1.2, limit = 3) {
+    const data = await this.fetchFootballGoOverview();
+    const sportBlocks = Array.isArray(data?.sportData) ? data.sportData : [];
+    const footballGo = sportBlocks.find(
+      (s) => s?.id === 8 || String(s?.name).toLowerCase().includes("footballgo"),
+    );
+    if (!footballGo) {
+      throw new Error("FootballGO overview block not found");
+    }
+
+    const candidates = [];
+    for (const tournament of footballGo.tournaments || []) {
+      for (const event of tournament.events || []) {
+        for (const market of event.markets || []) {
+          for (const selection of market.selections || []) {
+            const oddVal = selection?.odd?.value;
+            if (typeof oddVal === "number" && oddVal <= maxOdd) {
+              candidates.push({ event, market, selection, oddValue: oddVal });
+            }
+          }
+        }
+      }
+    }
+
+    if (candidates.length === 0) {
+      return [];
+    }
+
+    // Shuffle candidates to ensure randomness, then take up to `limit`
+    for (let i = candidates.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [candidates[i], candidates[j]] = [candidates[j], candidates[i]];
+    }
+
+    // Ensure uniqueness by event id to avoid duplicates on same match
+    const uniqueByEvent = [];
+    const seenEventIds = new Set();
+    for (const c of candidates) {
+      const id = c?.event?.id;
+      if (!seenEventIds.has(id)) {
+        uniqueByEvent.push(c);
+        seenEventIds.add(id);
+      }
+      if (uniqueByEvent.length >= limit) break;
+    }
+
+    return uniqueByEvent;
+  }
+
+  /**
+   * Convert overview event/market/selection into oddsSelection for betslip payload.
+   */
+  buildOddsSelectionFromOverview(event, market, selection) {
+    return {
+      IDSelectionType: selection.typeId,
+      IDSport: event.sportId,
+      allowFixed: false,
+      compatibilityLevel: 0,
+      eventCategory: event.eventCategory,
+      eventDate: event.date,
+      eventId: event.categoryId,
+      eventName: event.categoryName,
+      fixed: false,
+      gamePlay: 1,
+      incompatibleEvents: Array.isArray(event.incompatibleEvents)
+        ? event.incompatibleEvents
+        : [],
+      isExpired: false,
+      isLocked: false,
+      isBetBuilder: false,
+      marketId: market.id,
+      marketName: market.name,
+      marketTag: 0,
+      marketTypeId: market.typeId,
+      matchId: event.id,
+      matchName: event.name,
+      oddValue: selection.odd.value,
+      parentEventId: event.id,
+      selectionId: selection.id,
+      selectionName: selection.name,
+      selectionNoWinValues: [],
+      smartCode: event.smartCode ?? 0,
+      specialValue:
+        (market.specialBetValue !== undefined && market.specialBetValue !== null)
+          ? String(market.specialBetValue)
+          : "0",
+      sportName: event.sportName,
+      tournamentId: event.tournamentId,
+      tournamentName: event.tournamentName,
+    };
+  }
+
+  /**
+   * Build a multi-slip payload combining the primary bookmaker selection and a
+   * randomly chosen lowest-odd FootballGO selection (<= maxLowOdd).
+   * If no FootballGO low-odd selection is found, falls back to single-slip payload.
+   */
+  async constructMultiSlipPayloadWithLowOdd(
+    matchData,
+    market,
+    selection,
+    stakeAmount,
+    providerData,
+    maxLowOdd = 1.2,
+    lowOddChoiceParam = null,
+  ) {
+    try {
+      // Build primary odds selection from detailed bookmaker data
+      const eventCategory = this.sportIdMapper[providerData.sportId] || "F";
+      const primaryOddsSelection = {
+        IDSelectionType: selection.typeId,
+        IDSport: matchData.sportId,
+        allowFixed: false,
+        compatibilityLevel: 0,
+        eventCategory: eventCategory,
+        eventDate: matchData.date,
+        eventId: matchData.id,
+        eventName: matchData.categoryName,
+        fixed: false,
+        gamePlay: 1,
+        incompatibleEvents: [],
+        isExpired: false,
+        isLocked: false,
+        isBetBuilder: false,
+        marketId: market.id,
+        marketName: market.name,
+        marketTag: 0,
+        marketTypeId: market.typeId,
+        matchId: matchData.id,
+        matchName: matchData.name,
+        oddValue: selection.odd.value,
+        parentEventId: matchData.id,
+        selectionId: selection.id,
+        selectionName: selection.name,
+        selectionNoWinValues: [],
+        smartCode: matchData.smartBetCode,
+        specialValue: selection.specialValue || "0",
+        sportName: matchData.sportName,
+        tournamentId: matchData.tournamentId,
+        tournamentName: matchData.tournamentName,
+      };
+
+      // Try get FootballGO low-odd selection (prefer provided candidate)
+      const lowOddChoice =
+        lowOddChoiceParam || (await this.selectRandomLowestOddFromOverview(maxLowOdd));
+      console.log("lowOddChoice", lowOddChoice);
+      if (!lowOddChoice) {
+        // Fallback to single-slip behavior
+        return this.constructBetPayload(
+          matchData,
+          market,
+          selection,
+          stakeAmount,
+          providerData,
+        );
+      }
+
+      const addOddsSelection = this.buildOddsSelectionFromOverview(
+        lowOddChoice.event,
+        lowOddChoice.market,
+        lowOddChoice.selection,
+      );
+
+      const selections = [primaryOddsSelection, addOddsSelection];
+      const oddValues = selections.map((s) => Number(s.oddValue) || 0);
+      const totalOdds = oddValues.reduce((acc, v) => acc * v, 1);
+      const potentialWinnings = stakeAmount * totalOdds;
+      const minOdd = Math.min(...oddValues);
+      const maxOdd = Math.max(...oddValues);
+
+      const grouping = {
+        grouping: 2,
+        combinations: 1,
+        minWin: potentialWinnings,
+        minWinNet: potentialWinnings,
+        netStakeMinWin: potentialWinnings,
+        maxWin: potentialWinnings,
+        maxWinNet: potentialWinnings,
+        netStakeMaxWin: potentialWinnings,
+        minBonus: 0,
+        maxBonus: 0,
+        minPercentageBonus: 0,
+        maxPercentageBonus: 0,
+        stake: stakeAmount,
+        netStake: stakeAmount,
+        selected: true,
+      };
+
+      const betCoupon = {
+        isClientSideCoupon: true,
+        couponTypeId: 2,
+        minWin: potentialWinnings,
+        minWinNet: potentialWinnings,
+        netStakeMinWin: potentialWinnings,
+        maxWin: potentialWinnings,
+        maxWinNet: potentialWinnings,
+        netStakeMaxWin: potentialWinnings,
+        minBonus: 0,
+        maxBonus: 0,
+        minPercentageBonus: 0,
+        maxPercentageBonus: 0,
+        minOdd: minOdd,
+        maxOdd: maxOdd,
+        totalOdds: totalOdds,
+        stake: stakeAmount,
+        useGroupsStake: false,
+        stakeGross: stakeAmount,
+        stakeTaxed: 0,
+        taxPercentage: 0,
+        tax: 0,
+        minWithholdingTax: 0,
+        maxWithholdingTax: 0,
+        turnoverTax: 0,
+        totalCombinations: 1,
+        odds: selections,
+        groupings: [grouping],
+        possibleMissingGroupings: [
+          { combinations: 2, grouping: 1 },
+        ],
+        currencyId: 16,
+        isLive: true,
+        isVirtual: false,
+        currentEvalMotivation: 0,
+        betCouponGlobalVariable: {
+          currencyId: 16,
+          defaultStakeGross: 100,
+          isFreeBetRedemptionEnabled: false,
+          isVirtualsInstallation: false,
+          maxBetStake: 175438596.49,
+          maxCombinationBetWin: 75000000,
+          maxCombinationsByGrouping: 10000,
+          maxCouponCombinations: 17543859,
+          maxGroupingsBetStake: 41641682,
+          maxMultipleBetWin: 75000000,
+          maxNoOfEvents: 40,
+          maxNoOfSelections: 40,
+          maxSingleBetWin: 75000000,
+          minBetStake: 10,
+          minBonusOdd: 1.35,
+          minFlexiCutOdds: 1.01,
+          minFlexiCutSelections: 5,
+          minGroupingsBetStake: 5,
+          stakeInnerMod0Combination: 0.01,
+          stakeMod0Multiple: 0,
+          stakeMod0Single: 0,
+          stakeThresholdMultiple: 175438.6,
+          stakeThresholdSingle: 17543.86,
+          flexiCutGlobalVariable: {
+            parameters: {
+              formulaId: 1,
+              minOddThreshold: 1.05,
+              minWinningSelections: 2,
+            },
+          },
+        },
+        language: "en",
+        hasLive: true,
+        couponType: 2,
+        allGroupings: [grouping],
+      };
+
+      return {
+        betCoupon,
+        allowOddChanges: true,
+        allowStakeReduction: false,
+        requestTransactionId: Date.now().toString(),
+        transferStakeFromAgent: false,
+      };
+    } catch (error) {
+      console.error(
+        "[Bookmaker] constructMultiSlipPayloadWithLowOdd error:",
+        error.message,
+      );
+      throw error;
+    }
+  }
+
+  /**
    * Places a bet using a direct API call, leveraging the cached `accessToken`
    * from the active session.
    *
