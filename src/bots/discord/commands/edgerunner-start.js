@@ -33,10 +33,6 @@ export default
 					.setDescription("Enable placing multiple bets (default: true)")
 					.setRequired(false))
 			.addBooleanOption(option =>
-				option.setName("placement-new-test")
-					.setDescription("Enable placing test bets (default: true)")
-					.setRequired(false))
-			.addBooleanOption(option =>
 				option.setName("use-proxy")
 					.setDescription("Enable to use a proxy for this bot (default: false)")
 					.setRequired(false)) // Optional
@@ -62,7 +58,6 @@ export default
 			const useProxy = interaction.options.getBoolean("use-proxy") ?? false;
 			const placementSingle = interaction.options.getBoolean("placement-single");
 			const placementMultiple = interaction.options.getBoolean("placement-multiple");
-			const placementTest = interaction.options.getBoolean("placement-new-test");
 
 			const payload = {
 				provider: { userId },
