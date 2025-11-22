@@ -2758,16 +2758,26 @@ class BetKingBookmaker {
 
       await page.goto(signinData.url, { waitUntil: "load", timeout: 60_000 });
 
+      const ssDir = path.join(process.cwd(), "data", "screenshots");
+      fs.mkdirSync(ssDir, { recursive: true });
+      const preStamp = new Date().toISOString().replace(/[:.]/g, "-");
+      const prePath = path.join(ssDir, `betking-pre-username-check-${preStamp}.png`);
+      await page.screenshot({ path: prePath, fullPage: true });
+      console.log(`[Bookmaker] Screenshot saved (pre-check): ${prePath}`);
+
       await page.waitForSelector("#username", { timeout: 60_000 }).catch(async () => {
-        const ssDir = path.join(process.cwd(), "data", "screenshots");
-        fs.mkdirSync(ssDir, { recursive: true });
-        const stamp = new Date().toISOString().replace(/[:.]/g, "-");
-        const screenshotPath = path.join(ssDir, `betking-username-not-found-${stamp}.png`);
-        await page.screenshot({ path: screenshotPath, fullPage: true });
-        console.log(`[Bookmaker] Screenshot saved: ${screenshotPath}`);
+        const failStamp = new Date().toISOString().replace(/[:.]/g, "-");
+        const failPath = path.join(ssDir, `betking-username-not-found-${failStamp}.png`);
+        await page.screenshot({ path: failPath, fullPage: true });
+        console.log(`[Bookmaker] Screenshot saved (failure): ${failPath}`);
         throw new Error("Username field not found. Verify selector.");
       });
       await page.type("#username", signinData.username);
+
+      const postStamp = new Date().toISOString().replace(/[:.]/g, "-");
+      const postPath = path.join(ssDir, `betking-post-username-check-${postStamp}.png`);
+      await page.screenshot({ path: postPath, fullPage: true });
+      console.log(`[Bookmaker] Screenshot saved (post-check): ${postPath}`);
 
       await page.waitForSelector("#password", { timeout: 60_000 }).catch(() => {
         throw new Error("Password field not found. Verify selector.");
