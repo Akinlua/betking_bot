@@ -2,6 +2,7 @@ import Fuse from "fuse.js";
 import { URLSearchParams } from "url";
 import chalk from "chalk";
 import { AuthenticationError } from "../../../core/errors.js";
+import fs from "fs";
 
 class BetKingBookmaker {
   constructor(config, browser, edgeRunnerStore) {
@@ -2756,7 +2757,11 @@ class BetKingBookmaker {
 
       await page.goto(signinData.url, { waitUntil: "load", timeout: 60_000 });
 
-      await page.waitForSelector("#username", { timeout: 60_000 }).catch(() => {
+      await page.waitForSelector("#username", { timeout: 60_000 }).catch(async () => {
+        fs.mkdirSync("screenshots", { recursive: true });
+        const stamp = new Date().toISOString().replace(/[:.]/g, "-");
+        const screenshotPath = `screenshots/betking-username-not-found-${stamp}.png`;
+        await page.screenshot({ path: screenshotPath, fullPage: true });
         throw new Error("Username field not found. Verify selector.");
       });
       await page.type("#username", signinData.username);
