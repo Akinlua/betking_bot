@@ -7,7 +7,7 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - ./data:/app/data
+      - ./data:/home/pptruser/app/data
       - puppeteer-cache:/home/pptruser/app/.cache/puppeteer
     env_file:
       - ./env/.env.production
