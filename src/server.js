@@ -60,19 +60,36 @@ async function startDiscordBot() {
 		console.log('[Discord] Discord Bot initialized successfully.');
 
 		const commandsPath = path.join(__dirname, "./bots/discord/commands");
-		const commandFiles = (await fs.readdir(commandsPath)).filter(file => file.endsWith(".js"));
+		async function getAllCommandFiles(dir) {
+			const entries = await fs.readdir(dir, { withFileTypes: true });
+			let files = [];
+			for (const entry of entries) {
+				const fullPath = path.join(dir, entry.name);
+				if (entry.isDirectory()) {
+					files = files.concat(await getAllCommandFiles(fullPath));
+				} else if (entry.isFile() && entry.name.endsWith(".js")) {
+					files.push(fullPath);
+				}
+			}
+			return files;
+		}
+		const commandFiles = await getAllCommandFiles(commandsPath);
 
-		for (const file of commandFiles) {
-			const filePath = path.join(commandsPath, file);
-			const commandModule = await import(filePath);
-			const command = commandModule.default || commandModule;
-			if ('data' in command && 'execute' in command) {
-				client.commands.set(command.data.name, command);
-				commands.push(command.data.toJSON())
-			} else {
-				console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
+		for (const filePath of commandFiles) {
+			try {
+				const commandModule = await import(filePath);
+				const command = commandModule.default || commandModule;
+				if ('data' in command && 'execute' in command) {
+					client.commands.set(command.data.name, command);
+					commands.push(command.data.toJSON());
+				} else {
+					console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
+				}
+			} catch (err) {
+				console.error(`[Discord] Failed loading command: ${filePath}`, err);
 			}
 		}
+		console.log("[Discord] Loaded commands:", commands.map(c => c.name));
 
 		client.on(Events.InteractionCreate, async interaction => {
 			if (!interaction.isChatInputCommand()) return;
