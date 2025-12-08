@@ -3110,7 +3110,8 @@ class BetKingBookmaker {
   ) {
     try {
       // Build primary odds selection from detailed bookmaker data
-      const eventCategory = this.sportIdMapper[providerData.sportId] || "F";
+      // const eventCategory = this.sportIdMapper[providerData.sportId] || "F";
+      const eventCategory = "F";
       const primaryOddsSelection = {
         IDSelectionType: selection.typeId,
         IDSport: matchData.sportId,

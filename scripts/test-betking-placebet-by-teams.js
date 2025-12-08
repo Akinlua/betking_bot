@@ -51,6 +51,21 @@ function pickMarketAndSelection(matchDetails) {
   const markets = Array.isArray(matchDetails?.markets) ? matchDetails.markets : [];
   if (!markets.length) throw new Error("No markets found in match details.");
 
+  const normalize = (s) => String(s || "").toLowerCase();
+
+  const totalsMarket = markets.find((m) => normalize(m.name).includes("total"));
+  if (totalsMarket && Array.isArray(totalsMarket.selections)) {
+    const isTargetLine = (sel) => {
+      const val = String(sel?.specialValue ?? sel?.line ?? "");
+      return val.includes("172.5");
+    };
+    let overSel = totalsMarket.selections.find((s) => normalize(s?.name) === "over" && isTargetLine(s));
+    if (!overSel) overSel = totalsMarket.selections.find((s) => normalize(s?.name) === "over");
+    if (overSel && overSel?.odd && typeof overSel.odd.value === "number") {
+      return { market: totalsMarket, selection: overSel };
+    }
+  }
+
   const preferredNames = [
     "1x2",
     "full time result",
@@ -60,7 +75,7 @@ function pickMarketAndSelection(matchDetails) {
     "handicap",
   ];
 
-  const normalize = (s) => String(s || "").toLowerCase();
+  // const normalize = (s) => String(s || "").toLowerCase();
   let market = markets.find((m) => preferredNames.some((p) => normalize(m.name).includes(p)));
   if (!market) market = markets.find((m) => Array.isArray(m.selections) && m.selections.length > 0);
   if (!market) throw new Error("No suitable market with selections found.");
