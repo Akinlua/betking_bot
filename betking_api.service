@@ -1,0 +1,23 @@
+[Unit]
+Description=BetKing Bot API Server
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/betking_bot
+ExecStart=/usr/bin/node src/simple_bet_api/server.js
+Restart=always
+RestartSec=5s
+Environment=NODE_ENV=production
+Environment=SIMPLE_API_PORT=3001
+# Add other environment variables here if needed
+# Environment=BETKING_USERNAME=your_username
+# Environment=BETKING_PASSWORD=your_password
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=betking-api
+
+[Install]
+WantedBy=multi-user.target

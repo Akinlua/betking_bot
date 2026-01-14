@@ -2847,16 +2847,70 @@ class BetKingBookmaker {
           throw new Error("Cookies could not be found after login.");
         }
 
-        console.log(`[Bookmaker] Cookies found for ${username}: ${JSON.stringify(cookies)}`);
+        console.log(`[Bookmaker] Cookies found for ${username}`);
         await this.botStore.setBookmakerCookies(cookies);
 
         const accessTokenCookie = cookies.find((c) => c.name === "accessToken");
-        const accessToken = accessTokenCookie ? accessTokenCookie.value : null;
+        let accessToken = accessTokenCookie ? accessTokenCookie.value : null;
+
+        // Fallback: If no cookie found, try to extract from page storage
+        if (!accessToken) {
+          console.log(`[Bookmaker] accessToken cookie not found. Attempting extraction from page storage...`);
+          accessToken = await page.evaluate(() => {
+            // 1. Try common localStorage/sessionStorage keys
+            const tokenKeys = ["accessToken", "token", "userToken", "phx-token", "auth-token", "jwt", "session"];
+            for (const key of tokenKeys) {
+              const val = localStorage.getItem(key) || sessionStorage.getItem(key);
+              if (val && typeof val === "string" && val.length > 20) return val;
+
+              // Try parsing as JSON
+              try {
+                const parsed = JSON.parse(val);
+                if (parsed && typeof parsed === "object") {
+                  if (parsed.token && typeof parsed.token === "string") return parsed.token;
+                  if (parsed.accessToken && typeof parsed.accessToken === "string") return parsed.accessToken;
+                }
+              } catch (e) { }
+            }
+
+            // 2. Try to find in any JSON object in localStorage
+            for (let i = 0; i < localStorage.length; i++) {
+              const key = localStorage.key(i);
+              try {
+                const val = JSON.parse(localStorage.getItem(key));
+                if (val && typeof val === "object") {
+                  if (val.token && typeof val.token === "string" && val.token.length > 20) return val.token;
+                  if (val.accessToken && typeof val.accessToken === "string" && val.accessToken.length > 20) return val.accessToken;
+                }
+              } catch (e) { }
+            }
+
+            // 3. Try Remix context
+            if (window.__remixContext && window.__remixContext.state && window.__remixContext.state.loaderData) {
+              const loaderData = window.__remixContext.state.loaderData;
+              const findToken = (obj, depth = 0) => {
+                if (!obj || typeof obj !== "object" || depth > 5) return null;
+                for (const k in obj) {
+                  if (typeof obj[k] === "string" && obj[k].length > 20 && (k.toLowerCase().includes("token") || k.toLowerCase().includes("auth"))) {
+                    return obj[k];
+                  }
+                  const found = findToken(obj[k], depth + 1);
+                  if (found) return found;
+                }
+                return null;
+              };
+              return findToken(loaderData);
+            }
+
+            return null;
+          });
+        }
 
         // Get access token from cookies
         if (!accessToken) {
-          throw new Error("Access token could not be found after login.");
+          throw new Error("Access token could not be found after login (checked cookies and storage).");
         }
+        console.log(`[Bookmaker] Successfully extracted access token (Length: ${accessToken.length})`);
         await this.botStore.setAccessToken(accessToken);
         await page.close();
 
