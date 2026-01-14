@@ -1,0 +1,2895 @@
+{
+    "id": 1003633555,
+    "name": "Man Utd - Man City",
+    "date": "2026-01-17T13:30:00+01:00",
+    "markets": [
+        {
+            "collectionId": 540869669,
+            "selections": [
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "1 HT",
+                    "typeId": 4,
+                    "order": 1,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 3.7,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028558,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869669
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "X HT",
+                    "typeId": 2,
+                    "order": 2,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 2.42,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028585,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869669
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "2 HT",
+                    "typeId": 5,
+                    "order": 3,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 2.47,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028590,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869669
+                }
+            ],
+            "name": "1st Half - 1X2",
+            "typeId": 142,
+            "specialValue": "0",
+            "oddsDescription": "Predict the final outcome of the 1st half of the match, either the win of the home team (1), a draw (X) or the win for the away team (2).",
+            "isOutright": false,
+            "isGoalScorer": false,
+            "iDGroup": null,
+            "iDGroupMarketType": 142,
+            "templateType": 0,
+            "oddsTypeOrder": 10,
+            "onlyRegularTime": false,
+            "multilineType": 0,
+            "oddCollectionID": 0,
+            "scheduleStatus": 0,
+            "specialBetValue": 0,
+            "combinability": 1,
+            "groupNo": 0,
+            "id": 540869669
+        },
+        {
+            "collectionId": 540869652,
+            "selections": [
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "1X",
+                    "typeId": 9,
+                    "order": 1,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 1.53,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028478,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869652
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "12",
+                    "typeId": 10,
+                    "order": 2,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 1.55,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028484,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869652
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "X2",
+                    "typeId": 11,
+                    "order": 3,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 1.27,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028490,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869652
+                }
+            ],
+            "name": "1st Half - Double Chance",
+            "typeId": 9588,
+            "specialValue": "0",
+            "oddsDescription": "Predict the outcome of the first half of the match. There are 3 possible outcomes: 1X (home team wins or draws at 1st half), X2 (away team wins or draws at 1st half), 12 (home team wins or the away team wins at 1st half).",
+            "isOutright": false,
+            "isGoalScorer": false,
+            "iDGroup": null,
+            "iDGroupMarketType": 9588,
+            "templateType": 0,
+            "oddsTypeOrder": 20,
+            "onlyRegularTime": false,
+            "multilineType": 0,
+            "oddCollectionID": 0,
+            "scheduleStatus": 0,
+            "specialBetValue": 0,
+            "combinability": 1,
+            "groupNo": 0,
+            "id": 540869652
+        },
+        {
+            "collectionId": 540869648,
+            "selections": [
+                {
+                    "specialValue": "0.5",
+                    "specialValueNumber": 0.5,
+                    "specialValueString": "0.5",
+                    "name": "Over",
+                    "typeId": 12,
+                    "order": 1,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 1.26,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028470,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869648
+                },
+                {
+                    "specialValue": "0.5",
+                    "specialValueNumber": 0.5,
+                    "specialValueString": "0.5",
+                    "name": "Under",
+                    "typeId": 13,
+                    "order": 2,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 3.75,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028471,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869648
+                }
+            ],
+            "name": "1st Half - Total Goals",
+            "typeId": 161,
+            "specialValue": "0.5",
+            "oddsDescription": "Predict whether the number of goals scored in first half of a match will be under/over the value specified.",
+            "isOutright": false,
+            "isGoalScorer": false,
+            "iDGroup": null,
+            "iDGroupMarketType": 161,
+            "templateType": 1,
+            "oddsTypeOrder": 30,
+            "onlyRegularTime": false,
+            "multilineType": 0,
+            "oddCollectionID": 0,
+            "scheduleStatus": 0,
+            "specialBetValue": 0.5,
+            "combinability": 1,
+            "groupNo": 0,
+            "id": 540869648,
+            "spreadMarkets": [
+                {
+                    "collectionId": 540869648,
+                    "selections": [
+                        {
+                            "specialValue": "0.5",
+                            "specialValueNumber": 0.5,
+                            "specialValueString": "0.5",
+                            "name": "Over",
+                            "typeId": 12,
+                            "order": 1,
+                            "selectionDescription": "",
+                            "odd": {
+                                "value": 1.26,
+                                "unboostedOddValue": null,
+                                "scheduleStatus": 0
+                            },
+                            "id": 1755028470,
+                            "smartCode": 23563,
+                            "status": "VALID",
+                            "oddCollectionID": 540869648
+                        },
+                        {
+                            "specialValue": "0.5",
+                            "specialValueNumber": 0.5,
+                            "specialValueString": "0.5",
+                            "name": "Under",
+                            "typeId": 13,
+                            "order": 2,
+                            "selectionDescription": "",
+                            "odd": {
+                                "value": 3.75,
+                                "unboostedOddValue": null,
+                                "scheduleStatus": 0
+                            },
+                            "id": 1755028471,
+                            "smartCode": 23563,
+                            "status": "VALID",
+                            "oddCollectionID": 540869648
+                        }
+                    ],
+                    "name": "1st Half - Total Goals 0.5",
+                    "typeId": 161,
+                    "specialValue": "0.5",
+                    "oddsDescription": "Predict whether the number of goals scored in first half of a match will be under/over the value specified.",
+                    "isOutright": false,
+                    "isGoalScorer": false,
+                    "iDGroup": null,
+                    "iDGroupMarketType": 161,
+                    "templateType": 1,
+                    "oddsTypeOrder": 30,
+                    "onlyRegularTime": false,
+                    "multilineType": 0,
+                    "oddCollectionID": 0,
+                    "scheduleStatus": 0,
+                    "specialBetValue": 0.5,
+                    "combinability": 1,
+                    "groupNo": 0,
+                    "id": 540869648
+                },
+                {
+                    "collectionId": 540869647,
+                    "selections": [
+                        {
+                            "specialValue": "1.5",
+                            "specialValueNumber": 1.5,
+                            "specialValueString": "1.5",
+                            "name": "Over",
+                            "typeId": 12,
+                            "order": 1,
+                            "selectionDescription": "",
+                            "odd": {
+                                "value": 2.2,
+                                "unboostedOddValue": null,
+                                "scheduleStatus": 0
+                            },
+                            "id": 1755028465,
+                            "smartCode": 23563,
+                            "status": "VALID",
+                            "oddCollectionID": 540869647
+                        },
+                        {
+                            "specialValue": "1.5",
+                            "specialValueNumber": 1.5,
+                            "specialValueString": "1.5",
+                            "name": "Under",
+                            "typeId": 13,
+                            "order": 2,
+                            "selectionDescription": "",
+                            "odd": {
+                                "value": 1.65,
+                                "unboostedOddValue": null,
+                                "scheduleStatus": 0
+                            },
+                            "id": 1755028466,
+                            "smartCode": 23563,
+                            "status": "VALID",
+                            "oddCollectionID": 540869647
+                        }
+                    ],
+                    "name": "1st Half - Total Goals 1.5",
+                    "typeId": 161,
+                    "specialValue": "1.5",
+                    "oddsDescription": "Predict whether the number of goals scored in first half of a match will be under/over the value specified.",
+                    "isOutright": false,
+                    "isGoalScorer": false,
+                    "iDGroup": null,
+                    "iDGroupMarketType": 161,
+                    "templateType": 1,
+                    "oddsTypeOrder": 30,
+                    "onlyRegularTime": false,
+                    "multilineType": 0,
+                    "oddCollectionID": 0,
+                    "scheduleStatus": 0,
+                    "specialBetValue": 1.5,
+                    "combinability": 1,
+                    "groupNo": 0,
+                    "id": 540869647
+                },
+                {
+                    "collectionId": 540869653,
+                    "selections": [
+                        {
+                            "specialValue": "2.5",
+                            "specialValueNumber": 2.5,
+                            "specialValueString": "2.5",
+                            "name": "Over",
+                            "typeId": 12,
+                            "order": 1,
+                            "selectionDescription": "",
+                            "odd": {
+                                "value": 4.85,
+                                "unboostedOddValue": null,
+                                "scheduleStatus": 0
+                            },
+                            "id": 1755028492,
+                            "smartCode": 23563,
+                            "status": "VALID",
+                            "oddCollectionID": 540869653
+                        },
+                        {
+                            "specialValue": "2.5",
+                            "specialValueNumber": 2.5,
+                            "specialValueString": "2.5",
+                            "name": "Under",
+                            "typeId": 13,
+                            "order": 2,
+                            "selectionDescription": "",
+                            "odd": {
+                                "value": 1.16,
+                                "unboostedOddValue": null,
+                                "scheduleStatus": 0
+                            },
+                            "id": 1755028493,
+                            "smartCode": 23563,
+                            "status": "VALID",
+                            "oddCollectionID": 540869653
+                        }
+                    ],
+                    "name": "1st Half - Total Goals 2.5",
+                    "typeId": 161,
+                    "specialValue": "2.5",
+                    "oddsDescription": "Predict whether the number of goals scored in first half of a match will be under/over the value specified.",
+                    "isOutright": false,
+                    "isGoalScorer": false,
+                    "iDGroup": null,
+                    "iDGroupMarketType": 161,
+                    "templateType": 1,
+                    "oddsTypeOrder": 30,
+                    "onlyRegularTime": false,
+                    "multilineType": 0,
+                    "oddCollectionID": 0,
+                    "scheduleStatus": 0,
+                    "specialBetValue": 2.5,
+                    "combinability": 1,
+                    "groupNo": 0,
+                    "id": 540869653
+                }
+            ]
+        },
+        {
+            "collectionId": 540869722,
+            "selections": [
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "1-2 goals",
+                    "typeId": 2460,
+                    "order": 1,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 1.61,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028689,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869722
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "1-3 goals",
+                    "typeId": 2461,
+                    "order": 2,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 1.33,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028692,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869722
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "2-3 goals",
+                    "typeId": 2117,
+                    "order": 3,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 2.53,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028698,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869722
+                }
+            ],
+            "name": "Multigoal HT",
+            "typeId": 9617,
+            "specialValue": "0",
+            "oddsDescription": "Predict the total number of goals that will be scored in 1st half of the match by choosing one of the available selections.",
+            "isOutright": false,
+            "isGoalScorer": false,
+            "iDGroup": null,
+            "iDGroupMarketType": 9617,
+            "templateType": 0,
+            "oddsTypeOrder": 35,
+            "onlyRegularTime": false,
+            "multilineType": 0,
+            "oddCollectionID": 0,
+            "scheduleStatus": 0,
+            "specialBetValue": 0,
+            "combinability": 1,
+            "groupNo": 0,
+            "id": 540869722
+        },
+        {
+            "collectionId": 540869707,
+            "selections": [
+                {
+                    "specialValue": "1",
+                    "specialValueNumber": 1,
+                    "specialValueString": "1",
+                    "name": "Yes",
+                    "typeId": 74,
+                    "order": 1,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 2.72,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028633,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869707
+                }
+            ],
+            "name": "1st Half - Total Goals 1",
+            "typeId": 9639,
+            "specialValue": "1",
+            "oddsDescription": "You have to predict the total number of goals that will be scored during the first half by choosing one of the options.",
+            "isOutright": false,
+            "isGoalScorer": false,
+            "iDGroup": null,
+            "iDGroupMarketType": 9639,
+            "templateType": 1,
+            "oddsTypeOrder": 40,
+            "onlyRegularTime": false,
+            "multilineType": 0,
+            "oddCollectionID": 0,
+            "scheduleStatus": 0,
+            "specialBetValue": 1,
+            "combinability": 1,
+            "groupNo": 0,
+            "id": 540869707
+        },
+        {
+            "collectionId": 544883848,
+            "selections": [
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "1 HT or 1 FT",
+                    "typeId": 2047,
+                    "order": 1,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 2.57,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1766799850,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 544883848
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "1 HT or 0 Goal HT",
+                    "typeId": 2378,
+                    "order": 2,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 1.89,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1766799851,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 544883848
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "1 HT or GG HT",
+                    "typeId": 2380,
+                    "order": 3,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 2.1,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1766799856,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 544883848
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "1 HT or NG HT",
+                    "typeId": 2382,
+                    "order": 4,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 1.26,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1766799860,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 544883848
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "2 HT or 2 FT",
+                    "typeId": 2048,
+                    "order": 5,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 1.67,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1766799864,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 544883848
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "2 HT or 0 Goal HT",
+                    "typeId": 2384,
+                    "order": 6,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 1.5,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1766799866,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 544883848
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "2 HT or GG HT",
+                    "typeId": 2386,
+                    "order": 7,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 1.73,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1766799870,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 544883848
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "2 HT or NG HT",
+                    "typeId": 2388,
+                    "order": 8,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 1.22,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1766799874,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 544883848
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "GG HT or GG 2HT",
+                    "typeId": 2390,
+                    "order": 9,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 1.83,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1766799877,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 544883848
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "GG 1HT or <2 Goals 1HT",
+                    "typeId": 2391,
+                    "order": 10,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 1.16,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1766799878,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 544883848
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "X HT or X FT",
+                    "typeId": 2,
+                    "order": 11,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 1.91,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1766799880,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 544883848
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "X HT or GG HT",
+                    "typeId": 2393,
+                    "order": 12,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 1.91,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1766799881,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 544883848
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "X HT or NG HT",
+                    "typeId": 2395,
+                    "order": 13,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 1.13,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1766799883,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 544883848
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "1 2HT or 0 Goal 2HT",
+                    "typeId": 2379,
+                    "order": 14,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 2.15,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1766799854,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 544883848
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "1 2HT or GG 2HT",
+                    "typeId": 2381,
+                    "order": 15,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 1.79,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1766799858,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 544883848
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "1 2HT or NG 2HT",
+                    "typeId": 2383,
+                    "order": 16,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 1.37,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1766799862,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 544883848
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "2 2HT or 0 Goal 2HT",
+                    "typeId": 2385,
+                    "order": 17,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 1.6,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1766799868,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 544883848
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "2  2HT or GG 2HT",
+                    "typeId": 2387,
+                    "order": 18,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 1.5,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1766799872,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 544883848
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "2 2HT or NG 2HT",
+                    "typeId": 2389,
+                    "order": 19,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 1.3,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1766799876,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 544883848
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "GG 2HT or <2 Goals 2HT",
+                    "typeId": 2392,
+                    "order": 20,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 1.2,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1766799879,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 544883848
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "X 2HT or GG 2HT",
+                    "typeId": 2394,
+                    "order": 21,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 1.84,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1766799882,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 544883848
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "X 2HT or NG 2HT",
+                    "typeId": 2396,
+                    "order": 22,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 1.23,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1766799884,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 544883848
+                }
+            ],
+            "name": "Chance Mix +",
+            "typeId": 9917,
+            "specialValue": "0",
+            "oddsDescription": "Predict the outcome of a halftime betting on two related bet types. If at least one selection is correct, the bet is winning. In case both selections are correct, the winnings won't be doubled.",
+            "isOutright": false,
+            "isGoalScorer": false,
+            "iDGroup": null,
+            "iDGroupMarketType": 9917,
+            "templateType": 0,
+            "oddsTypeOrder": 50,
+            "onlyRegularTime": false,
+            "multilineType": 1,
+            "oddCollectionID": 0,
+            "scheduleStatus": 0,
+            "specialBetValue": 0,
+            "combinability": 1,
+            "groupNo": 0,
+            "id": 544883848
+        },
+        {
+            "collectionId": 540869657,
+            "selections": [
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "Yes",
+                    "typeId": 74,
+                    "order": 74,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 2.08,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028479,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869657
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "No",
+                    "typeId": 76,
+                    "order": 76,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 1.64,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028485,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869657
+                }
+            ],
+            "name": "Home To Win Either Half",
+            "typeId": 628,
+            "specialValue": "0",
+            "oddsDescription": "Predict whether home team will win atleast one half of the match.",
+            "isOutright": false,
+            "isGoalScorer": false,
+            "iDGroup": null,
+            "iDGroupMarketType": 628,
+            "templateType": 0,
+            "oddsTypeOrder": 60,
+            "onlyRegularTime": false,
+            "multilineType": 0,
+            "oddCollectionID": 0,
+            "scheduleStatus": 0,
+            "specialBetValue": 0,
+            "combinability": 1,
+            "groupNo": 0,
+            "id": 540869657
+        },
+        {
+            "collectionId": 540869658,
+            "selections": [
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "Yes",
+                    "typeId": 74,
+                    "order": 74,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 1.46,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028483,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869658
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "No",
+                    "typeId": 76,
+                    "order": 76,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 2.45,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028488,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869658
+                }
+            ],
+            "name": "Away To Win Either Half",
+            "typeId": 627,
+            "specialValue": "0",
+            "oddsDescription": "Predict whether away team will win atleast one half of the match.",
+            "isOutright": false,
+            "isGoalScorer": false,
+            "iDGroup": null,
+            "iDGroupMarketType": 627,
+            "templateType": 0,
+            "oddsTypeOrder": 70,
+            "onlyRegularTime": false,
+            "multilineType": 0,
+            "oddCollectionID": 0,
+            "scheduleStatus": 0,
+            "specialBetValue": 0,
+            "combinability": 1,
+            "groupNo": 0,
+            "id": 540869658
+        },
+        {
+            "collectionId": 540869667,
+            "selections": [
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "0:0",
+                    "typeId": 1538,
+                    "order": 1,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 3.75,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028553,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869667
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "1:0",
+                    "typeId": 1539,
+                    "order": 2,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 5.8,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028608,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869667
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "2:0",
+                    "typeId": 1540,
+                    "order": 3,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 18.5,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028629,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869667
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "0:1",
+                    "typeId": 1547,
+                    "order": 13,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 4.3,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028663,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869667
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "1:1",
+                    "typeId": 1548,
+                    "order": 14,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 6.7,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028563,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869667
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "2:1",
+                    "typeId": 1549,
+                    "order": 15,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 20.5,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028645,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869667
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "0:2",
+                    "typeId": 1555,
+                    "order": 25,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 10.25,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028666,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869667
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "1:2",
+                    "typeId": 1556,
+                    "order": 26,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 15,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028668,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869667
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "2:2",
+                    "typeId": 1557,
+                    "order": 27,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 43,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028599,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869667
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "Other",
+                    "typeId": 1995,
+                    "order": 86,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 10.5,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028670,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869667
+                }
+            ],
+            "name": "1st Half - Correct Score",
+            "typeId": 10298,
+            "specialValue": "0",
+            "oddsDescription": "Predict the actual scoreline of the 1st half.",
+            "isOutright": false,
+            "isGoalScorer": false,
+            "iDGroup": null,
+            "iDGroupMarketType": 10298,
+            "templateType": 0,
+            "oddsTypeOrder": 80,
+            "onlyRegularTime": false,
+            "multilineType": 0,
+            "oddCollectionID": 0,
+            "scheduleStatus": 0,
+            "specialBetValue": 0,
+            "combinability": 1,
+            "groupNo": 0,
+            "correctScoreSelections": {
+                "homeToWin": [
+                    {
+                        "specialValue": "0",
+                        "specialValueNumber": 0,
+                        "specialValueString": "",
+                        "name": "1:0",
+                        "typeId": 1539,
+                        "order": 2,
+                        "selectionDescription": "",
+                        "odd": {
+                            "value": 5.8,
+                            "unboostedOddValue": null,
+                            "scheduleStatus": 0
+                        },
+                        "id": 1755028608,
+                        "smartCode": 23563,
+                        "status": "VALID",
+                        "oddCollectionID": 540869667
+                    },
+                    {
+                        "specialValue": "0",
+                        "specialValueNumber": 0,
+                        "specialValueString": "",
+                        "name": "2:0",
+                        "typeId": 1540,
+                        "order": 3,
+                        "selectionDescription": "",
+                        "odd": {
+                            "value": 18.5,
+                            "unboostedOddValue": null,
+                            "scheduleStatus": 0
+                        },
+                        "id": 1755028629,
+                        "smartCode": 23563,
+                        "status": "VALID",
+                        "oddCollectionID": 540869667
+                    },
+                    {
+                        "specialValue": "0",
+                        "specialValueNumber": 0,
+                        "specialValueString": "",
+                        "name": "2:1",
+                        "typeId": 1549,
+                        "order": 15,
+                        "selectionDescription": "",
+                        "odd": {
+                            "value": 20.5,
+                            "unboostedOddValue": null,
+                            "scheduleStatus": 0
+                        },
+                        "id": 1755028645,
+                        "smartCode": 23563,
+                        "status": "VALID",
+                        "oddCollectionID": 540869667
+                    }
+                ],
+                "awayToWin": [
+                    {
+                        "specialValue": "0",
+                        "specialValueNumber": 0,
+                        "specialValueString": "",
+                        "name": "0:1",
+                        "typeId": 1547,
+                        "order": 13,
+                        "selectionDescription": "",
+                        "odd": {
+                            "value": 4.3,
+                            "unboostedOddValue": null,
+                            "scheduleStatus": 0
+                        },
+                        "id": 1755028663,
+                        "smartCode": 23563,
+                        "status": "VALID",
+                        "oddCollectionID": 540869667
+                    },
+                    {
+                        "specialValue": "0",
+                        "specialValueNumber": 0,
+                        "specialValueString": "",
+                        "name": "0:2",
+                        "typeId": 1555,
+                        "order": 25,
+                        "selectionDescription": "",
+                        "odd": {
+                            "value": 10.25,
+                            "unboostedOddValue": null,
+                            "scheduleStatus": 0
+                        },
+                        "id": 1755028666,
+                        "smartCode": 23563,
+                        "status": "VALID",
+                        "oddCollectionID": 540869667
+                    },
+                    {
+                        "specialValue": "0",
+                        "specialValueNumber": 0,
+                        "specialValueString": "",
+                        "name": "1:2",
+                        "typeId": 1556,
+                        "order": 26,
+                        "selectionDescription": "",
+                        "odd": {
+                            "value": 15,
+                            "unboostedOddValue": null,
+                            "scheduleStatus": 0
+                        },
+                        "id": 1755028668,
+                        "smartCode": 23563,
+                        "status": "VALID",
+                        "oddCollectionID": 540869667
+                    }
+                ],
+                "draw": [
+                    {
+                        "specialValue": "0",
+                        "specialValueNumber": 0,
+                        "specialValueString": "",
+                        "name": "0:0",
+                        "typeId": 1538,
+                        "order": 1,
+                        "selectionDescription": "",
+                        "odd": {
+                            "value": 3.75,
+                            "unboostedOddValue": null,
+                            "scheduleStatus": 0
+                        },
+                        "id": 1755028553,
+                        "smartCode": 23563,
+                        "status": "VALID",
+                        "oddCollectionID": 540869667
+                    },
+                    {
+                        "specialValue": "0",
+                        "specialValueNumber": 0,
+                        "specialValueString": "",
+                        "name": "1:1",
+                        "typeId": 1548,
+                        "order": 14,
+                        "selectionDescription": "",
+                        "odd": {
+                            "value": 6.7,
+                            "unboostedOddValue": null,
+                            "scheduleStatus": 0
+                        },
+                        "id": 1755028563,
+                        "smartCode": 23563,
+                        "status": "VALID",
+                        "oddCollectionID": 540869667
+                    },
+                    {
+                        "specialValue": "0",
+                        "specialValueNumber": 0,
+                        "specialValueString": "",
+                        "name": "2:2",
+                        "typeId": 1557,
+                        "order": 27,
+                        "selectionDescription": "",
+                        "odd": {
+                            "value": 43,
+                            "unboostedOddValue": null,
+                            "scheduleStatus": 0
+                        },
+                        "id": 1755028599,
+                        "smartCode": 23563,
+                        "status": "VALID",
+                        "oddCollectionID": 540869667
+                    }
+                ],
+                "others": [
+                    {
+                        "specialValue": "0",
+                        "specialValueNumber": 0,
+                        "specialValueString": "",
+                        "name": "Other",
+                        "typeId": 1995,
+                        "order": 86,
+                        "selectionDescription": "",
+                        "odd": {
+                            "value": 10.5,
+                            "unboostedOddValue": null,
+                            "scheduleStatus": 0
+                        },
+                        "id": 1755028670,
+                        "smartCode": 23563,
+                        "status": "VALID",
+                        "oddCollectionID": 540869667
+                    }
+                ]
+            },
+            "id": 540869667
+        },
+        {
+            "collectionId": 540869661,
+            "selections": [
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "HH",
+                    "typeId": 418,
+                    "order": 1,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 5.6,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028555,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869661
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "HD",
+                    "typeId": 420,
+                    "order": 2,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 15,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028576,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869661
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "HA",
+                    "typeId": 422,
+                    "order": 3,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 23.5,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028589,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869661
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "DH",
+                    "typeId": 424,
+                    "order": 4,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 9,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028611,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869661
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "DD",
+                    "typeId": 426,
+                    "order": 5,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 6.6,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028626,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869661
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "DA",
+                    "typeId": 428,
+                    "order": 6,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 5.7,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028648,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869661
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "AH",
+                    "typeId": 430,
+                    "order": 7,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 33,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028658,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869661
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "AD",
+                    "typeId": 432,
+                    "order": 8,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 15,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028661,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869661
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "AA",
+                    "typeId": 434,
+                    "order": 9,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 3,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028665,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869661
+                }
+            ],
+            "name": "HT/FT",
+            "typeId": 9881,
+            "specialValue": "0",
+            "oddsDescription": "Predict the outcome of the first half and the final outcome of the match. A halftime/full time bet is considered a winning only if both predictions of the halftime and full time are correct.",
+            "isOutright": false,
+            "isGoalScorer": false,
+            "iDGroup": null,
+            "iDGroupMarketType": 9881,
+            "templateType": 0,
+            "oddsTypeOrder": 90,
+            "onlyRegularTime": false,
+            "multilineType": 0,
+            "oddCollectionID": 0,
+            "scheduleStatus": 0,
+            "specialBetValue": 0,
+            "combinability": 1,
+            "groupNo": 0,
+            "id": 540869661
+        },
+        {
+            "collectionId": 540869654,
+            "selections": [
+                {
+                    "specialValue": "0.5",
+                    "specialValueNumber": 0.5,
+                    "specialValueString": "0.5",
+                    "name": "1 AH",
+                    "typeId": 1714,
+                    "order": 1,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 1.53,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028752,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869654
+                },
+                {
+                    "specialValue": "0.5",
+                    "specialValueNumber": 0.5,
+                    "specialValueString": "0.5",
+                    "name": "2 AH",
+                    "typeId": 1715,
+                    "order": 2,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 2.47,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028776,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869654
+                }
+            ],
+            "name": "1st Half - Handicap 0.5",
+            "typeId": 344,
+            "specialValue": "0.5",
+            "oddsDescription": "Predict the first half outcome of a match after the indicated handicap score has been applied to the half time result . For example, handicap score (0:2) indicates that the away team was given two goals advantage, handicap score (0.5:0) indicates that home team was given 0.5 goals advantage, etc. Asian handicap is two-way handicap, meaning that there are only 2 possible outcomes - win of the home team (1H) or win of the away team (2H). In the case of a whole goal handicap (value in brackets ends with ''1\" or \"4''), if the result is level after the handicap is taken into consideration, then all bets are void and stake refunded. By placing bet on value in brackets that represents quarter of one or more goals (value in brackets ends with ''0.5'' or ''1.5''), the bet can be half won (half of the stake multiplied by the odds is won) or half lost (half of the stake will be refunded).",
+            "isOutright": false,
+            "isGoalScorer": false,
+            "iDGroup": null,
+            "iDGroupMarketType": 344,
+            "templateType": 1,
+            "oddsTypeOrder": 100,
+            "onlyRegularTime": false,
+            "multilineType": 1,
+            "oddCollectionID": 0,
+            "scheduleStatus": 0,
+            "specialBetValue": 0.5,
+            "combinability": 1,
+            "groupNo": 0,
+            "id": 540869654
+        },
+        {
+            "collectionId": 540869656,
+            "selections": [
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "1",
+                    "typeId": 4,
+                    "order": 1,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 2.33,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028469,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869656
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "2",
+                    "typeId": 5,
+                    "order": 2,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 1.55,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028474,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869656
+                }
+            ],
+            "name": "1st Half - Draw No Bet",
+            "typeId": 9328,
+            "specialValue": "0",
+            "oddsDescription": "Predict which team will win 1st half of a match. Bets placed on this market will be void if 1st half ends in a draw.",
+            "isOutright": false,
+            "isGoalScorer": false,
+            "iDGroup": null,
+            "iDGroupMarketType": 9328,
+            "templateType": 0,
+            "oddsTypeOrder": 130,
+            "onlyRegularTime": false,
+            "multilineType": 0,
+            "oddCollectionID": 0,
+            "scheduleStatus": 0,
+            "specialBetValue": 0,
+            "combinability": 1,
+            "groupNo": 0,
+            "id": 540869656
+        },
+        {
+            "collectionId": 540869680,
+            "selections": [
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "Yes",
+                    "typeId": 74,
+                    "order": 1,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 3.4,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028583,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869680
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "No",
+                    "typeId": 76,
+                    "order": 2,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 1.28,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028615,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869680
+                }
+            ],
+            "name": "1st Half - Both Teams to Score",
+            "typeId": 9887,
+            "specialValue": "0",
+            "oddsDescription": "Predict if the two teams will score at least one goal each during 1st half of the match. The bet offers two possible outcomes: GG (both teams will score at least one goal during the 1st half); NG (one or none of the two teams will score at least one goal during the 1st half).",
+            "isOutright": false,
+            "isGoalScorer": false,
+            "iDGroup": null,
+            "iDGroupMarketType": 9887,
+            "templateType": 0,
+            "oddsTypeOrder": 160,
+            "onlyRegularTime": false,
+            "multilineType": 0,
+            "oddCollectionID": 0,
+            "scheduleStatus": 0,
+            "specialBetValue": 0,
+            "combinability": 1,
+            "groupNo": 0,
+            "id": 540869680
+        },
+        {
+            "collectionId": 540869679,
+            "selections": [
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "1 HT",
+                    "typeId": 4,
+                    "order": 1,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 2.87,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028592,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869679
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "X HT",
+                    "typeId": 7,
+                    "order": 2,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 3.75,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028609,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869679
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "2 HT",
+                    "typeId": 5,
+                    "order": 3,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 2.13,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028628,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869679
+                }
+            ],
+            "name": "1st Half - Goal 1",
+            "typeId": 234,
+            "specialValue": "0",
+            "oddsDescription": "",
+            "isOutright": false,
+            "isGoalScorer": false,
+            "iDGroup": null,
+            "iDGroupMarketType": 234,
+            "templateType": 1,
+            "oddsTypeOrder": 170,
+            "onlyRegularTime": false,
+            "multilineType": 0,
+            "oddCollectionID": 0,
+            "scheduleStatus": 0,
+            "specialBetValue": 0,
+            "combinability": 1,
+            "groupNo": 0,
+            "id": 540869679
+        },
+        {
+            "collectionId": 540869666,
+            "selections": [
+                {
+                    "specialValue": "0.5",
+                    "specialValueNumber": 0.5,
+                    "specialValueString": "0.5",
+                    "name": "Over",
+                    "typeId": 12,
+                    "order": 1,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 2.02,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028494,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869666
+                },
+                {
+                    "specialValue": "0.5",
+                    "specialValueNumber": 0.5,
+                    "specialValueString": "0.5",
+                    "name": "Under",
+                    "typeId": 13,
+                    "order": 2,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 1.73,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028495,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869666
+                }
+            ],
+            "name": "1st Half - Home Total Goals",
+            "typeId": 10290,
+            "specialValue": "0.5",
+            "oddsDescription": "Predict whether the number of goals scored by Home team in first half of a match will be under/over the number specified.",
+            "isOutright": false,
+            "isGoalScorer": false,
+            "iDGroup": null,
+            "iDGroupMarketType": 10290,
+            "templateType": 1,
+            "oddsTypeOrder": 180,
+            "onlyRegularTime": false,
+            "multilineType": 0,
+            "oddCollectionID": 0,
+            "scheduleStatus": 0,
+            "specialBetValue": 0.5,
+            "combinability": 1,
+            "groupNo": 0,
+            "id": 540869666,
+            "spreadMarkets": [
+                {
+                    "collectionId": 540869666,
+                    "selections": [
+                        {
+                            "specialValue": "0.5",
+                            "specialValueNumber": 0.5,
+                            "specialValueString": "0.5",
+                            "name": "Over",
+                            "typeId": 12,
+                            "order": 1,
+                            "selectionDescription": "",
+                            "odd": {
+                                "value": 2.02,
+                                "unboostedOddValue": null,
+                                "scheduleStatus": 0
+                            },
+                            "id": 1755028494,
+                            "smartCode": 23563,
+                            "status": "VALID",
+                            "oddCollectionID": 540869666
+                        },
+                        {
+                            "specialValue": "0.5",
+                            "specialValueNumber": 0.5,
+                            "specialValueString": "0.5",
+                            "name": "Under",
+                            "typeId": 13,
+                            "order": 2,
+                            "selectionDescription": "",
+                            "odd": {
+                                "value": 1.73,
+                                "unboostedOddValue": null,
+                                "scheduleStatus": 0
+                            },
+                            "id": 1755028495,
+                            "smartCode": 23563,
+                            "status": "VALID",
+                            "oddCollectionID": 540869666
+                        }
+                    ],
+                    "name": "1st Half - Home Total Goals 0.5",
+                    "typeId": 10290,
+                    "specialValue": "0.5",
+                    "oddsDescription": "Predict whether the number of goals scored by Home team in first half of a match will be under/over the number specified.",
+                    "isOutright": false,
+                    "isGoalScorer": false,
+                    "iDGroup": null,
+                    "iDGroupMarketType": 10290,
+                    "templateType": 1,
+                    "oddsTypeOrder": 180,
+                    "onlyRegularTime": false,
+                    "multilineType": 0,
+                    "oddCollectionID": 0,
+                    "scheduleStatus": 0,
+                    "specialBetValue": 0.5,
+                    "combinability": 1,
+                    "groupNo": 0,
+                    "id": 540869666
+                },
+                {
+                    "collectionId": 540869728,
+                    "selections": [
+                        {
+                            "specialValue": "1.5",
+                            "specialValueNumber": 1.5,
+                            "specialValueString": "1.5",
+                            "name": "Over",
+                            "typeId": 12,
+                            "order": 1,
+                            "selectionDescription": "",
+                            "odd": {
+                                "value": 6.9,
+                                "unboostedOddValue": null,
+                                "scheduleStatus": 0
+                            },
+                            "id": 1755028823,
+                            "smartCode": 23563,
+                            "status": "VALID",
+                            "oddCollectionID": 540869728
+                        },
+                        {
+                            "specialValue": "1.5",
+                            "specialValueNumber": 1.5,
+                            "specialValueString": "1.5",
+                            "name": "Under",
+                            "typeId": 13,
+                            "order": 2,
+                            "selectionDescription": "",
+                            "odd": {
+                                "value": 1.07,
+                                "unboostedOddValue": null,
+                                "scheduleStatus": 0
+                            },
+                            "id": 1755028836,
+                            "smartCode": 23563,
+                            "status": "VALID",
+                            "oddCollectionID": 540869728
+                        }
+                    ],
+                    "name": "1st Half - Home Total Goals 1.5",
+                    "typeId": 10290,
+                    "specialValue": "1.5",
+                    "oddsDescription": "Predict whether the number of goals scored by Home team in first half of a match will be under/over the number specified.",
+                    "isOutright": false,
+                    "isGoalScorer": false,
+                    "iDGroup": null,
+                    "iDGroupMarketType": 10290,
+                    "templateType": 1,
+                    "oddsTypeOrder": 180,
+                    "onlyRegularTime": false,
+                    "multilineType": 0,
+                    "oddCollectionID": 0,
+                    "scheduleStatus": 0,
+                    "specialBetValue": 1.5,
+                    "combinability": 1,
+                    "groupNo": 0,
+                    "id": 540869728
+                }
+            ]
+        },
+        {
+            "collectionId": 540869681,
+            "selections": [
+                {
+                    "specialValue": "0.5",
+                    "specialValueNumber": 0.5,
+                    "specialValueString": "0.5",
+                    "name": "Over",
+                    "typeId": 12,
+                    "order": 1,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 1.65,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028722,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869681
+                },
+                {
+                    "specialValue": "0.5",
+                    "specialValueNumber": 0.5,
+                    "specialValueString": "0.5",
+                    "name": "Under",
+                    "typeId": 13,
+                    "order": 2,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 2.13,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028747,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869681
+                }
+            ],
+            "name": "1st Half - Away Total Goals",
+            "typeId": 10291,
+            "specialValue": "0.5",
+            "oddsDescription": "Predict whether the number of goals scored by Away team in first half of a match will be under/over the number specified.",
+            "isOutright": false,
+            "isGoalScorer": false,
+            "iDGroup": null,
+            "iDGroupMarketType": 10291,
+            "templateType": 1,
+            "oddsTypeOrder": 190,
+            "onlyRegularTime": false,
+            "multilineType": 0,
+            "oddCollectionID": 0,
+            "scheduleStatus": 0,
+            "specialBetValue": 0.5,
+            "combinability": 1,
+            "groupNo": 0,
+            "id": 540869681,
+            "spreadMarkets": [
+                {
+                    "collectionId": 540869681,
+                    "selections": [
+                        {
+                            "specialValue": "0.5",
+                            "specialValueNumber": 0.5,
+                            "specialValueString": "0.5",
+                            "name": "Over",
+                            "typeId": 12,
+                            "order": 1,
+                            "selectionDescription": "",
+                            "odd": {
+                                "value": 1.65,
+                                "unboostedOddValue": null,
+                                "scheduleStatus": 0
+                            },
+                            "id": 1755028722,
+                            "smartCode": 23563,
+                            "status": "VALID",
+                            "oddCollectionID": 540869681
+                        },
+                        {
+                            "specialValue": "0.5",
+                            "specialValueNumber": 0.5,
+                            "specialValueString": "0.5",
+                            "name": "Under",
+                            "typeId": 13,
+                            "order": 2,
+                            "selectionDescription": "",
+                            "odd": {
+                                "value": 2.13,
+                                "unboostedOddValue": null,
+                                "scheduleStatus": 0
+                            },
+                            "id": 1755028747,
+                            "smartCode": 23563,
+                            "status": "VALID",
+                            "oddCollectionID": 540869681
+                        }
+                    ],
+                    "name": "1st Half - Away Total Goals 0.5",
+                    "typeId": 10291,
+                    "specialValue": "0.5",
+                    "oddsDescription": "Predict whether the number of goals scored by Away team in first half of a match will be under/over the number specified.",
+                    "isOutright": false,
+                    "isGoalScorer": false,
+                    "iDGroup": null,
+                    "iDGroupMarketType": 10291,
+                    "templateType": 1,
+                    "oddsTypeOrder": 190,
+                    "onlyRegularTime": false,
+                    "multilineType": 0,
+                    "oddCollectionID": 0,
+                    "scheduleStatus": 0,
+                    "specialBetValue": 0.5,
+                    "combinability": 1,
+                    "groupNo": 0,
+                    "id": 540869681
+                },
+                {
+                    "collectionId": 540869684,
+                    "selections": [
+                        {
+                            "specialValue": "1.5",
+                            "specialValueNumber": 1.5,
+                            "specialValueString": "1.5",
+                            "name": "Over",
+                            "typeId": 12,
+                            "order": 1,
+                            "selectionDescription": "",
+                            "odd": {
+                                "value": 4.45,
+                                "unboostedOddValue": null,
+                                "scheduleStatus": 0
+                            },
+                            "id": 1755028780,
+                            "smartCode": 23563,
+                            "status": "VALID",
+                            "oddCollectionID": 540869684
+                        },
+                        {
+                            "specialValue": "1.5",
+                            "specialValueNumber": 1.5,
+                            "specialValueString": "1.5",
+                            "name": "Under",
+                            "typeId": 13,
+                            "order": 2,
+                            "selectionDescription": "",
+                            "odd": {
+                                "value": 1.18,
+                                "unboostedOddValue": null,
+                                "scheduleStatus": 0
+                            },
+                            "id": 1755028793,
+                            "smartCode": 23563,
+                            "status": "VALID",
+                            "oddCollectionID": 540869684
+                        }
+                    ],
+                    "name": "1st Half - Away Total Goals 1.5",
+                    "typeId": 10291,
+                    "specialValue": "1.5",
+                    "oddsDescription": "Predict whether the number of goals scored by Away team in first half of a match will be under/over the number specified.",
+                    "isOutright": false,
+                    "isGoalScorer": false,
+                    "iDGroup": null,
+                    "iDGroupMarketType": 10291,
+                    "templateType": 1,
+                    "oddsTypeOrder": 190,
+                    "onlyRegularTime": false,
+                    "multilineType": 0,
+                    "oddCollectionID": 0,
+                    "scheduleStatus": 0,
+                    "specialBetValue": 1.5,
+                    "combinability": 1,
+                    "groupNo": 0,
+                    "id": 540869684
+                }
+            ]
+        },
+        {
+            "collectionId": 540869677,
+            "selections": [
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "Odd",
+                    "typeId": 70,
+                    "order": 1,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 1.99,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028538,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869677
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "Even",
+                    "typeId": 72,
+                    "order": 2,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 1.75,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028569,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869677
+                }
+            ],
+            "name": "1st Half - Odd/Even Goals",
+            "typeId": 9310,
+            "specialValue": "0",
+            "oddsDescription": "Select whether the total number of goals scored in 1st half of a  match will be odd or even. Any 1st half of a match resulting in 0-0 will be settled on an even number of goals.",
+            "isOutright": false,
+            "isGoalScorer": false,
+            "iDGroup": null,
+            "iDGroupMarketType": 9310,
+            "templateType": 0,
+            "oddsTypeOrder": 240,
+            "onlyRegularTime": false,
+            "multilineType": 0,
+            "oddCollectionID": 0,
+            "scheduleStatus": 0,
+            "specialBetValue": 0,
+            "combinability": 1,
+            "groupNo": 0,
+            "id": 540869677
+        },
+        {
+            "collectionId": 540869682,
+            "selections": [
+                {
+                    "specialValue": "1.5",
+                    "specialValueNumber": 1.5,
+                    "specialValueString": "1.5",
+                    "name": "1 & Over",
+                    "typeId": 796,
+                    "order": 1,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 9.1,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028857,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869682
+                },
+                {
+                    "specialValue": "1.5",
+                    "specialValueNumber": 1.5,
+                    "specialValueString": "1.5",
+                    "name": "1 & Under",
+                    "typeId": 794,
+                    "order": 2,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 5.8,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028841,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869682
+                },
+                {
+                    "specialValue": "1.5",
+                    "specialValueNumber": 1.5,
+                    "specialValueString": "1.5",
+                    "name": "X & Over",
+                    "typeId": 800,
+                    "order": 3,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 6.9,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028917,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869682
+                },
+                {
+                    "specialValue": "1.5",
+                    "specialValueNumber": 1.5,
+                    "specialValueString": "1.5",
+                    "name": "X & Under",
+                    "typeId": 798,
+                    "order": 4,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 3.75,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028894,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869682
+                },
+                {
+                    "specialValue": "1.5",
+                    "specialValueNumber": 1.5,
+                    "specialValueString": "1.5",
+                    "name": "2 & Over",
+                    "typeId": 804,
+                    "order": 5,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 5.5,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755029020,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869682
+                },
+                {
+                    "specialValue": "1.5",
+                    "specialValueNumber": 1.5,
+                    "specialValueString": "1.5",
+                    "name": "2 & Under",
+                    "typeId": 802,
+                    "order": 6,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 4.3,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028998,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869682
+                }
+            ],
+            "name": "1st Half - 1X2 & Total Goals 1.5",
+            "typeId": 10297,
+            "specialValue": "1.5",
+            "oddsDescription": "Predict the final outcome of the 1st half, either the win of the home team (1), a draw (X) or the win for the guests (2) and predict whether the number of goals scored during the 1st half will be under/over the number specified.",
+            "isOutright": false,
+            "isGoalScorer": false,
+            "iDGroup": null,
+            "iDGroupMarketType": 10297,
+            "templateType": 1,
+            "oddsTypeOrder": 270,
+            "onlyRegularTime": false,
+            "multilineType": 0,
+            "oddCollectionID": 0,
+            "scheduleStatus": 0,
+            "specialBetValue": 1.5,
+            "combinability": 1,
+            "groupNo": 0,
+            "id": 540869682
+        },
+        {
+            "collectionId": 540869683,
+            "selections": [
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "Home And Yes",
+                    "typeId": 78,
+                    "order": 1,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 16,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028843,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869683
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "Home And No",
+                    "typeId": 80,
+                    "order": 2,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 4.45,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028860,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869683
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "Draw And Yes",
+                    "typeId": 82,
+                    "order": 3,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 6.9,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028919,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869683
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "Draw And No",
+                    "typeId": 84,
+                    "order": 4,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 3.75,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028990,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869683
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "Away And Yes",
+                    "typeId": 86,
+                    "order": 5,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 11.5,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755029032,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869683
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "Away And No",
+                    "typeId": 88,
+                    "order": 6,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 2.97,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755029069,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869683
+                }
+            ],
+            "name": "1st Half - 1X2 & BTTS",
+            "typeId": 9884,
+            "specialValue": "0",
+            "oddsDescription": "Predict the final outcome of the 1st half of the match and if both teams will score/not score at least 1 goal.",
+            "isOutright": false,
+            "isGoalScorer": false,
+            "iDGroup": null,
+            "iDGroupMarketType": 9884,
+            "templateType": 0,
+            "oddsTypeOrder": 280,
+            "onlyRegularTime": false,
+            "multilineType": 0,
+            "oddCollectionID": 0,
+            "scheduleStatus": 0,
+            "specialBetValue": 0,
+            "combinability": 1,
+            "groupNo": 0,
+            "id": 540869683
+        },
+        {
+            "collectionId": 540869703,
+            "selections": [
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "1X + Yes",
+                    "typeId": 1718,
+                    "order": 1,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 4.9,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028726,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869703
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "1X + No",
+                    "typeId": 1719,
+                    "order": 2,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 2.17,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028736,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869703
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "X2 + Yes",
+                    "typeId": 1722,
+                    "order": 3,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 4.35,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028796,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869703
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "X2 + No",
+                    "typeId": 1723,
+                    "order": 4,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 1.75,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028815,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869703
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "12 + Yes",
+                    "typeId": 1720,
+                    "order": 5,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 7.4,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028750,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869703
+                },
+                {
+                    "specialValue": "0",
+                    "specialValueNumber": 0,
+                    "specialValueString": "",
+                    "name": "12 + No",
+                    "typeId": 1721,
+                    "order": 6,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 1.92,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028769,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869703
+                }
+            ],
+            "name": "HT DC & GG/NG",
+            "typeId": 9645,
+            "specialValue": "0",
+            "oddsDescription": "Predict the outcome of the 1st half and if both teams will score at least one goal or not.",
+            "isOutright": false,
+            "isGoalScorer": false,
+            "iDGroup": null,
+            "iDGroupMarketType": 9645,
+            "templateType": 0,
+            "oddsTypeOrder": 290,
+            "onlyRegularTime": false,
+            "multilineType": 0,
+            "oddCollectionID": 0,
+            "scheduleStatus": 0,
+            "specialBetValue": 0,
+            "combinability": 1,
+            "groupNo": 0,
+            "id": 540869703
+        },
+        {
+            "collectionId": 540869770,
+            "selections": [
+                {
+                    "specialValue": "1.5",
+                    "specialValueNumber": 1.5,
+                    "specialValueString": "1.5",
+                    "name": "12 & Over",
+                    "typeId": 1728,
+                    "order": 1,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 3.3,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755029063,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869770
+                },
+                {
+                    "specialValue": "1.5",
+                    "specialValueNumber": 1.5,
+                    "specialValueString": "1.5",
+                    "name": "12 & Under",
+                    "typeId": 1725,
+                    "order": 2,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 2.82,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028948,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869770
+                },
+                {
+                    "specialValue": "1.5",
+                    "specialValueNumber": 1.5,
+                    "specialValueString": "1.5",
+                    "name": "1X & Over",
+                    "typeId": 1727,
+                    "order": 3,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 3.85,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755029025,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869770
+                },
+                {
+                    "specialValue": "1.5",
+                    "specialValueNumber": 1.5,
+                    "specialValueString": "1.5",
+                    "name": "1X & Under",
+                    "typeId": 1724,
+                    "order": 4,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 2.47,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028905,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869770
+                },
+                {
+                    "specialValue": "1.5",
+                    "specialValueNumber": 1.5,
+                    "specialValueString": "1.5",
+                    "name": "X2 & Over",
+                    "typeId": 1729,
+                    "order": 5,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 2.92,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755029075,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869770
+                },
+                {
+                    "specialValue": "1.5",
+                    "specialValueNumber": 1.5,
+                    "specialValueString": "1.5",
+                    "name": "X2 & Under",
+                    "typeId": 1726,
+                    "order": 6,
+                    "selectionDescription": "",
+                    "odd": {
+                        "value": 2.18,
+                        "unboostedOddValue": null,
+                        "scheduleStatus": 0
+                    },
+                    "id": 1755028986,
+                    "smartCode": 23563,
+                    "status": "VALID",
+                    "oddCollectionID": 540869770
+                }
+            ],
+            "name": "1st Half - Double Chance & Total Goals 1.5",
+            "typeId": 9920,
+            "specialValue": "1.5",
+            "oddsDescription": "Predict the combination of 2 possible outcomes of the 1st half and number of goals scored during the 1st half offered.The bet is considered winning only if the outcome of bets for both combinations (markets) is correctly guessed.",
+            "isOutright": false,
+            "isGoalScorer": false,
+            "iDGroup": null,
+            "iDGroupMarketType": 9920,
+            "templateType": 1,
+            "oddsTypeOrder": 300,
+            "onlyRegularTime": false,
+            "multilineType": 0,
+            "oddCollectionID": 0,
+            "scheduleStatus": 0,
+            "specialBetValue": 1.5,
+            "combinability": 1,
+            "groupNo": 0,
+            "id": 540869770
+        }
+    ],
+    "eventCategory": "F",
+    "smartBetCode": 23563,
+    "extProvIDItem": "61300947",
+    "tournamentId": 20000841,
+    "tournamentName": "Premier League",
+    "categoryId": 10000840,
+    "categoryName": "England",
+    "matchStatus": 0,
+    "matchTime": 0,
+    "setScores": null,
+    "score": null,
+    "totalOdds": 1194,
+    "incompatibleEvents": [
+        1002699473,
+        1002699592,
+        1002704280,
+        1002636948,
+        1002636949,
+        1002578985,
+        1002367730,
+        1003686504,
+        1003692767,
+        1003692768,
+        1003692772,
+        1003692803,
+        1003693831,
+        1003693832,
+        1003693837,
+        1003693843,
+        1003693844,
+        1003693845,
+        1003682326,
+        1003682359,
+        1003682360,
+        1003682370,
+        1003682410,
+        1003686464,
+        1003686465,
+        1003686470,
+        1003686484,
+        1003692344,
+        1003692393,
+        1003692612,
+        1003692644,
+        1003692653,
+        1003692664,
+        1003692668,
+        1003692699,
+        1002530536,
+        1002530537,
+        1003685153,
+        1003687000
+    ],
+    "teams": [
+        {
+            "id": 212216,
+            "name": "Man Utd",
+            "itemOrder": 1,
+            "extProvIDTeam": "12"
+        },
+        {
+            "id": 212210,
+            "name": "Man City",
+            "itemOrder": 2,
+            "extProvIDTeam": "11"
+        }
+    ],
+    "sportId": 1
+}

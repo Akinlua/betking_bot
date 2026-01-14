@@ -2551,6 +2551,10 @@ class BetKingBookmaker {
     };
 
     const eventSlug = this.#slugifyEventName(eventName);
+    console.log(`[Bookmaker] Fetching data from page: .../${eventId}/${eventSlug}`);
+    console.log(`[Bookmaker] Event ID: ${eventId}`);
+    console.log(`[Bookmaker] Event Name: ${eventName}`);
+    console.log(`[Bookmaker] Event Slug: ${eventSlug}`);
     const url = `https://m.betking.com/sports/prematch/${eventId}/${eventSlug}`;
     // console.log(`[Bookmaker] Fetching data from page: .../${eventId}/${eventSlug}`);
 
@@ -2593,6 +2597,45 @@ class BetKingBookmaker {
 
       if (matchEventId != eventId) {
         throw new Error("Event Id mismatch, Event-Id does not match fetched Match-Details-Event-Id");
+      }
+
+      // Fetch additional markets (First Half and Team Totals)
+      const areaIds = [1575, 1573]; // 1575: First Half, 1573: Team Totals
+
+      for (const areaId of areaIds) {
+        try {
+          const typeLabel = areaId === 1575 ? "first half" : (areaId === 1573 ? "team totals" : "additional");
+          console.log(`[Bookmaker] Fetching ${typeLabel} markets (areaId: ${areaId}) for event ${eventId}...`);
+          const apiUrl = `https://m.betking.com/en-ng/sports/prematch/api/getOddsByAreaId?matchId=${eventId}&areaId=${areaId}`;
+
+          const apiResponse = await page.evaluate(async (url) => {
+            const response = await fetch(url);
+            if (!response.ok) {
+              throw new Error(`API returned ${response.status}`);
+            }
+            return await response.json();
+          }, apiUrl);
+
+          // Merge markets with main event details
+          if (apiResponse && apiResponse.markets && Array.isArray(apiResponse.markets)) {
+            console.log(`[Bookmaker] Found ${apiResponse.markets.length} ${typeLabel} markets`);
+
+            if (!matchEventDetails.markets) {
+              matchEventDetails.markets = [];
+            }
+
+            // Merge markets, avoiding duplicates by collectionId
+            const existingIds = new Set(matchEventDetails.markets.map(m => m.collectionId));
+            const newMarkets = apiResponse.markets.filter(m => !existingIds.has(m.collectionId));
+
+            matchEventDetails.markets = [...matchEventDetails.markets, ...newMarkets];
+            console.log(`[Bookmaker] Added ${newMarkets.length} new ${typeLabel} markets. Total markets: ${matchEventDetails.markets.length}`);
+          } else {
+            console.log(chalk.yellow(`[Bookmaker] No ${typeLabel} markets found in API response (areaId: ${areaId})`));
+          }
+        } catch (apiError) {
+          console.warn(chalk.yellow(`[Bookmaker] Failed to fetch areaId ${areaId} markets: ${apiError.message}.`));
+        }
       }
 
       this.state = {
