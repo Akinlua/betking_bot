@@ -189,8 +189,14 @@ function findMarketAndSelection(matchDetails, criteria) {
             // Check points if required
             let pointsMatch = true;
             if (points !== undefined && points !== null) {
-                const selLine = sel.specialValue || sel.line;
-                pointsMatch = String(selLine).includes(String(points));
+                // Try strict numeric match first if available
+                if (sel.specialValueNumber !== undefined && sel.specialValueNumber !== null && !isNaN(Number(points))) {
+                    pointsMatch = Number(sel.specialValueNumber) === Number(points);
+                } else {
+                    // Fallback to loose string matching
+                    const selLine = sel.specialValue || sel.line;
+                    pointsMatch = String(selLine).includes(String(points));
+                }
             }
 
             if (!pointsMatch) continue;
