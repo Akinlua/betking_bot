@@ -223,7 +223,9 @@ export async function placeBet(req, res) {
 
     const { browser } = req;
 
-    const ACCOUNTS_FILE = path.join(process.cwd(), "accounts.json");
+    // Resolve relative to this file
+    const __dirname = path.dirname(new URL(import.meta.url).pathname);
+    const ACCOUNTS_FILE = path.join(__dirname, "accounts.json");
     let accounts = [];
     try {
         const accountsData = fs.readFileSync(ACCOUNTS_FILE, 'utf-8');

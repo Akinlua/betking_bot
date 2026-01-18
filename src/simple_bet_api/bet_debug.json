@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-01-18T18:34:48.113Z",
+  "timestamp": "2026-01-18T18:59:19.261Z",
   "matchDetails": {
     "id": 1003638990,
     "name": "Milan - Lecce",
@@ -35,7 +35,7 @@
             "order": 2,
             "selectionDescription": "",
             "odd": {
-              "value": 5.3,
+              "value": 5.5,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -189,7 +189,7 @@
             "order": 2,
             "selectionDescription": "",
             "odd": {
-              "value": 5.3,
+              "value": 5.5,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -207,7 +207,7 @@
             "order": 3,
             "selectionDescription": "",
             "odd": {
-              "value": 10.5,
+              "value": 10.25,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -266,7 +266,7 @@
             "order": 2,
             "selectionDescription": "",
             "odd": {
-              "value": 5.3,
+              "value": 5.5,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -343,7 +343,7 @@
             "order": 2,
             "selectionDescription": "",
             "odd": {
-              "value": 10.75,
+              "value": 11,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -402,7 +402,7 @@
                 "order": 2,
                 "selectionDescription": "",
                 "odd": {
-                  "value": 10.75,
+                  "value": 11,
                   "unboostedOddValue": null,
                   "scheduleStatus": 0
                 },
@@ -443,7 +443,7 @@
                 "order": 1,
                 "selectionDescription": "",
                 "odd": {
-                  "value": 1.25,
+                  "value": 1.26,
                   "unboostedOddValue": null,
                   "scheduleStatus": 0
                 },
@@ -502,7 +502,7 @@
                 "order": 1,
                 "selectionDescription": "",
                 "odd": {
-                  "value": 1.86,
+                  "value": 1.87,
                   "unboostedOddValue": null,
                   "scheduleStatus": 0
                 },
@@ -848,7 +848,7 @@
             "order": 6,
             "selectionDescription": "",
             "odd": {
-              "value": 3.3,
+              "value": 3.25,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -907,7 +907,7 @@
             "order": 2,
             "selectionDescription": "",
             "odd": {
-              "value": 1.47,
+              "value": 1.48,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -979,7 +979,7 @@
             "order": 6,
             "selectionDescription": "",
             "odd": {
-              "value": 1.84,
+              "value": 1.83,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -1020,7 +1020,7 @@
             "order": 1,
             "selectionDescription": "",
             "odd": {
-              "value": 1.23,
+              "value": 1.22,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -1038,7 +1038,7 @@
             "order": 2,
             "selectionDescription": "",
             "odd": {
-              "value": 2.17,
+              "value": 2.2,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -1056,29 +1056,11 @@
             "order": 3,
             "selectionDescription": "",
             "odd": {
-              "value": 2.67,
+              "value": 2.68,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
             "id": 1768003548,
-            "smartCode": 22829,
-            "status": "VALID",
-            "oddCollectionID": 545285614
-          },
-          {
-            "specialValue": "3.5",
-            "specialValueNumber": 3.5,
-            "specialValueString": "3.5",
-            "name": "1 or Under",
-            "typeId": 2355,
-            "order": 4,
-            "selectionDescription": "",
-            "odd": {
-              "value": 1.01,
-              "unboostedOddValue": null,
-              "scheduleStatus": 0
-            },
-            "id": 1768003817,
             "smartCode": 22829,
             "status": "VALID",
             "oddCollectionID": 545285614
@@ -1205,7 +1187,7 @@
             "order": 4,
             "selectionDescription": "",
             "odd": {
-              "value": 4.4,
+              "value": 4.35,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -1223,7 +1205,7 @@
             "order": 5,
             "selectionDescription": "",
             "odd": {
-              "value": 5.2,
+              "value": 5.1,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -1241,7 +1223,7 @@
             "order": 6,
             "selectionDescription": "",
             "odd": {
-              "value": 8.7,
+              "value": 8.8,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -1282,7 +1264,7 @@
             "order": 1,
             "selectionDescription": "",
             "odd": {
-              "value": 1.97,
+              "value": 1.98,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -1354,7 +1336,7 @@
             "order": 5,
             "selectionDescription": "",
             "odd": {
-              "value": 2.72,
+              "value": 2.7,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -1372,7 +1354,7 @@
             "order": 6,
             "selectionDescription": "",
             "odd": {
-              "value": 4.85,
+              "value": 4.9,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -1413,7 +1395,7 @@
             "order": 1,
             "selectionDescription": "",
             "odd": {
-              "value": 3.3,
+              "value": 3.35,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -1449,7 +1431,7 @@
             "order": 3,
             "selectionDescription": "",
             "odd": {
-              "value": 22.5,
+              "value": 23,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -1485,7 +1467,7 @@
             "order": 5,
             "selectionDescription": "",
             "odd": {
-              "value": 1.69,
+              "value": 1.67,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -1503,7 +1485,7 @@
             "order": 6,
             "selectionDescription": "",
             "odd": {
-              "value": 4.4,
+              "value": 4.45,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -1544,7 +1526,7 @@
             "order": 1,
             "selectionDescription": "",
             "odd": {
-              "value": 6.7,
+              "value": 6.8,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -1562,7 +1544,7 @@
             "order": 2,
             "selectionDescription": "",
             "odd": {
-              "value": 6.6,
+              "value": 6.7,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -1616,7 +1598,7 @@
             "order": 5,
             "selectionDescription": "",
             "odd": {
-              "value": 1.38,
+              "value": 1.37,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -1634,7 +1616,7 @@
             "order": 6,
             "selectionDescription": "",
             "odd": {
-              "value": 3.9,
+              "value": 3.95,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -1734,7 +1716,7 @@
             "order": 74,
             "selectionDescription": "",
             "odd": {
-              "value": 5.3,
+              "value": 5.2,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -1852,7 +1834,7 @@
             "order": 1,
             "selectionDescription": "",
             "odd": {
-              "value": 6.5,
+              "value": 6.6,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -2006,7 +1988,7 @@
             "order": 1,
             "selectionDescription": "",
             "odd": {
-              "value": 1.81,
+              "value": 1.82,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -2101,7 +2083,7 @@
             "order": 2,
             "selectionDescription": "",
             "odd": {
-              "value": 9.1,
+              "value": 9.2,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -2178,7 +2160,7 @@
             "order": 2,
             "selectionDescription": "",
             "odd": {
-              "value": 8.8,
+              "value": 8.7,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -2219,7 +2201,7 @@
             "order": 1,
             "selectionDescription": "",
             "odd": {
-              "value": 1.81,
+              "value": 1.8,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -2255,7 +2237,7 @@
             "order": 3,
             "selectionDescription": "",
             "odd": {
-              "value": 84,
+              "value": 82,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -2291,7 +2273,7 @@
             "order": 5,
             "selectionDescription": "",
             "odd": {
-              "value": 7.3,
+              "value": 7.5,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -2309,7 +2291,7 @@
             "order": 6,
             "selectionDescription": "",
             "odd": {
-              "value": 23.5,
+              "value": 23,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -2363,7 +2345,7 @@
             "order": 9,
             "selectionDescription": "",
             "odd": {
-              "value": 21,
+              "value": 20.5,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -2404,7 +2386,7 @@
             "order": 1,
             "selectionDescription": "",
             "odd": {
-              "value": 1.75,
+              "value": 1.74,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -2440,7 +2422,7 @@
             "order": 3,
             "selectionDescription": "",
             "odd": {
-              "value": 9,
+              "value": 9.1,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -2499,7 +2481,7 @@
             "order": 2,
             "selectionDescription": "",
             "odd": {
-              "value": 1.54,
+              "value": 1.53,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -2517,7 +2499,7 @@
             "order": 3,
             "selectionDescription": "",
             "odd": {
-              "value": 2.03,
+              "value": 2.05,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -2796,7 +2778,7 @@
             "order": 1,
             "selectionDescription": "",
             "odd": {
-              "value": 1.61,
+              "value": 1.6,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -2832,7 +2814,7 @@
             "order": 3,
             "selectionDescription": "",
             "odd": {
-              "value": 3,
+              "value": 3.05,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -2873,7 +2855,7 @@
             "order": 1,
             "selectionDescription": "",
             "odd": {
-              "value": 2.55,
+              "value": 2.53,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -2914,7 +2896,7 @@
             "order": 1,
             "selectionDescription": "",
             "odd": {
-              "value": 1.2,
+              "value": 1.19,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -2986,7 +2968,7 @@
             "order": 5,
             "selectionDescription": "",
             "odd": {
-              "value": 7,
+              "value": 7.1,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -3022,7 +3004,7 @@
             "order": 7,
             "selectionDescription": "",
             "odd": {
-              "value": 4.45,
+              "value": 4.55,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -3058,7 +3040,7 @@
             "order": 9,
             "selectionDescription": "",
             "odd": {
-              "value": 3.35,
+              "value": 3.45,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -3076,7 +3058,7 @@
             "order": 10,
             "selectionDescription": "",
             "odd": {
-              "value": 1.23,
+              "value": 1.24,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -3094,7 +3076,7 @@
             "order": 11,
             "selectionDescription": "",
             "odd": {
-              "value": 2.15,
+              "value": 2.17,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -3202,7 +3184,7 @@
             "order": 17,
             "selectionDescription": "",
             "odd": {
-              "value": 2.92,
+              "value": 2.95,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -3220,7 +3202,7 @@
             "order": 18,
             "selectionDescription": "",
             "odd": {
-              "value": 3.65,
+              "value": 3.7,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -3238,7 +3220,7 @@
             "order": 19,
             "selectionDescription": "",
             "odd": {
-              "value": 1.19,
+              "value": 1.18,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -3274,7 +3256,7 @@
             "order": 21,
             "selectionDescription": "",
             "odd": {
-              "value": 2.38,
+              "value": 2.42,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -3351,7 +3333,7 @@
             "order": 2,
             "selectionDescription": "",
             "odd": {
-              "value": 2.85,
+              "value": 2.82,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -3369,7 +3351,7 @@
             "order": 3,
             "selectionDescription": "",
             "odd": {
-              "value": 5.9,
+              "value": 5.8,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -3405,7 +3387,7 @@
             "order": 14,
             "selectionDescription": "",
             "odd": {
-              "value": 11.5,
+              "value": 11.75,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -3423,7 +3405,7 @@
             "order": 15,
             "selectionDescription": "",
             "odd": {
-              "value": 23,
+              "value": 23.5,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -3441,7 +3423,7 @@
             "order": 25,
             "selectionDescription": "",
             "odd": {
-              "value": 74,
+              "value": 76,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -3459,7 +3441,7 @@
             "order": 26,
             "selectionDescription": "",
             "odd": {
-              "value": 76,
+              "value": 78,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -3477,7 +3459,7 @@
             "order": 27,
             "selectionDescription": "",
             "odd": {
-              "value": 120,
+              "value": 125,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -3533,7 +3515,7 @@
               "order": 2,
               "selectionDescription": "",
               "odd": {
-                "value": 2.85,
+                "value": 2.82,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -3551,7 +3533,7 @@
               "order": 3,
               "selectionDescription": "",
               "odd": {
-                "value": 5.9,
+                "value": 5.8,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -3569,7 +3551,7 @@
               "order": 15,
               "selectionDescription": "",
               "odd": {
-                "value": 23,
+                "value": 23.5,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -3607,7 +3589,7 @@
               "order": 25,
               "selectionDescription": "",
               "odd": {
-                "value": 74,
+                "value": 76,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -3625,7 +3607,7 @@
               "order": 26,
               "selectionDescription": "",
               "odd": {
-                "value": 76,
+                "value": 78,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -3663,7 +3645,7 @@
               "order": 14,
               "selectionDescription": "",
               "odd": {
-                "value": 11.5,
+                "value": 11.75,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -3681,7 +3663,7 @@
               "order": 27,
               "selectionDescription": "",
               "odd": {
-                "value": 120,
+                "value": 125,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -3726,7 +3708,7 @@
             "order": 1,
             "selectionDescription": "",
             "odd": {
-              "value": 1.75,
+              "value": 1.74,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -3744,7 +3726,7 @@
             "order": 2,
             "selectionDescription": "",
             "odd": {
-              "value": 2.03,
+              "value": 2.05,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -3803,7 +3785,7 @@
             "order": 2,
             "selectionDescription": "",
             "odd": {
-              "value": 6,
+              "value": 6.1,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -3844,7 +3826,7 @@
             "order": 1,
             "selectionDescription": "",
             "odd": {
-              "value": 6.6,
+              "value": 6.7,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -3939,7 +3921,7 @@
             "order": 3,
             "selectionDescription": "",
             "odd": {
-              "value": 6.5,
+              "value": 6.6,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -3998,7 +3980,7 @@
             "order": 2,
             "selectionDescription": "",
             "odd": {
-              "value": 2.4,
+              "value": 2.42,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -4057,7 +4039,7 @@
                 "order": 2,
                 "selectionDescription": "",
                 "odd": {
-                  "value": 2.4,
+                  "value": 2.42,
                   "unboostedOddValue": null,
                   "scheduleStatus": 0
                 },
@@ -4159,7 +4141,7 @@
             "order": 1,
             "selectionDescription": "",
             "odd": {
-              "value": 4.3,
+              "value": 4.4,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -4177,7 +4159,7 @@
             "order": 2,
             "selectionDescription": "",
             "odd": {
-              "value": 1.19,
+              "value": 1.18,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -4218,7 +4200,7 @@
                 "order": 1,
                 "selectionDescription": "",
                 "odd": {
-                  "value": 4.3,
+                  "value": 4.4,
                   "unboostedOddValue": null,
                   "scheduleStatus": 0
                 },
@@ -4236,7 +4218,7 @@
                 "order": 2,
                 "selectionDescription": "",
                 "odd": {
-                  "value": 1.19,
+                  "value": 1.18,
                   "unboostedOddValue": null,
                   "scheduleStatus": 0
                 },
@@ -4356,7 +4338,7 @@
             "order": 2,
             "selectionDescription": "",
             "odd": {
-              "value": 2.85,
+              "value": 2.82,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -4374,7 +4356,7 @@
             "order": 3,
             "selectionDescription": "",
             "odd": {
-              "value": 11,
+              "value": 11.25,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -4410,7 +4392,7 @@
             "order": 5,
             "selectionDescription": "",
             "odd": {
-              "value": 31,
+              "value": 32,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -4487,7 +4469,7 @@
             "order": 2,
             "selectionDescription": "",
             "odd": {
-              "value": 1.87,
+              "value": 1.85,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -4505,7 +4487,7 @@
             "order": 3,
             "selectionDescription": "",
             "odd": {
-              "value": 11,
+              "value": 11.25,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -4559,7 +4541,7 @@
             "order": 6,
             "selectionDescription": "",
             "odd": {
-              "value": 9.6,
+              "value": 9.7,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -4600,7 +4582,7 @@
             "order": 1,
             "selectionDescription": "",
             "odd": {
-              "value": 7.6,
+              "value": 7.8,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -4618,7 +4600,7 @@
             "order": 2,
             "selectionDescription": "",
             "odd": {
-              "value": 1.18,
+              "value": 1.17,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -4636,7 +4618,7 @@
             "order": 3,
             "selectionDescription": "",
             "odd": {
-              "value": 11,
+              "value": 11.25,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -4672,7 +4654,7 @@
             "order": 5,
             "selectionDescription": "",
             "odd": {
-              "value": 15.5,
+              "value": 16,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -4690,7 +4672,7 @@
             "order": 6,
             "selectionDescription": "",
             "odd": {
-              "value": 1.65,
+              "value": 1.64,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -4749,7 +4731,7 @@
             "order": 2,
             "selectionDescription": "",
             "odd": {
-              "value": 2.58,
+              "value": 2.57,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -4785,7 +4767,7 @@
             "order": 4,
             "selectionDescription": "",
             "odd": {
-              "value": 1.57,
+              "value": 1.56,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -4803,7 +4785,7 @@
             "order": 5,
             "selectionDescription": "",
             "odd": {
-              "value": 10,
+              "value": 10.25,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -4880,7 +4862,7 @@
             "order": 2,
             "selectionDescription": "",
             "odd": {
-              "value": 7.5,
+              "value": 7.6,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -4939,7 +4921,7 @@
                 "order": 2,
                 "selectionDescription": "",
                 "odd": {
-                  "value": 7.5,
+                  "value": 7.6,
                   "unboostedOddValue": null,
                   "scheduleStatus": 0
                 },
@@ -4980,7 +4962,7 @@
                 "order": 1,
                 "selectionDescription": "",
                 "odd": {
-                  "value": 1.48,
+                  "value": 1.47,
                   "unboostedOddValue": null,
                   "scheduleStatus": 0
                 },
@@ -4998,7 +4980,7 @@
                 "order": 2,
                 "selectionDescription": "",
                 "odd": {
-                  "value": 2.57,
+                  "value": 2.58,
                   "unboostedOddValue": null,
                   "scheduleStatus": 0
                 },
@@ -5057,7 +5039,7 @@
                 "order": 2,
                 "selectionDescription": "",
                 "odd": {
-                  "value": 1.5,
+                  "value": 1.51,
                   "unboostedOddValue": null,
                   "scheduleStatus": 0
                 },
@@ -5100,7 +5082,7 @@
             "order": 1,
             "selectionDescription": "",
             "odd": {
-              "value": 2.23,
+              "value": 2.28,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -5118,7 +5100,7 @@
             "order": 2,
             "selectionDescription": "",
             "odd": {
-              "value": 1.62,
+              "value": 1.59,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -5159,7 +5141,7 @@
                 "order": 1,
                 "selectionDescription": "",
                 "odd": {
-                  "value": 2.23,
+                  "value": 2.28,
                   "unboostedOddValue": null,
                   "scheduleStatus": 0
                 },
@@ -5177,7 +5159,7 @@
                 "order": 2,
                 "selectionDescription": "",
                 "odd": {
-                  "value": 1.62,
+                  "value": 1.59,
                   "unboostedOddValue": null,
                   "scheduleStatus": 0
                 },
@@ -5218,7 +5200,7 @@
                 "order": 1,
                 "selectionDescription": "",
                 "odd": {
-                  "value": 8.3,
+                  "value": 8.6,
                   "unboostedOddValue": null,
                   "scheduleStatus": 0
                 },
@@ -5236,7 +5218,7 @@
                 "order": 2,
                 "selectionDescription": "",
                 "odd": {
-                  "value": 1.06,
+                  "value": 1.05,
                   "unboostedOddValue": null,
                   "scheduleStatus": 0
                 },
@@ -5277,7 +5259,7 @@
                 "order": 1,
                 "selectionDescription": "",
                 "odd": {
-                  "value": 30,
+                  "value": 31,
                   "unboostedOddValue": null,
                   "scheduleStatus": 0
                 },
@@ -5410,7 +5392,7 @@
             "order": 17,
             "selectionDescription": "",
             "odd": {
-              "value": 5.9,
+              "value": 5.8,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -5428,7 +5410,7 @@
             "order": 18,
             "selectionDescription": "",
             "odd": {
-              "value": 10.25,
+              "value": 10.75,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -5446,7 +5428,7 @@
             "order": 19,
             "selectionDescription": "",
             "odd": {
-              "value": 37,
+              "value": 38,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -5500,7 +5482,7 @@
             "order": 32,
             "selectionDescription": "",
             "odd": {
-              "value": 5.4,
+              "value": 5.3,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -5536,7 +5518,7 @@
             "order": 34,
             "selectionDescription": "",
             "odd": {
-              "value": 33,
+              "value": 34,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -5590,7 +5572,7 @@
             "order": 47,
             "selectionDescription": "",
             "odd": {
-              "value": 7.4,
+              "value": 7.3,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -5608,7 +5590,7 @@
             "order": 48,
             "selectionDescription": "",
             "odd": {
-              "value": 13.25,
+              "value": 13.5,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -5626,7 +5608,7 @@
             "order": 49,
             "selectionDescription": "",
             "odd": {
-              "value": 45,
+              "value": 46,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -5680,7 +5662,7 @@
             "order": 61,
             "selectionDescription": "",
             "odd": {
-              "value": 13.25,
+              "value": 13,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -5698,7 +5680,7 @@
             "order": 62,
             "selectionDescription": "",
             "odd": {
-              "value": 23.5,
+              "value": 24,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -5716,7 +5698,7 @@
             "order": 63,
             "selectionDescription": "",
             "odd": {
-              "value": 72,
+              "value": 76,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -5808,7 +5790,7 @@
               "order": 17,
               "selectionDescription": "",
               "odd": {
-                "value": 5.9,
+                "value": 5.8,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -5826,7 +5808,7 @@
               "order": 32,
               "selectionDescription": "",
               "odd": {
-                "value": 5.4,
+                "value": 5.3,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -5862,7 +5844,7 @@
               "order": 47,
               "selectionDescription": "",
               "odd": {
-                "value": 7.4,
+                "value": 7.3,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -5880,7 +5862,7 @@
               "order": 48,
               "selectionDescription": "",
               "odd": {
-                "value": 13.25,
+                "value": 13.5,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -5898,7 +5880,7 @@
               "order": 49,
               "selectionDescription": "",
               "odd": {
-                "value": 45,
+                "value": 46,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -5916,7 +5898,7 @@
               "order": 61,
               "selectionDescription": "",
               "odd": {
-                "value": 13.25,
+                "value": 13,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -5934,7 +5916,7 @@
               "order": 62,
               "selectionDescription": "",
               "odd": {
-                "value": 23.5,
+                "value": 24,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -5952,7 +5934,7 @@
               "order": 63,
               "selectionDescription": "",
               "odd": {
-                "value": 72,
+                "value": 76,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -6062,7 +6044,7 @@
               "order": 19,
               "selectionDescription": "",
               "odd": {
-                "value": 37,
+                "value": 38,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -6190,7 +6172,7 @@
               "order": 18,
               "selectionDescription": "",
               "odd": {
-                "value": 10.25,
+                "value": 10.75,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -6208,7 +6190,7 @@
               "order": 34,
               "selectionDescription": "",
               "odd": {
-                "value": 33,
+                "value": 34,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -6361,7 +6343,7 @@
             "order": 334,
             "selectionDescription": "",
             "odd": {
-              "value": 10,
+              "value": 9.8,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -6379,7 +6361,7 @@
             "order": 336,
             "selectionDescription": "",
             "odd": {
-              "value": 31,
+              "value": 33,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -6451,7 +6433,7 @@
             "order": 344,
             "selectionDescription": "",
             "odd": {
-              "value": 40,
+              "value": 39,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -6541,7 +6523,7 @@
             "order": 354,
             "selectionDescription": "",
             "odd": {
-              "value": 41,
+              "value": 42,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -6595,7 +6577,7 @@
             "order": 360,
             "selectionDescription": "",
             "odd": {
-              "value": 56,
+              "value": 58,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -6739,7 +6721,7 @@
             "order": 376,
             "selectionDescription": "",
             "odd": {
-              "value": 41,
+              "value": 42,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -6775,7 +6757,7 @@
             "order": 380,
             "selectionDescription": "",
             "odd": {
-              "value": 10.5,
+              "value": 10.25,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -6811,7 +6793,7 @@
             "order": 384,
             "selectionDescription": "",
             "odd": {
-              "value": 17,
+              "value": 16.5,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -6847,7 +6829,7 @@
             "order": 388,
             "selectionDescription": "",
             "odd": {
-              "value": 50,
+              "value": 52,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -6901,7 +6883,7 @@
             "order": 394,
             "selectionDescription": "",
             "odd": {
-              "value": 25,
+              "value": 26,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -6991,7 +6973,7 @@
             "order": 404,
             "selectionDescription": "",
             "odd": {
-              "value": 21.5,
+              "value": 21,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -7063,7 +7045,7 @@
             "order": 412,
             "selectionDescription": "",
             "odd": {
-              "value": 82,
+              "value": 80,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -7081,7 +7063,7 @@
             "order": 414,
             "selectionDescription": "",
             "odd": {
-              "value": 23,
+              "value": 22.5,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -7099,7 +7081,7 @@
             "order": 416,
             "selectionDescription": "",
             "odd": {
-              "value": 23.5,
+              "value": 24,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -7137,7 +7119,7 @@
               "order": 334,
               "selectionDescription": "",
               "odd": {
-                "value": 10,
+                "value": 9.8,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -7191,7 +7173,7 @@
               "order": 344,
               "selectionDescription": "",
               "odd": {
-                "value": 40,
+                "value": 39,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -7245,7 +7227,7 @@
               "order": 380,
               "selectionDescription": "",
               "odd": {
-                "value": 10.5,
+                "value": 10.25,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -7281,7 +7263,7 @@
               "order": 384,
               "selectionDescription": "",
               "odd": {
-                "value": 17,
+                "value": 16.5,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -7353,7 +7335,7 @@
               "order": 404,
               "selectionDescription": "",
               "odd": {
-                "value": 21.5,
+                "value": 21,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -7389,7 +7371,7 @@
               "order": 412,
               "selectionDescription": "",
               "odd": {
-                "value": 82,
+                "value": 80,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -7699,7 +7681,7 @@
               "order": 336,
               "selectionDescription": "",
               "odd": {
-                "value": 31,
+                "value": 33,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -7717,7 +7699,7 @@
               "order": 354,
               "selectionDescription": "",
               "odd": {
-                "value": 41,
+                "value": 42,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -7735,7 +7717,7 @@
               "order": 376,
               "selectionDescription": "",
               "odd": {
-                "value": 41,
+                "value": 42,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -7753,7 +7735,7 @@
               "order": 388,
               "selectionDescription": "",
               "odd": {
-                "value": 50,
+                "value": 52,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -7779,7 +7761,7 @@
             "order": 1,
             "selectionDescription": "",
             "odd": {
-              "value": 6.1,
+              "value": 6.3,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -7815,7 +7797,7 @@
             "order": 3,
             "selectionDescription": "",
             "odd": {
-              "value": 42,
+              "value": 43,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -7833,7 +7815,7 @@
             "order": 4,
             "selectionDescription": "",
             "odd": {
-              "value": 2.1,
+              "value": 2.08,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -7869,7 +7851,7 @@
             "order": 6,
             "selectionDescription": "",
             "odd": {
-              "value": 22,
+              "value": 23,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -7923,7 +7905,7 @@
             "order": 9,
             "selectionDescription": "",
             "odd": {
-              "value": 5.8,
+              "value": 5.7,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -7961,7 +7943,7 @@
               "order": 4,
               "selectionDescription": "",
               "odd": {
-                "value": 2.1,
+                "value": 2.08,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -8035,7 +8017,7 @@
               "order": 3,
               "selectionDescription": "",
               "odd": {
-                "value": 42,
+                "value": 43,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -8073,7 +8055,7 @@
               "order": 1,
               "selectionDescription": "",
               "odd": {
-                "value": 6.1,
+                "value": 6.3,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -8091,7 +8073,7 @@
               "order": 6,
               "selectionDescription": "",
               "odd": {
-                "value": 22,
+                "value": 23,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -8111,7 +8093,7 @@
               "order": 9,
               "selectionDescription": "",
               "odd": {
-                "value": 5.8,
+                "value": 5.7,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -8136,7 +8118,7 @@
             "order": 1,
             "selectionDescription": "",
             "odd": {
-              "value": 1.26,
+              "value": 1.25,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -8172,7 +8154,7 @@
             "order": 3,
             "selectionDescription": "",
             "odd": {
-              "value": 4.9,
+              "value": 5,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -8213,7 +8195,7 @@
             "order": 4,
             "selectionDescription": "",
             "odd": {
-              "value": 1.26,
+              "value": 1.25,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -8231,7 +8213,7 @@
             "order": 5,
             "selectionDescription": "",
             "odd": {
-              "value": 4.9,
+              "value": 5,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -8290,7 +8272,7 @@
             "order": 1,
             "selectionDescription": "",
             "odd": {
-              "value": 2.47,
+              "value": 2.48,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -8308,7 +8290,7 @@
             "order": 2,
             "selectionDescription": "",
             "odd": {
-              "value": 18,
+              "value": 18.5,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -8344,7 +8326,7 @@
             "order": 4,
             "selectionDescription": "",
             "odd": {
-              "value": 1.96,
+              "value": 1.94,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -8362,7 +8344,7 @@
             "order": 5,
             "selectionDescription": "",
             "odd": {
-              "value": 14.5,
+              "value": 15,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -8436,7 +8418,7 @@
               "order": 1,
               "selectionDescription": "",
               "odd": {
-                "value": 2.47,
+                "value": 2.48,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -8454,7 +8436,7 @@
               "order": 4,
               "selectionDescription": "",
               "odd": {
-                "value": 1.96,
+                "value": 1.94,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -8492,7 +8474,7 @@
               "order": 2,
               "selectionDescription": "",
               "odd": {
-                "value": 18,
+                "value": 18.5,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -8530,7 +8512,7 @@
               "order": 5,
               "selectionDescription": "",
               "odd": {
-                "value": 14.5,
+                "value": 15,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -8575,7 +8557,7 @@
             "order": 1,
             "selectionDescription": "",
             "odd": {
-              "value": 2.15,
+              "value": 2.13,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -8593,7 +8575,7 @@
             "order": 2,
             "selectionDescription": "",
             "odd": {
-              "value": 1.43,
+              "value": 1.42,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -8611,7 +8593,7 @@
             "order": 3,
             "selectionDescription": "",
             "odd": {
-              "value": 1.16,
+              "value": 1.15,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -8791,7 +8773,7 @@
             "order": 13,
             "selectionDescription": "",
             "odd": {
-              "value": 3.85,
+              "value": 3.9,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -8827,7 +8809,7 @@
             "order": 15,
             "selectionDescription": "",
             "odd": {
-              "value": 7.3,
+              "value": 7.4,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -8845,7 +8827,7 @@
             "order": 16,
             "selectionDescription": "",
             "odd": {
-              "value": 23.5,
+              "value": 24,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -8922,7 +8904,7 @@
             "order": 3,
             "selectionDescription": "",
             "odd": {
-              "value": 1.99,
+              "value": 1.98,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -8963,7 +8945,7 @@
             "order": 1,
             "selectionDescription": "",
             "odd": {
-              "value": 2.3,
+              "value": 2.33,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -8981,7 +8963,7 @@
             "order": 2,
             "selectionDescription": "",
             "odd": {
-              "value": 2.2,
+              "value": 2.25,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -8999,7 +8981,7 @@
             "order": 3,
             "selectionDescription": "",
             "odd": {
-              "value": 8.7,
+              "value": 9.1,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -9040,7 +9022,7 @@
             "order": 1,
             "selectionDescription": "",
             "odd": {
-              "value": 4.6,
+              "value": 4.55,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -9286,7 +9268,7 @@
             "order": 1,
             "selectionDescription": "",
             "odd": {
-              "value": 28,
+              "value": 29,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -9327,7 +9309,7 @@
             "order": 1,
             "selectionDescription": "",
             "odd": {
-              "value": 1.9,
+              "value": 1.89,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -9345,7 +9327,7 @@
             "order": 2,
             "selectionDescription": "",
             "odd": {
-              "value": 1.86,
+              "value": 1.87,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -9386,7 +9368,7 @@
             "order": 1,
             "selectionDescription": "",
             "odd": {
-              "value": 1.47,
+              "value": 1.48,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -9422,7 +9404,7 @@
             "order": 3,
             "selectionDescription": "",
             "odd": {
-              "value": 2.5,
+              "value": 2.48,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -9458,7 +9440,7 @@
             "order": 5,
             "selectionDescription": "",
             "odd": {
-              "value": 1.98,
+              "value": 1.99,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -9494,7 +9476,7 @@
             "order": 7,
             "selectionDescription": "",
             "odd": {
-              "value": 1.74,
+              "value": 1.73,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -9512,7 +9494,7 @@
             "order": 8,
             "selectionDescription": "",
             "odd": {
-              "value": 2.87,
+              "value": 2.9,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -9566,7 +9548,7 @@
             "order": 11,
             "selectionDescription": "",
             "odd": {
-              "value": 1.51,
+              "value": 1.5,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -9584,7 +9566,7 @@
             "order": 12,
             "selectionDescription": "",
             "odd": {
-              "value": 6.1,
+              "value": 6.2,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -9602,7 +9584,7 @@
             "order": 13,
             "selectionDescription": "",
             "odd": {
-              "value": 1.8,
+              "value": 1.81,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -9638,7 +9620,7 @@
             "order": 15,
             "selectionDescription": "",
             "odd": {
-              "value": 1.91,
+              "value": 1.9,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -9656,7 +9638,7 @@
             "order": 16,
             "selectionDescription": "",
             "odd": {
-              "value": 3.4,
+              "value": 3.45,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -9728,7 +9710,7 @@
             "order": 20,
             "selectionDescription": "",
             "odd": {
-              "value": 5.6,
+              "value": 5.7,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -9746,7 +9728,7 @@
             "order": 21,
             "selectionDescription": "",
             "odd": {
-              "value": 4.8,
+              "value": 4.85,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -9782,7 +9764,7 @@
             "order": 23,
             "selectionDescription": "",
             "odd": {
-              "value": 1.15,
+              "value": 1.14,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -9818,7 +9800,7 @@
             "order": 25,
             "selectionDescription": "",
             "odd": {
-              "value": 1.97,
+              "value": 1.98,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -9854,7 +9836,7 @@
             "order": 27,
             "selectionDescription": "",
             "odd": {
-              "value": 1.75,
+              "value": 1.74,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -9872,7 +9854,7 @@
             "order": 28,
             "selectionDescription": "",
             "odd": {
-              "value": 8.5,
+              "value": 8.6,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -9890,7 +9872,7 @@
             "order": 31,
             "selectionDescription": "",
             "odd": {
-              "value": 13,
+              "value": 13.25,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -9908,7 +9890,7 @@
             "order": 32,
             "selectionDescription": "",
             "odd": {
-              "value": 22,
+              "value": 22.5,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -9949,7 +9931,7 @@
             "order": 1,
             "selectionDescription": "",
             "odd": {
-              "value": 12.5,
+              "value": 12.75,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -9990,7 +9972,7 @@
             "order": 1,
             "selectionDescription": "",
             "odd": {
-              "value": 7.5,
+              "value": 7.6,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -10085,7 +10067,7 @@
             "order": 1,
             "selectionDescription": "",
             "odd": {
-              "value": 1.62,
+              "value": 1.59,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -10103,7 +10085,7 @@
             "order": 2,
             "selectionDescription": "",
             "odd": {
-              "value": 2.92,
+              "value": 2.95,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -10121,7 +10103,7 @@
             "order": 3,
             "selectionDescription": "",
             "odd": {
-              "value": 9.4,
+              "value": 9.7,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -10139,7 +10121,7 @@
             "order": 4,
             "selectionDescription": "",
             "odd": {
-              "value": 30,
+              "value": 31,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -10216,7 +10198,7 @@
             "order": 3,
             "selectionDescription": "",
             "odd": {
-              "value": 4.05,
+              "value": 4,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -10275,7 +10257,7 @@
             "order": 2,
             "selectionDescription": "",
             "odd": {
-              "value": 7.5,
+              "value": 7.6,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -10334,7 +10316,7 @@
             "order": 1,
             "selectionDescription": "",
             "odd": {
-              "value": 4.3,
+              "value": 4.4,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -10352,7 +10334,7 @@
             "order": 2,
             "selectionDescription": "",
             "odd": {
-              "value": 1.62,
+              "value": 1.59,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -10370,7 +10352,7 @@
             "order": 3,
             "selectionDescription": "",
             "odd": {
-              "value": 4.25,
+              "value": 4.35,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -10411,7 +10393,7 @@
     "matchTime": 0,
     "setScores": null,
     "score": null,
-    "totalOdds": 1236,
+    "totalOdds": 1237,
     "incompatibleEvents": [
       1003715424,
       1003710410,
@@ -10477,7 +10459,7 @@
           "order": 2,
           "selectionDescription": "",
           "odd": {
-            "value": 5.3,
+            "value": 5.5,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -10631,7 +10613,7 @@
           "order": 2,
           "selectionDescription": "",
           "odd": {
-            "value": 5.3,
+            "value": 5.5,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -10649,7 +10631,7 @@
           "order": 3,
           "selectionDescription": "",
           "odd": {
-            "value": 10.5,
+            "value": 10.25,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -10708,7 +10690,7 @@
           "order": 2,
           "selectionDescription": "",
           "odd": {
-            "value": 5.3,
+            "value": 5.5,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -10785,7 +10767,7 @@
           "order": 2,
           "selectionDescription": "",
           "odd": {
-            "value": 10.75,
+            "value": 11,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -10844,7 +10826,7 @@
               "order": 2,
               "selectionDescription": "",
               "odd": {
-                "value": 10.75,
+                "value": 11,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -10885,7 +10867,7 @@
               "order": 1,
               "selectionDescription": "",
               "odd": {
-                "value": 1.25,
+                "value": 1.26,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -10944,7 +10926,7 @@
               "order": 1,
               "selectionDescription": "",
               "odd": {
-                "value": 1.86,
+                "value": 1.87,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -11141,7 +11123,7 @@
           "order": 2,
           "selectionDescription": "",
           "odd": {
-            "value": 10.75,
+            "value": 11,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -11182,7 +11164,7 @@
           "order": 1,
           "selectionDescription": "",
           "odd": {
-            "value": 1.25,
+            "value": 1.26,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -11241,7 +11223,7 @@
           "order": 1,
           "selectionDescription": "",
           "odd": {
-            "value": 1.86,
+            "value": 1.87,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -11585,7 +11567,7 @@
           "order": 6,
           "selectionDescription": "",
           "odd": {
-            "value": 3.3,
+            "value": 3.25,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -11644,7 +11626,7 @@
           "order": 2,
           "selectionDescription": "",
           "odd": {
-            "value": 1.47,
+            "value": 1.48,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -11716,7 +11698,7 @@
           "order": 6,
           "selectionDescription": "",
           "odd": {
-            "value": 1.84,
+            "value": 1.83,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -11757,7 +11739,7 @@
           "order": 1,
           "selectionDescription": "",
           "odd": {
-            "value": 1.23,
+            "value": 1.22,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -11775,7 +11757,7 @@
           "order": 2,
           "selectionDescription": "",
           "odd": {
-            "value": 2.17,
+            "value": 2.2,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -11793,29 +11775,11 @@
           "order": 3,
           "selectionDescription": "",
           "odd": {
-            "value": 2.67,
+            "value": 2.68,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
           "id": 1768003548,
-          "smartCode": 22829,
-          "status": "VALID",
-          "oddCollectionID": 545285614
-        },
-        {
-          "specialValue": "3.5",
-          "specialValueNumber": 3.5,
-          "specialValueString": "3.5",
-          "name": "1 or Under",
-          "typeId": 2355,
-          "order": 4,
-          "selectionDescription": "",
-          "odd": {
-            "value": 1.01,
-            "unboostedOddValue": null,
-            "scheduleStatus": 0
-          },
-          "id": 1768003817,
           "smartCode": 22829,
           "status": "VALID",
           "oddCollectionID": 545285614
@@ -11942,7 +11906,7 @@
           "order": 4,
           "selectionDescription": "",
           "odd": {
-            "value": 4.4,
+            "value": 4.35,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -11960,7 +11924,7 @@
           "order": 5,
           "selectionDescription": "",
           "odd": {
-            "value": 5.2,
+            "value": 5.1,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -11978,7 +11942,7 @@
           "order": 6,
           "selectionDescription": "",
           "odd": {
-            "value": 8.7,
+            "value": 8.8,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -12019,7 +11983,7 @@
           "order": 1,
           "selectionDescription": "",
           "odd": {
-            "value": 1.97,
+            "value": 1.98,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -12091,7 +12055,7 @@
           "order": 5,
           "selectionDescription": "",
           "odd": {
-            "value": 2.72,
+            "value": 2.7,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -12109,7 +12073,7 @@
           "order": 6,
           "selectionDescription": "",
           "odd": {
-            "value": 4.85,
+            "value": 4.9,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -12150,7 +12114,7 @@
           "order": 1,
           "selectionDescription": "",
           "odd": {
-            "value": 3.3,
+            "value": 3.35,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -12186,7 +12150,7 @@
           "order": 3,
           "selectionDescription": "",
           "odd": {
-            "value": 22.5,
+            "value": 23,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -12222,7 +12186,7 @@
           "order": 5,
           "selectionDescription": "",
           "odd": {
-            "value": 1.69,
+            "value": 1.67,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -12240,7 +12204,7 @@
           "order": 6,
           "selectionDescription": "",
           "odd": {
-            "value": 4.4,
+            "value": 4.45,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -12281,7 +12245,7 @@
           "order": 1,
           "selectionDescription": "",
           "odd": {
-            "value": 6.7,
+            "value": 6.8,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -12299,7 +12263,7 @@
           "order": 2,
           "selectionDescription": "",
           "odd": {
-            "value": 6.6,
+            "value": 6.7,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -12353,7 +12317,7 @@
           "order": 5,
           "selectionDescription": "",
           "odd": {
-            "value": 1.38,
+            "value": 1.37,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -12371,7 +12335,7 @@
           "order": 6,
           "selectionDescription": "",
           "odd": {
-            "value": 3.9,
+            "value": 3.95,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -12471,7 +12435,7 @@
           "order": 74,
           "selectionDescription": "",
           "odd": {
-            "value": 5.3,
+            "value": 5.2,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -12589,7 +12553,7 @@
           "order": 1,
           "selectionDescription": "",
           "odd": {
-            "value": 6.5,
+            "value": 6.6,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -12743,7 +12707,7 @@
           "order": 1,
           "selectionDescription": "",
           "odd": {
-            "value": 1.81,
+            "value": 1.82,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -12838,7 +12802,7 @@
           "order": 2,
           "selectionDescription": "",
           "odd": {
-            "value": 9.1,
+            "value": 9.2,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -12915,7 +12879,7 @@
           "order": 2,
           "selectionDescription": "",
           "odd": {
-            "value": 8.8,
+            "value": 8.7,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -12956,7 +12920,7 @@
           "order": 1,
           "selectionDescription": "",
           "odd": {
-            "value": 1.81,
+            "value": 1.8,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -12992,7 +12956,7 @@
           "order": 3,
           "selectionDescription": "",
           "odd": {
-            "value": 84,
+            "value": 82,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -13028,7 +12992,7 @@
           "order": 5,
           "selectionDescription": "",
           "odd": {
-            "value": 7.3,
+            "value": 7.5,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -13046,7 +13010,7 @@
           "order": 6,
           "selectionDescription": "",
           "odd": {
-            "value": 23.5,
+            "value": 23,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -13100,7 +13064,7 @@
           "order": 9,
           "selectionDescription": "",
           "odd": {
-            "value": 21,
+            "value": 20.5,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -13141,7 +13105,7 @@
           "order": 1,
           "selectionDescription": "",
           "odd": {
-            "value": 1.75,
+            "value": 1.74,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -13177,7 +13141,7 @@
           "order": 3,
           "selectionDescription": "",
           "odd": {
-            "value": 9,
+            "value": 9.1,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -13236,7 +13200,7 @@
           "order": 2,
           "selectionDescription": "",
           "odd": {
-            "value": 1.54,
+            "value": 1.53,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -13254,7 +13218,7 @@
           "order": 3,
           "selectionDescription": "",
           "odd": {
-            "value": 2.03,
+            "value": 2.05,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -13710,7 +13674,7 @@
           "order": 1,
           "selectionDescription": "",
           "odd": {
-            "value": 1.61,
+            "value": 1.6,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -13746,7 +13710,7 @@
           "order": 3,
           "selectionDescription": "",
           "odd": {
-            "value": 3,
+            "value": 3.05,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -13787,7 +13751,7 @@
           "order": 1,
           "selectionDescription": "",
           "odd": {
-            "value": 2.55,
+            "value": 2.53,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -13828,7 +13792,7 @@
           "order": 1,
           "selectionDescription": "",
           "odd": {
-            "value": 1.2,
+            "value": 1.19,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -13900,7 +13864,7 @@
           "order": 5,
           "selectionDescription": "",
           "odd": {
-            "value": 7,
+            "value": 7.1,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -13936,7 +13900,7 @@
           "order": 7,
           "selectionDescription": "",
           "odd": {
-            "value": 4.45,
+            "value": 4.55,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -13972,7 +13936,7 @@
           "order": 9,
           "selectionDescription": "",
           "odd": {
-            "value": 3.35,
+            "value": 3.45,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -13990,7 +13954,7 @@
           "order": 10,
           "selectionDescription": "",
           "odd": {
-            "value": 1.23,
+            "value": 1.24,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -14008,7 +13972,7 @@
           "order": 11,
           "selectionDescription": "",
           "odd": {
-            "value": 2.15,
+            "value": 2.17,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -14116,7 +14080,7 @@
           "order": 17,
           "selectionDescription": "",
           "odd": {
-            "value": 2.92,
+            "value": 2.95,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -14134,7 +14098,7 @@
           "order": 18,
           "selectionDescription": "",
           "odd": {
-            "value": 3.65,
+            "value": 3.7,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -14152,7 +14116,7 @@
           "order": 19,
           "selectionDescription": "",
           "odd": {
-            "value": 1.19,
+            "value": 1.18,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -14188,7 +14152,7 @@
           "order": 21,
           "selectionDescription": "",
           "odd": {
-            "value": 2.38,
+            "value": 2.42,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -14265,7 +14229,7 @@
           "order": 2,
           "selectionDescription": "",
           "odd": {
-            "value": 2.85,
+            "value": 2.82,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -14283,7 +14247,7 @@
           "order": 3,
           "selectionDescription": "",
           "odd": {
-            "value": 5.9,
+            "value": 5.8,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -14319,7 +14283,7 @@
           "order": 14,
           "selectionDescription": "",
           "odd": {
-            "value": 11.5,
+            "value": 11.75,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -14337,7 +14301,7 @@
           "order": 15,
           "selectionDescription": "",
           "odd": {
-            "value": 23,
+            "value": 23.5,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -14355,7 +14319,7 @@
           "order": 25,
           "selectionDescription": "",
           "odd": {
-            "value": 74,
+            "value": 76,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -14373,7 +14337,7 @@
           "order": 26,
           "selectionDescription": "",
           "odd": {
-            "value": 76,
+            "value": 78,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -14391,7 +14355,7 @@
           "order": 27,
           "selectionDescription": "",
           "odd": {
-            "value": 120,
+            "value": 125,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -14447,7 +14411,7 @@
             "order": 2,
             "selectionDescription": "",
             "odd": {
-              "value": 2.85,
+              "value": 2.82,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -14465,7 +14429,7 @@
             "order": 3,
             "selectionDescription": "",
             "odd": {
-              "value": 5.9,
+              "value": 5.8,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -14483,7 +14447,7 @@
             "order": 15,
             "selectionDescription": "",
             "odd": {
-              "value": 23,
+              "value": 23.5,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -14521,7 +14485,7 @@
             "order": 25,
             "selectionDescription": "",
             "odd": {
-              "value": 74,
+              "value": 76,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -14539,7 +14503,7 @@
             "order": 26,
             "selectionDescription": "",
             "odd": {
-              "value": 76,
+              "value": 78,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -14577,7 +14541,7 @@
             "order": 14,
             "selectionDescription": "",
             "odd": {
-              "value": 11.5,
+              "value": 11.75,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -14595,7 +14559,7 @@
             "order": 27,
             "selectionDescription": "",
             "odd": {
-              "value": 120,
+              "value": 125,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -14640,7 +14604,7 @@
           "order": 1,
           "selectionDescription": "",
           "odd": {
-            "value": 1.75,
+            "value": 1.74,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -14658,7 +14622,7 @@
           "order": 2,
           "selectionDescription": "",
           "odd": {
-            "value": 2.03,
+            "value": 2.05,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -14717,7 +14681,7 @@
           "order": 2,
           "selectionDescription": "",
           "odd": {
-            "value": 6,
+            "value": 6.1,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -14758,7 +14722,7 @@
           "order": 1,
           "selectionDescription": "",
           "odd": {
-            "value": 6.6,
+            "value": 6.7,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -14853,7 +14817,7 @@
           "order": 3,
           "selectionDescription": "",
           "odd": {
-            "value": 6.5,
+            "value": 6.6,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -14912,7 +14876,7 @@
           "order": 2,
           "selectionDescription": "",
           "odd": {
-            "value": 2.4,
+            "value": 2.42,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -14971,7 +14935,7 @@
               "order": 2,
               "selectionDescription": "",
               "odd": {
-                "value": 2.4,
+                "value": 2.42,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -15091,7 +15055,7 @@
           "order": 2,
           "selectionDescription": "",
           "odd": {
-            "value": 2.4,
+            "value": 2.42,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -15191,7 +15155,7 @@
           "order": 1,
           "selectionDescription": "",
           "odd": {
-            "value": 4.3,
+            "value": 4.4,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -15209,7 +15173,7 @@
           "order": 2,
           "selectionDescription": "",
           "odd": {
-            "value": 1.19,
+            "value": 1.18,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -15250,7 +15214,7 @@
               "order": 1,
               "selectionDescription": "",
               "odd": {
-                "value": 4.3,
+                "value": 4.4,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -15268,7 +15232,7 @@
               "order": 2,
               "selectionDescription": "",
               "odd": {
-                "value": 1.19,
+                "value": 1.18,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -15311,7 +15275,7 @@
           "order": 1,
           "selectionDescription": "",
           "odd": {
-            "value": 4.3,
+            "value": 4.4,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -15329,7 +15293,7 @@
           "order": 2,
           "selectionDescription": "",
           "odd": {
-            "value": 1.19,
+            "value": 1.18,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -15447,7 +15411,7 @@
           "order": 2,
           "selectionDescription": "",
           "odd": {
-            "value": 2.85,
+            "value": 2.82,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -15465,7 +15429,7 @@
           "order": 3,
           "selectionDescription": "",
           "odd": {
-            "value": 11,
+            "value": 11.25,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -15501,7 +15465,7 @@
           "order": 5,
           "selectionDescription": "",
           "odd": {
-            "value": 31,
+            "value": 32,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -15578,7 +15542,7 @@
           "order": 2,
           "selectionDescription": "",
           "odd": {
-            "value": 1.87,
+            "value": 1.85,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -15596,7 +15560,7 @@
           "order": 3,
           "selectionDescription": "",
           "odd": {
-            "value": 11,
+            "value": 11.25,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -15650,7 +15614,7 @@
           "order": 6,
           "selectionDescription": "",
           "odd": {
-            "value": 9.6,
+            "value": 9.7,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -15691,7 +15655,7 @@
           "order": 1,
           "selectionDescription": "",
           "odd": {
-            "value": 7.6,
+            "value": 7.8,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -15709,7 +15673,7 @@
           "order": 2,
           "selectionDescription": "",
           "odd": {
-            "value": 1.18,
+            "value": 1.17,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -15727,7 +15691,7 @@
           "order": 3,
           "selectionDescription": "",
           "odd": {
-            "value": 11,
+            "value": 11.25,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -15763,7 +15727,7 @@
           "order": 5,
           "selectionDescription": "",
           "odd": {
-            "value": 15.5,
+            "value": 16,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -15781,7 +15745,7 @@
           "order": 6,
           "selectionDescription": "",
           "odd": {
-            "value": 1.65,
+            "value": 1.64,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -15840,7 +15804,7 @@
           "order": 2,
           "selectionDescription": "",
           "odd": {
-            "value": 2.58,
+            "value": 2.57,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -15876,7 +15840,7 @@
           "order": 4,
           "selectionDescription": "",
           "odd": {
-            "value": 1.57,
+            "value": 1.56,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -15894,7 +15858,7 @@
           "order": 5,
           "selectionDescription": "",
           "odd": {
-            "value": 10,
+            "value": 10.25,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -15971,7 +15935,7 @@
           "order": 2,
           "selectionDescription": "",
           "odd": {
-            "value": 7.5,
+            "value": 7.6,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -16030,7 +15994,7 @@
               "order": 2,
               "selectionDescription": "",
               "odd": {
-                "value": 7.5,
+                "value": 7.6,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -16071,7 +16035,7 @@
               "order": 1,
               "selectionDescription": "",
               "odd": {
-                "value": 1.48,
+                "value": 1.47,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -16089,7 +16053,7 @@
               "order": 2,
               "selectionDescription": "",
               "odd": {
-                "value": 2.57,
+                "value": 2.58,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -16148,7 +16112,7 @@
               "order": 2,
               "selectionDescription": "",
               "odd": {
-                "value": 1.5,
+                "value": 1.51,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -16209,7 +16173,7 @@
           "order": 2,
           "selectionDescription": "",
           "odd": {
-            "value": 7.5,
+            "value": 7.6,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -16250,7 +16214,7 @@
           "order": 1,
           "selectionDescription": "",
           "odd": {
-            "value": 1.48,
+            "value": 1.47,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -16268,7 +16232,7 @@
           "order": 2,
           "selectionDescription": "",
           "odd": {
-            "value": 2.57,
+            "value": 2.58,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -16327,7 +16291,7 @@
           "order": 2,
           "selectionDescription": "",
           "odd": {
-            "value": 1.5,
+            "value": 1.51,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -16368,7 +16332,7 @@
           "order": 1,
           "selectionDescription": "",
           "odd": {
-            "value": 2.23,
+            "value": 2.28,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -16386,7 +16350,7 @@
           "order": 2,
           "selectionDescription": "",
           "odd": {
-            "value": 1.62,
+            "value": 1.59,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -16427,7 +16391,7 @@
               "order": 1,
               "selectionDescription": "",
               "odd": {
-                "value": 2.23,
+                "value": 2.28,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -16445,7 +16409,7 @@
               "order": 2,
               "selectionDescription": "",
               "odd": {
-                "value": 1.62,
+                "value": 1.59,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -16486,7 +16450,7 @@
               "order": 1,
               "selectionDescription": "",
               "odd": {
-                "value": 8.3,
+                "value": 8.6,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -16504,7 +16468,7 @@
               "order": 2,
               "selectionDescription": "",
               "odd": {
-                "value": 1.06,
+                "value": 1.05,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -16545,7 +16509,7 @@
               "order": 1,
               "selectionDescription": "",
               "odd": {
-                "value": 30,
+                "value": 31,
                 "unboostedOddValue": null,
                 "scheduleStatus": 0
               },
@@ -16588,7 +16552,7 @@
           "order": 1,
           "selectionDescription": "",
           "odd": {
-            "value": 2.23,
+            "value": 2.28,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -16606,7 +16570,7 @@
           "order": 2,
           "selectionDescription": "",
           "odd": {
-            "value": 1.62,
+            "value": 1.59,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -16647,7 +16611,7 @@
           "order": 1,
           "selectionDescription": "",
           "odd": {
-            "value": 8.3,
+            "value": 8.6,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -16665,7 +16629,7 @@
           "order": 2,
           "selectionDescription": "",
           "odd": {
-            "value": 1.06,
+            "value": 1.05,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -16706,7 +16670,7 @@
           "order": 1,
           "selectionDescription": "",
           "odd": {
-            "value": 30,
+            "value": 31,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -16837,7 +16801,7 @@
           "order": 17,
           "selectionDescription": "",
           "odd": {
-            "value": 5.9,
+            "value": 5.8,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -16855,7 +16819,7 @@
           "order": 18,
           "selectionDescription": "",
           "odd": {
-            "value": 10.25,
+            "value": 10.75,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -16873,7 +16837,7 @@
           "order": 19,
           "selectionDescription": "",
           "odd": {
-            "value": 37,
+            "value": 38,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -16927,7 +16891,7 @@
           "order": 32,
           "selectionDescription": "",
           "odd": {
-            "value": 5.4,
+            "value": 5.3,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -16963,7 +16927,7 @@
           "order": 34,
           "selectionDescription": "",
           "odd": {
-            "value": 33,
+            "value": 34,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -17017,7 +16981,7 @@
           "order": 47,
           "selectionDescription": "",
           "odd": {
-            "value": 7.4,
+            "value": 7.3,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -17035,7 +16999,7 @@
           "order": 48,
           "selectionDescription": "",
           "odd": {
-            "value": 13.25,
+            "value": 13.5,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -17053,7 +17017,7 @@
           "order": 49,
           "selectionDescription": "",
           "odd": {
-            "value": 45,
+            "value": 46,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -17107,7 +17071,7 @@
           "order": 61,
           "selectionDescription": "",
           "odd": {
-            "value": 13.25,
+            "value": 13,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -17125,7 +17089,7 @@
           "order": 62,
           "selectionDescription": "",
           "odd": {
-            "value": 23.5,
+            "value": 24,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -17143,7 +17107,7 @@
           "order": 63,
           "selectionDescription": "",
           "odd": {
-            "value": 72,
+            "value": 76,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -17235,7 +17199,7 @@
             "order": 17,
             "selectionDescription": "",
             "odd": {
-              "value": 5.9,
+              "value": 5.8,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -17253,7 +17217,7 @@
             "order": 32,
             "selectionDescription": "",
             "odd": {
-              "value": 5.4,
+              "value": 5.3,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -17289,7 +17253,7 @@
             "order": 47,
             "selectionDescription": "",
             "odd": {
-              "value": 7.4,
+              "value": 7.3,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -17307,7 +17271,7 @@
             "order": 48,
             "selectionDescription": "",
             "odd": {
-              "value": 13.25,
+              "value": 13.5,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -17325,7 +17289,7 @@
             "order": 49,
             "selectionDescription": "",
             "odd": {
-              "value": 45,
+              "value": 46,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -17343,7 +17307,7 @@
             "order": 61,
             "selectionDescription": "",
             "odd": {
-              "value": 13.25,
+              "value": 13,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -17361,7 +17325,7 @@
             "order": 62,
             "selectionDescription": "",
             "odd": {
-              "value": 23.5,
+              "value": 24,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -17379,7 +17343,7 @@
             "order": 63,
             "selectionDescription": "",
             "odd": {
-              "value": 72,
+              "value": 76,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -17489,7 +17453,7 @@
             "order": 19,
             "selectionDescription": "",
             "odd": {
-              "value": 37,
+              "value": 38,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -17617,7 +17581,7 @@
             "order": 18,
             "selectionDescription": "",
             "odd": {
-              "value": 10.25,
+              "value": 10.75,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -17635,7 +17599,7 @@
             "order": 34,
             "selectionDescription": "",
             "odd": {
-              "value": 33,
+              "value": 34,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -17788,7 +17752,7 @@
           "order": 334,
           "selectionDescription": "",
           "odd": {
-            "value": 10,
+            "value": 9.8,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -17806,7 +17770,7 @@
           "order": 336,
           "selectionDescription": "",
           "odd": {
-            "value": 31,
+            "value": 33,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -17878,7 +17842,7 @@
           "order": 344,
           "selectionDescription": "",
           "odd": {
-            "value": 40,
+            "value": 39,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -17968,7 +17932,7 @@
           "order": 354,
           "selectionDescription": "",
           "odd": {
-            "value": 41,
+            "value": 42,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -18022,7 +17986,7 @@
           "order": 360,
           "selectionDescription": "",
           "odd": {
-            "value": 56,
+            "value": 58,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -18166,7 +18130,7 @@
           "order": 376,
           "selectionDescription": "",
           "odd": {
-            "value": 41,
+            "value": 42,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -18202,7 +18166,7 @@
           "order": 380,
           "selectionDescription": "",
           "odd": {
-            "value": 10.5,
+            "value": 10.25,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -18238,7 +18202,7 @@
           "order": 384,
           "selectionDescription": "",
           "odd": {
-            "value": 17,
+            "value": 16.5,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -18274,7 +18238,7 @@
           "order": 388,
           "selectionDescription": "",
           "odd": {
-            "value": 50,
+            "value": 52,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -18328,7 +18292,7 @@
           "order": 394,
           "selectionDescription": "",
           "odd": {
-            "value": 25,
+            "value": 26,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -18418,7 +18382,7 @@
           "order": 404,
           "selectionDescription": "",
           "odd": {
-            "value": 21.5,
+            "value": 21,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -18490,7 +18454,7 @@
           "order": 412,
           "selectionDescription": "",
           "odd": {
-            "value": 82,
+            "value": 80,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -18508,7 +18472,7 @@
           "order": 414,
           "selectionDescription": "",
           "odd": {
-            "value": 23,
+            "value": 22.5,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -18526,7 +18490,7 @@
           "order": 416,
           "selectionDescription": "",
           "odd": {
-            "value": 23.5,
+            "value": 24,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -18564,7 +18528,7 @@
             "order": 334,
             "selectionDescription": "",
             "odd": {
-              "value": 10,
+              "value": 9.8,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -18618,7 +18582,7 @@
             "order": 344,
             "selectionDescription": "",
             "odd": {
-              "value": 40,
+              "value": 39,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -18672,7 +18636,7 @@
             "order": 380,
             "selectionDescription": "",
             "odd": {
-              "value": 10.5,
+              "value": 10.25,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -18708,7 +18672,7 @@
             "order": 384,
             "selectionDescription": "",
             "odd": {
-              "value": 17,
+              "value": 16.5,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -18780,7 +18744,7 @@
             "order": 404,
             "selectionDescription": "",
             "odd": {
-              "value": 21.5,
+              "value": 21,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -18816,7 +18780,7 @@
             "order": 412,
             "selectionDescription": "",
             "odd": {
-              "value": 82,
+              "value": 80,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -19126,7 +19090,7 @@
             "order": 336,
             "selectionDescription": "",
             "odd": {
-              "value": 31,
+              "value": 33,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -19144,7 +19108,7 @@
             "order": 354,
             "selectionDescription": "",
             "odd": {
-              "value": 41,
+              "value": 42,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -19162,7 +19126,7 @@
             "order": 376,
             "selectionDescription": "",
             "odd": {
-              "value": 41,
+              "value": 42,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -19180,7 +19144,7 @@
             "order": 388,
             "selectionDescription": "",
             "odd": {
-              "value": 50,
+              "value": 52,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -19206,7 +19170,7 @@
           "order": 1,
           "selectionDescription": "",
           "odd": {
-            "value": 6.1,
+            "value": 6.3,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -19242,7 +19206,7 @@
           "order": 3,
           "selectionDescription": "",
           "odd": {
-            "value": 42,
+            "value": 43,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -19260,7 +19224,7 @@
           "order": 4,
           "selectionDescription": "",
           "odd": {
-            "value": 2.1,
+            "value": 2.08,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -19296,7 +19260,7 @@
           "order": 6,
           "selectionDescription": "",
           "odd": {
-            "value": 22,
+            "value": 23,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -19350,7 +19314,7 @@
           "order": 9,
           "selectionDescription": "",
           "odd": {
-            "value": 5.8,
+            "value": 5.7,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -19388,7 +19352,7 @@
             "order": 4,
             "selectionDescription": "",
             "odd": {
-              "value": 2.1,
+              "value": 2.08,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -19462,7 +19426,7 @@
             "order": 3,
             "selectionDescription": "",
             "odd": {
-              "value": 42,
+              "value": 43,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -19500,7 +19464,7 @@
             "order": 1,
             "selectionDescription": "",
             "odd": {
-              "value": 6.1,
+              "value": 6.3,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -19518,7 +19482,7 @@
             "order": 6,
             "selectionDescription": "",
             "odd": {
-              "value": 22,
+              "value": 23,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -19538,7 +19502,7 @@
             "order": 9,
             "selectionDescription": "",
             "odd": {
-              "value": 5.8,
+              "value": 5.7,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -19563,7 +19527,7 @@
           "order": 1,
           "selectionDescription": "",
           "odd": {
-            "value": 1.26,
+            "value": 1.25,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -19599,7 +19563,7 @@
           "order": 3,
           "selectionDescription": "",
           "odd": {
-            "value": 4.9,
+            "value": 5,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -19640,7 +19604,7 @@
           "order": 4,
           "selectionDescription": "",
           "odd": {
-            "value": 1.26,
+            "value": 1.25,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -19658,7 +19622,7 @@
           "order": 5,
           "selectionDescription": "",
           "odd": {
-            "value": 4.9,
+            "value": 5,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -19717,7 +19681,7 @@
           "order": 1,
           "selectionDescription": "",
           "odd": {
-            "value": 2.47,
+            "value": 2.48,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -19735,7 +19699,7 @@
           "order": 2,
           "selectionDescription": "",
           "odd": {
-            "value": 18,
+            "value": 18.5,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -19771,7 +19735,7 @@
           "order": 4,
           "selectionDescription": "",
           "odd": {
-            "value": 1.96,
+            "value": 1.94,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -19789,7 +19753,7 @@
           "order": 5,
           "selectionDescription": "",
           "odd": {
-            "value": 14.5,
+            "value": 15,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -19863,7 +19827,7 @@
             "order": 1,
             "selectionDescription": "",
             "odd": {
-              "value": 2.47,
+              "value": 2.48,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -19881,7 +19845,7 @@
             "order": 4,
             "selectionDescription": "",
             "odd": {
-              "value": 1.96,
+              "value": 1.94,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -19919,7 +19883,7 @@
             "order": 2,
             "selectionDescription": "",
             "odd": {
-              "value": 18,
+              "value": 18.5,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -19957,7 +19921,7 @@
             "order": 5,
             "selectionDescription": "",
             "odd": {
-              "value": 14.5,
+              "value": 15,
               "unboostedOddValue": null,
               "scheduleStatus": 0
             },
@@ -20002,7 +19966,7 @@
           "order": 1,
           "selectionDescription": "",
           "odd": {
-            "value": 2.15,
+            "value": 2.13,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -20020,7 +19984,7 @@
           "order": 2,
           "selectionDescription": "",
           "odd": {
-            "value": 1.43,
+            "value": 1.42,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -20038,7 +20002,7 @@
           "order": 3,
           "selectionDescription": "",
           "odd": {
-            "value": 1.16,
+            "value": 1.15,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -20218,7 +20182,7 @@
           "order": 13,
           "selectionDescription": "",
           "odd": {
-            "value": 3.85,
+            "value": 3.9,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -20254,7 +20218,7 @@
           "order": 15,
           "selectionDescription": "",
           "odd": {
-            "value": 7.3,
+            "value": 7.4,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -20272,7 +20236,7 @@
           "order": 16,
           "selectionDescription": "",
           "odd": {
-            "value": 23.5,
+            "value": 24,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -20349,7 +20313,7 @@
           "order": 3,
           "selectionDescription": "",
           "odd": {
-            "value": 1.99,
+            "value": 1.98,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -20390,7 +20354,7 @@
           "order": 1,
           "selectionDescription": "",
           "odd": {
-            "value": 2.3,
+            "value": 2.33,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -20408,7 +20372,7 @@
           "order": 2,
           "selectionDescription": "",
           "odd": {
-            "value": 2.2,
+            "value": 2.25,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -20426,7 +20390,7 @@
           "order": 3,
           "selectionDescription": "",
           "odd": {
-            "value": 8.7,
+            "value": 9.1,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -20467,7 +20431,7 @@
           "order": 1,
           "selectionDescription": "",
           "odd": {
-            "value": 4.6,
+            "value": 4.55,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -20713,7 +20677,7 @@
           "order": 1,
           "selectionDescription": "",
           "odd": {
-            "value": 28,
+            "value": 29,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -20754,7 +20718,7 @@
           "order": 1,
           "selectionDescription": "",
           "odd": {
-            "value": 1.9,
+            "value": 1.89,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -20772,7 +20736,7 @@
           "order": 2,
           "selectionDescription": "",
           "odd": {
-            "value": 1.86,
+            "value": 1.87,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -20813,7 +20777,7 @@
           "order": 1,
           "selectionDescription": "",
           "odd": {
-            "value": 1.47,
+            "value": 1.48,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -20849,7 +20813,7 @@
           "order": 3,
           "selectionDescription": "",
           "odd": {
-            "value": 2.5,
+            "value": 2.48,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -20885,7 +20849,7 @@
           "order": 5,
           "selectionDescription": "",
           "odd": {
-            "value": 1.98,
+            "value": 1.99,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -20921,7 +20885,7 @@
           "order": 7,
           "selectionDescription": "",
           "odd": {
-            "value": 1.74,
+            "value": 1.73,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -20939,7 +20903,7 @@
           "order": 8,
           "selectionDescription": "",
           "odd": {
-            "value": 2.87,
+            "value": 2.9,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -20993,7 +20957,7 @@
           "order": 11,
           "selectionDescription": "",
           "odd": {
-            "value": 1.51,
+            "value": 1.5,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -21011,7 +20975,7 @@
           "order": 12,
           "selectionDescription": "",
           "odd": {
-            "value": 6.1,
+            "value": 6.2,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -21029,7 +20993,7 @@
           "order": 13,
           "selectionDescription": "",
           "odd": {
-            "value": 1.8,
+            "value": 1.81,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -21065,7 +21029,7 @@
           "order": 15,
           "selectionDescription": "",
           "odd": {
-            "value": 1.91,
+            "value": 1.9,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -21083,7 +21047,7 @@
           "order": 16,
           "selectionDescription": "",
           "odd": {
-            "value": 3.4,
+            "value": 3.45,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -21155,7 +21119,7 @@
           "order": 20,
           "selectionDescription": "",
           "odd": {
-            "value": 5.6,
+            "value": 5.7,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -21173,7 +21137,7 @@
           "order": 21,
           "selectionDescription": "",
           "odd": {
-            "value": 4.8,
+            "value": 4.85,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -21209,7 +21173,7 @@
           "order": 23,
           "selectionDescription": "",
           "odd": {
-            "value": 1.15,
+            "value": 1.14,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -21245,7 +21209,7 @@
           "order": 25,
           "selectionDescription": "",
           "odd": {
-            "value": 1.97,
+            "value": 1.98,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -21281,7 +21245,7 @@
           "order": 27,
           "selectionDescription": "",
           "odd": {
-            "value": 1.75,
+            "value": 1.74,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -21299,7 +21263,7 @@
           "order": 28,
           "selectionDescription": "",
           "odd": {
-            "value": 8.5,
+            "value": 8.6,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -21317,7 +21281,7 @@
           "order": 31,
           "selectionDescription": "",
           "odd": {
-            "value": 13,
+            "value": 13.25,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -21335,7 +21299,7 @@
           "order": 32,
           "selectionDescription": "",
           "odd": {
-            "value": 22,
+            "value": 22.5,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -21376,7 +21340,7 @@
           "order": 1,
           "selectionDescription": "",
           "odd": {
-            "value": 12.5,
+            "value": 12.75,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -21417,7 +21381,7 @@
           "order": 1,
           "selectionDescription": "",
           "odd": {
-            "value": 7.5,
+            "value": 7.6,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -21512,7 +21476,7 @@
           "order": 1,
           "selectionDescription": "",
           "odd": {
-            "value": 1.62,
+            "value": 1.59,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -21530,7 +21494,7 @@
           "order": 2,
           "selectionDescription": "",
           "odd": {
-            "value": 2.92,
+            "value": 2.95,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -21548,7 +21512,7 @@
           "order": 3,
           "selectionDescription": "",
           "odd": {
-            "value": 9.4,
+            "value": 9.7,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -21566,7 +21530,7 @@
           "order": 4,
           "selectionDescription": "",
           "odd": {
-            "value": 30,
+            "value": 31,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -21643,7 +21607,7 @@
           "order": 3,
           "selectionDescription": "",
           "odd": {
-            "value": 4.05,
+            "value": 4,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -21702,7 +21666,7 @@
           "order": 2,
           "selectionDescription": "",
           "odd": {
-            "value": 7.5,
+            "value": 7.6,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -21761,7 +21725,7 @@
           "order": 1,
           "selectionDescription": "",
           "odd": {
-            "value": 4.3,
+            "value": 4.4,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -21779,7 +21743,7 @@
           "order": 2,
           "selectionDescription": "",
           "odd": {
-            "value": 1.62,
+            "value": 1.59,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },
@@ -21797,7 +21761,7 @@
           "order": 3,
           "selectionDescription": "",
           "odd": {
-            "value": 4.25,
+            "value": 4.35,
             "unboostedOddValue": null,
             "scheduleStatus": 0
           },

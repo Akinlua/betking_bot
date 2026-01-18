@@ -12,7 +12,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DATA_DIR = path.join(process.cwd(), "data", "edgerunner");
 
 // Singleton browser accessor (passed from server start)
-const ACCOUNTS_FILE = path.join(process.cwd(), "accounts.json");
+const ACCOUNTS_FILE = path.join(__dirname, "accounts.json");
 let _browser = null;
 
 export function initAuthService(browser) {
