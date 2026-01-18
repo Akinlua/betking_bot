@@ -16,7 +16,7 @@ BET_API_URL = "http://72.60.89.248:3001/bet"
 def send_to_api(data: dict):
     try:
         response = requests.post(BET_API_URL, json=data)
-        # print(f"Sent to API: {response.status_code}")
+        print(f"Sent to API: {response.status_code}")
     except Exception as e:
         print(f"Error sending to API: {e}", file=stderr)
 
