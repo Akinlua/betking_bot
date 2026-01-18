@@ -1,0 +1,19 @@
+[Unit]
+Description=BetKing Stream Service
+After=network.target
+
+[Service]
+Type=simple
+# Change this to the user you want to run the script as
+User=root
+# Adjust the working directory to where your code is located
+WorkingDirectory=/root/betking_bot
+# Adjust the path to python3 and the script
+ExecStart=/usr/bin/python3 stream.py
+Restart=always
+RestartSec=5
+# Environment variables if needed
+# Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target

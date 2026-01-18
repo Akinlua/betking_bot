@@ -302,6 +302,14 @@ export async function placeBet(req, res) {
         }
 
         const { market, selection } = selectionData;
+
+        const found_odds = selection.odd.value;
+        const expected_odds = req.body.odds;
+
+        if (expected_odds && found_odds < expected_odds) {
+            console.warn(chalk.yellow(`[SimpleAPI] odds slippage: found ${found_odds} expected ${expected_odds}`));
+        }
+
         console.log(chalk.green(`[SimpleAPI] Found Market="${market.name}" Selection="${selection.name}" @ ${selection.odd.value}`));
 
         const providerData = { sportId: 1 };
