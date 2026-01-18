@@ -43,9 +43,9 @@ function getExclusionReason(selection, market_type) {
     const specialValue = String(selection.specialValue || "");
 
     // Exclude -0.5 spread (appears as "0 : 0.5" for away in football)
-    // if (specialValue.includes("0 : 0.5") || specialValue.includes("0:0.5")) {
-    //     return "Spread -0.5 (0:0.5) is excluded by policy.";
-    // }
+    if (specialValue.includes("0 : 0.5") || specialValue.includes("0:0.5")) {
+        return "Spread -0.5 (0:0.5) is excluded by policy.";
+    }
 
     // Exclude 0 spread (DNB - Draw No Bet)
     if (specialValue === "0" || normalize(selection.name).includes("dnb")) {
