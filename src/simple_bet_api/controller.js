@@ -335,7 +335,7 @@ export async function placeBet(req, res) {
 
             const found_odds = selection.odd.value;
 
-            if (expected_odds && expected_odds < found_odds) {
+            if (expected_odds && found_odds < expected_odds) {
                 console.warn(chalk.yellow(`[SimpleAPI][${userToUse}] odds slippage: found ${found_odds} expected ${expected_odds}`));
                 // Optional: We could throw here if we want to abort bet on slippage
                 throw new Error(`Odds slippage: found ${found_odds} expected ${expected_odds}`);
