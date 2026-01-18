@@ -33,25 +33,26 @@ function shouldExcludeLeague(matchDetails, market_type) {
 
 /**
  * Checks if a spread/handicap selection should be excluded
+ * Returns a string reason if excluded, or null if allowed.
  */
-function shouldExcludeSpread(selection, market_type) {
+function getExclusionReason(selection, market_type) {
     if (market_type !== "spread" && market_type !== "handicap") {
-        return false;
+        return null;
     }
 
     const specialValue = String(selection.specialValue || "");
 
     // Exclude -0.5 spread (appears as "0 : 0.5" for away in football)
     if (specialValue.includes("0 : 0.5") || specialValue.includes("0:0.5")) {
-        return true;
+        return "Spread -0.5 (0:0.5) is excluded by policy.";
     }
 
     // Exclude 0 spread (DNB - Draw No Bet)
     if (specialValue === "0" || normalize(selection.name).includes("dnb")) {
-        return true;
+        return "Spread 0 (DNB) is excluded by policy.";
     }
 
-    return false;
+    return null;
 }
 
 /**
@@ -69,6 +70,7 @@ function findMarketAndSelection(matchDetails, criteria) {
             m.spreadMarkets.forEach(sm => markets.push(sm));
         }
     });
+
     // Debug: Write match details to file
     const debugData = {
         timestamp: new Date().toISOString(),
@@ -79,6 +81,7 @@ function findMarketAndSelection(matchDetails, criteria) {
     const debugFilePath = path.join(process.cwd(), 'bet_debug.json');
     fs.writeFileSync(debugFilePath, JSON.stringify(debugData, null, 2));
     console.log("Debug data written to", debugFilePath);
+
     if (!markets.length) throw new Error("No markets found in match details.");
 
     // Check league exclusions
@@ -153,6 +156,8 @@ function findMarketAndSelection(matchDetails, criteria) {
 
     if (candidateMarkets.length === 0) throw new Error(`No markets found matching type '${market_type}' (Half: ${is_first_half})`);
 
+    let rejectionReason = null;
+
     // 2. Find Selection within Candidate Markets
     for (const market of candidateMarkets) {
         const selections = market.selections || [];
@@ -181,20 +186,28 @@ function findMarketAndSelection(matchDetails, criteria) {
 
             if (!nameMatch) continue;
 
-            // Check spread exclusions
-            if (shouldExcludeSpread(sel, market_type)) {
-                continue; // Skip this selection
-            }
-
+            // Check points if required
+            let pointsMatch = true;
             if (points !== undefined && points !== null) {
                 const selLine = sel.specialValue || sel.line;
-                if (String(selLine).includes(String(points))) {
-                    return { market, selection: sel };
-                }
-            } else {
-                return { market, selection: sel };
+                pointsMatch = String(selLine).includes(String(points));
             }
+
+            if (!pointsMatch) continue;
+
+            // Check spread exclusions for this matched candidate
+            const reason = getExclusionReason(sel, market_type);
+            if (reason) {
+                rejectionReason = reason;
+                continue; // Skip this excluded one, keep looking for others
+            }
+
+            return { market, selection: sel };
         }
+    }
+
+    if (rejectionReason) {
+        throw new Error(`Selection found but excluded: ${rejectionReason}`);
     }
 
     throw new Error(`No selection found for outcome '${outcome}' with points '${points}' in markets matching '${market_type}'`);
@@ -318,7 +331,7 @@ export async function placeBet(req, res) {
             if (expected_odds && found_odds < expected_odds) {
                 console.warn(chalk.yellow(`[SimpleAPI][${userToUse}] odds slippage: found ${found_odds} expected ${expected_odds}`));
                 // Optional: We could throw here if we want to abort bet on slippage
-                // throw new Error(`Odds slippage: found ${found_odds} expected ${expected_odds}`);
+                throw new Error(`Odds slippage: found ${found_odds} expected ${expected_odds}`);
             }
 
             console.log(chalk.green(`[SimpleAPI][${userToUse}] Found Market="${market.name}" Selection="${selection.name}" @ ${selection.odd.value}`));
