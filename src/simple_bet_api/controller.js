@@ -170,10 +170,11 @@ function findMarketAndSelection(matchDetails, criteria) {
 
             // First half selections use "HT" suffix (e.g., "1 HT", "X HT", "2 HT")
             // Regular selections use plain names (e.g., "1", "X", "2", "Home", "Away")
+            // Asian Handicap selections use "1 AH", "2 AH"
             if (targetOutcome === "home" || targetOutcome === "1") {
-                nameMatch = sName === "home" || sName === "1" || sName === "1 ht";
+                nameMatch = sName === "home" || sName === "1" || sName === "1 ht" || sName === "1 ah";
             } else if (targetOutcome === "away" || targetOutcome === "2") {
-                nameMatch = sName === "away" || sName === "2" || sName === "2 ht";
+                nameMatch = sName === "away" || sName === "2" || sName === "2 ht" || sName === "2 ah";
             } else if (targetOutcome === "draw" || targetOutcome === "x") {
                 nameMatch = sName === "draw" || sName === "x" || sName === "x ht";
             } else if (targetOutcome === "over") {
