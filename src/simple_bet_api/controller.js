@@ -205,13 +205,12 @@ export async function placeBet(req, res) {
     const {
         home,
         away,
-        stake = 10,
-        username,
         market_type = "moneyline",
         outcome,
         points,
         is_first_half = false,
-        team // "home" or "away" for team_totals
+        team, // "home" or "away" for team_totals
+        odds: expected_odds
     } = req.body;
 
     if (!home || !away) {
@@ -224,123 +223,153 @@ export async function placeBet(req, res) {
 
     const { browser } = req;
 
-    // Determine user context
-    const userToUse = username || process.env.BETKING_USERNAME;
-    if (!userToUse) {
-        return res.status(400).json({ error: "Username is required (or env default) to load session." });
-    }
-
+    const ACCOUNTS_FILE = path.join(process.cwd(), "accounts.json");
+    let accounts = [];
     try {
-        console.log(chalk.cyan(`[SimpleAPI] Processing bet for user: ${userToUse}`));
-
-        // 1. Load User Store
-        const store = new Store(userToUse);
-        await store.initialize();
-
-        // 2. Initialize Bookmaker with stored session
-        // Note: Password might not be needed if session is valid.
-        // If we need to re-login, we need the password.
-        const data = store.getData();
-        const storedCreds = data.credentials || {};
-        const passwordToUse = storedCreds.password || process.env.BETKING_PASSWORD;
-
-        const bookmakerConf = {
-            name: "BetKing",
-            username: userToUse,
-            password: passwordToUse || "", // Might be empty if not saved
-        };
-
-        const bookmaker = new BetKingBookmaker(bookmakerConf, browser, store);
-
-        // 3. Verify Session
-        // "doesn't bother about login just take cookies"
-        // But we should verify if cookies are valid.
-        const valid = await bookmaker.getBookmakerSessionValidity();
-
-        if (!valid) {
-            console.log(chalk.yellow(`[SimpleAPI] Session invalid for ${userToUse}. Attempting auto-login...`));
-            if (passwordToUse) {
-                const loginRes = await bookmaker.signin(userToUse, passwordToUse);
-                if (!loginRes.success) {
-                    return res.status(401).json({ error: "Session invalid and auto-login failed", details: loginRes.error });
-                }
-                console.log(chalk.green(`[SimpleAPI] Auto-login successful.`));
-            } else {
-                return res.status(401).json({ error: "Session invalid and no password saved for auto-login." });
-            }
-        } else {
-            console.log(chalk.green(`[SimpleAPI] Session valid for ${userToUse}. Proceeding...`));
-        }
-
-        // 4. Find Match and Place Bet
-        console.log(chalk.cyan(`[SimpleAPI] Searching match: ${home} vs ${away}`));
-        const matchItem = await bookmaker.getMatchDataByTeamPair(home, away);
-        if (!matchItem) {
-            return res.status(404).json({ error: "Match not found by team names." });
-        }
-
-        const eventId = matchItem.IDEvent ?? matchItem.id;
-        const eventName = matchItem.EventName ?? matchItem.eventName ?? `${matchItem.TeamHome} - ${matchItem.TeamAway}`;
-
-        console.log(chalk.cyan(`[SimpleAPI] Fetching event details: id=${eventId}, name=${eventName}`));
-        const matchDetails = await bookmaker.getMatchDetailsByEvent(eventId, eventName);
-        if (!matchDetails) {
-            return res.status(500).json({ error: "Failed to fetch match details." });
-        }
-
-        let selectionData;
-        try {
-            selectionData = findMarketAndSelection(matchDetails, {
-                market_type,
-                outcome,
-                points,
-                is_first_half,
-                team
-            });
-        } catch (e) {
-            return res.status(400).json({ error: `Could not find specified market/selection: ${e.message}` });
-        }
-
-        const { market, selection } = selectionData;
-
-        const found_odds = selection.odd.value;
-        const expected_odds = req.body.odds;
-
-        if (expected_odds && found_odds < expected_odds) {
-            console.warn(chalk.yellow(`[SimpleAPI] odds slippage: found ${found_odds} expected ${expected_odds}`));
-        }
-
-        console.log(chalk.green(`[SimpleAPI] Found Market="${market.name}" Selection="${selection.name}" @ ${selection.odd.value}`));
-
-        const providerData = { sportId: 1 };
-
-        const payload = bookmaker.constructBetPayload(
-            matchDetails,
-            market,
-            selection,
-            Number(stake),
-            providerData
-        );
-
-        const betResult = await bookmaker.placeBet(userToUse, payload);
-
-        // BetKing returns responseStatus: 1 for success
-        if (betResult.responseStatus === 1) {
-            return res.json({
-                status: "success",
-                match: eventName,
-                market: market.name,
-                selection: selection.name,
-                odds: selection.odd.value,
-                result: betResult
-            });
-        } else {
-            const errorMsg = betResult.errorsList ? JSON.stringify(betResult.errorsList) : `Status: ${betResult.responseStatus}`;
-            return res.status(400).json({ status: "failed", error: `Bet rejected: ${errorMsg}` });
-        }
-
+        const accountsData = fs.readFileSync(ACCOUNTS_FILE, 'utf-8');
+        accounts = JSON.parse(accountsData);
     } catch (error) {
-        console.error(chalk.red("[SimpleAPI] Error processing bet:"), error);
-        return res.status(500).json({ error: error.message });
+        console.error(chalk.red("[SimpleAPI] Failed to read accounts.json:"), error);
+        return res.status(500).json({ error: "Failed to load accounts configuration." });
     }
+
+    if (!Array.isArray(accounts) || accounts.length === 0) {
+        return res.status(400).json({ error: "No accounts configured in accounts.json" });
+    }
+
+    console.log(chalk.magenta(`[SimpleAPI] Starting parallel bet placement for ${accounts.length} accounts...`));
+
+    const results = await Promise.all(accounts.map(async (account) => {
+        const userToUse = account.username;
+        const stake = account.stake || 50; // Default stake if missing
+
+        try {
+            console.log(chalk.cyan(`[SimpleAPI] Processing bet for user: ${userToUse}`));
+
+            // 1. Load User Store
+            const store = new Store(userToUse);
+            await store.initialize();
+
+            // 2. Initialize Bookmaker
+            const data = store.getData();
+            const storedCreds = data.credentials || {};
+            // Use password from account config if not in store (though auth service should have synced it)
+            const passwordToUse = account.password || storedCreds.password || process.env.BETKING_PASSWORD;
+
+            const bookmakerConf = {
+                name: "BetKing",
+                username: userToUse,
+                password: passwordToUse || "",
+            };
+
+            const bookmaker = new BetKingBookmaker(bookmakerConf, browser, store);
+
+            // 3. Verify Session
+            const valid = await bookmaker.getBookmakerSessionValidity();
+
+            if (!valid) {
+                console.log(chalk.yellow(`[SimpleAPI] Session invalid for ${userToUse}. Attempting auto-login...`));
+                if (passwordToUse) {
+                    const loginRes = await bookmaker.signin(userToUse, passwordToUse);
+                    if (!loginRes.success) {
+                        throw new Error(`Session invalid and auto-login failed: ${loginRes.error}`);
+                    }
+                    console.log(chalk.green(`[SimpleAPI] Auto-login successful for ${userToUse}.`));
+                } else {
+                    throw new Error("Session invalid and no password available for auto-login.");
+                }
+            }
+
+            // 4. Find Match and Place Bet
+            // console.log(chalk.cyan(`[SimpleAPI] Searching match: ${home} vs ${away}`));
+            const matchItem = await bookmaker.getMatchDataByTeamPair(home, away);
+            if (!matchItem) {
+                throw new Error("Match not found by team names.");
+            }
+
+            const eventId = matchItem.IDEvent ?? matchItem.id;
+            const eventName = matchItem.EventName ?? matchItem.eventName ?? `${matchItem.TeamHome} - ${matchItem.TeamAway}`;
+
+            // console.log(chalk.cyan(`[SimpleAPI] Fetching event details: id=${eventId}, name=${eventName}`));
+            const matchDetails = await bookmaker.getMatchDetailsByEvent(eventId, eventName);
+            if (!matchDetails) {
+                throw new Error("Failed to fetch match details.");
+            }
+
+            let selectionData;
+            try {
+                selectionData = findMarketAndSelection(matchDetails, {
+                    market_type,
+                    outcome,
+                    points,
+                    is_first_half,
+                    team
+                });
+            } catch (e) {
+                throw new Error(`Could not find specified market/selection: ${e.message}`);
+            }
+
+            const { market, selection } = selectionData;
+
+            const found_odds = selection.odd.value;
+
+            if (expected_odds && found_odds < expected_odds) {
+                console.warn(chalk.yellow(`[SimpleAPI][${userToUse}] odds slippage: found ${found_odds} expected ${expected_odds}`));
+                // Optional: We could throw here if we want to abort bet on slippage
+                // throw new Error(`Odds slippage: found ${found_odds} expected ${expected_odds}`);
+            }
+
+            console.log(chalk.green(`[SimpleAPI][${userToUse}] Found Market="${market.name}" Selection="${selection.name}" @ ${selection.odd.value}`));
+
+            const providerData = { sportId: 1 };
+
+            const payload = bookmaker.constructBetPayload(
+                matchDetails,
+                market,
+                selection,
+                Number(stake),
+                providerData
+            );
+
+            const betResult = await bookmaker.placeBet(userToUse, payload);
+
+            if (betResult.responseStatus === 1) {
+                return {
+                    username: userToUse,
+                    status: "success",
+                    match: eventName,
+                    market: market.name,
+                    selection: selection.name,
+                    odds: selection.odd.value,
+                    result: betResult
+                };
+            } else {
+                const errorMsg = betResult.errorsList ? JSON.stringify(betResult.errorsList) : `Status: ${betResult.responseStatus}`;
+                throw new Error(`Bet rejected: ${errorMsg}`);
+            }
+
+        } catch (error) {
+            console.error(chalk.red(`[SimpleAPI] Error processing bet for ${userToUse}:`), error.message);
+            return {
+                username: userToUse,
+                status: "failed",
+                error: error.message
+            };
+        }
+    }));
+
+    // Aggregate stats
+    const successful = results.filter(r => r.status === "success").length;
+    const failed = results.filter(r => r.status === "failed").length;
+
+    console.log(chalk.magenta(`[SimpleAPI] Parallel bet execution finished. Success: ${successful}, Failed: ${failed}`));
+
+    return res.json({
+        summary: {
+            total: results.length,
+            successful,
+            failed
+        },
+        results
+    });
 }

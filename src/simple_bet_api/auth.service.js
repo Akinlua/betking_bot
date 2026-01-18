@@ -12,20 +12,71 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DATA_DIR = path.join(process.cwd(), "data", "edgerunner");
 
 // Singleton browser accessor (passed from server start)
+const ACCOUNTS_FILE = path.join(process.cwd(), "accounts.json");
 let _browser = null;
 
 export function initAuthService(browser) {
     _browser = browser;
-    console.log(chalk.green("[AuthService] Initialized. Scheduling re-login task (Every 6 Hours)."));
+    console.log(chalk.green("[AuthService] Initialized. Starting initial sync and login sequence..."));
 
-    nodeCron.schedule("0 */6 * * *", async () => {
-        console.log(chalk.cyan(`\n[AuthService] Starting scheduled re-login for all accounts...`));
-        await reLoginAll();
+    // Immediate sync and login on startup
+    syncAndLoginAll().then(() => {
+        console.log(chalk.green("[AuthService] Initial sync and login sequence completed. Scheduling re-login task (Every 6 Hours)."));
+
+        nodeCron.schedule("0 */6 * * *", async () => {
+            console.log(chalk.cyan(`\n[AuthService] Starting scheduled re-login for all accounts...`));
+            await reLoginAll();
+        });
     });
 }
 
 function getStore(username) {
     return new Store(username);
+}
+
+/**
+ * Reads accounts.json, ensures they are in the store, and then triggers a mass login.
+ */
+async function syncAndLoginAll() {
+    console.log(chalk.cyan("[AuthService] Syncing accounts from accounts.json..."));
+    try {
+        const accountsData = await fs.readFile(ACCOUNTS_FILE, 'utf-8');
+        const accounts = JSON.parse(accountsData);
+
+        if (!Array.isArray(accounts)) {
+            console.error(chalk.red("[AuthService] accounts.json is not an array."));
+            return;
+        }
+
+        console.log(chalk.dim(`[AuthService] Found ${accounts.length} accounts in configuration.`));
+
+        for (const account of accounts) {
+            const { username, password } = account;
+            if (!username || !password) continue;
+
+            try {
+                const store = getStore(username);
+                await store.initialize();
+
+                // Save/Update credentials
+                await store.setCredentials({ username, password });
+
+                console.log(chalk.dim(`[AuthService] Synced credentials for ${username}`));
+            } catch (err) {
+                console.error(chalk.red(`[AuthService] Failed to sync ${username}:`), err);
+            }
+        }
+
+    } catch (error) {
+        if (error.code === 'ENOENT') {
+            console.log(chalk.yellow("[AuthService] accounts.json not found. Skipping sync."));
+        } else {
+            console.error(chalk.red("[AuthService] Error reading accounts.json:"), error);
+        }
+    }
+
+    // Now perform the login for everyone (newly synced + existing)
+    await reLoginAll();
 }
 
 async function reLoginAll() {
@@ -47,7 +98,7 @@ async function reLoginAll() {
         const files = await fs.readdir(DATA_DIR);
         const userFiles = files.filter(f => f.endsWith(".json"));
 
-        console.log(chalk.dim(`[AuthService] Found ${userFiles.length} accounts.`));
+        console.log(chalk.dim(`[AuthService] Found ${userFiles.length} accounts in storage.`));
 
         for (const file of userFiles) {
             const username = path.basename(file, ".json");
@@ -58,7 +109,7 @@ async function reLoginAll() {
                 await store.initialize();
 
                 const data = store.getData();
-                const creds = data.credentials || {}; // We saved this in login controller
+                const creds = data.credentials || {};
 
                 if (!creds.password) {
                     console.log(chalk.yellow(`[AuthService] No password saved for ${username}, skipping.`));

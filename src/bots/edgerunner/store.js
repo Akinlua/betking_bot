@@ -22,6 +22,7 @@ const defaultEdgerunnerState = {
     cookies: [],
     accessToken: null,
   },
+  credentials: {},
 };
 
 export class Store {
@@ -157,5 +158,19 @@ export class Store {
         throw error;
       }
     }
+  }
+
+  /**
+   * Persists credentials.
+   * @param {Object} credentials { username, password }
+   */
+  async setCredentials(credentials) {
+    // If the key doesn't exist in db.data yet (because it was initialized with old default), we might need to force it.
+    // updateAndWrite checks hasOwnProperty.
+
+    if (!this.#db.data.credentials) {
+      this.#db.data.credentials = {};
+    }
+    await this.updateAndWrite("credentials", credentials);
   }
 }
