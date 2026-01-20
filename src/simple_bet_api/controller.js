@@ -12,8 +12,9 @@ function normalize(s) {
  * Checks if a league should be excluded based on market type
  */
 function shouldExcludeLeague(matchDetails, market_type) {
-    const leagueName = normalize(matchDetails?.league?.name || matchDetails?.leagueName || "");
+    const leagueName = normalize(matchDetails?.tournamentName || matchDetails?.leagueName || "");
 
+    console.log(`League name: ${leagueName}`)
     // Handicap & Moneyline: Exclude CUP and WOMEN
     if (market_type === "moneyline" || market_type === "spread" || market_type === "handicap") {
         if (leagueName.includes("cup") || leagueName.includes("women")) {
@@ -35,16 +36,21 @@ function shouldExcludeLeague(matchDetails, market_type) {
  * Checks if a spread/handicap selection should be excluded
  * Returns a string reason if excluded, or null if allowed.
  */
-function getExclusionReason(selection, market_type) {
+function getExclusionReason(selection, market, market_type) {
     if (market_type !== "spread" && market_type !== "handicap") {
         return null;
     }
 
-    const specialValue = String(selection.specialValue || "");
+    // For handicaps, the line value is on the market, not the selection
+    const marketLine = String(market.specialValue || market.line || "");
+    const selectionValue = String(selection.specialValue || "");
 
-    // Exclude -0.5 spread (appears as "0 : 0.5" for away in football)
-    if (specialValue.includes("0 : 0.5") || specialValue.includes("0:0.5")) {
-        return "Spread -0.5 (0:0.5) is excluded by policy.";
+    // Check both market and selection for the line value
+    const specialValue = marketLine || selectionValue;
+
+    // Exclude -0.5 spread (can appear as "-0.5", "0:0.5", or "0 : 0.5")
+    if (specialValue.includes("-0.5") || specialValue.includes("0:0.5") || specialValue.includes("0 : 0.5")) {
+        return "Spread -0.5 is excluded by policy.";
     }
 
     // Exclude 0 spread (DNB - Draw No Bet)
@@ -112,14 +118,37 @@ function findMarketAndSelection(matchDetails, criteria) {
             targetMarketName = market_type;
     }
 
+    // Extract team names from matchDetails for team_totals matching
+    const homeTeamName = matchDetails?.homeTeam || matchDetails?.name?.split(' - ')[0] || "";
+    const awayTeamName = matchDetails?.awayTeam || matchDetails?.name?.split(' - ')[1] || "";
+
     // Filter markets by name
     let candidateMarkets = markets.filter(m => {
         const mName = normalize(m.name);
 
         if (market_type === "team_totals") {
             const hasTotal = mName.includes("total");
-            // Check for specific team if provided, otherwise match any team
-            const hasTeam = team ? mName.includes(team) : (mName.includes("home") || mName.includes("away"));
+
+            // Check for specific team if provided
+            let hasTeam = false;
+            if (team) {
+                if (is_first_half) {
+                    // First-half markets use actual team names: "1st Half - JS Kairouanaise Total Goals"
+                    const targetTeam = team === "home" ? homeTeamName : (team === "away" ? awayTeamName : team);
+                    hasTeam = mName.includes(normalize(targetTeam));
+                } else {
+                    // Regular markets use "home"/"away" keywords: "Total Goals Home"
+                    hasTeam = mName.includes(team);
+                }
+            } else {
+                // If no team specified, match any team total market
+                if (is_first_half) {
+                    hasTeam = mName.includes(normalize(homeTeamName)) || mName.includes(normalize(awayTeamName));
+                } else {
+                    hasTeam = mName.includes("home") || mName.includes("away");
+                }
+            }
+
             const halfMatch = is_first_half ?
                 (mName.includes("1st half") || mName.includes("1st-half") || mName.includes("first half")) :
                 !(mName.includes("1st half") || mName.includes("1st-half") || mName.includes("first half"));
@@ -134,6 +163,12 @@ function findMarketAndSelection(matchDetails, criteria) {
         if (market_type === "moneyline") {
             // Check if market name contains 1x2/moneyline AND matches half criteria
             const isMoneyline = mName.includes("1x2") || mName.includes("moneyline") || mName.includes("match winner");
+
+            // Special handling for "HT 1X2" markets (HT = Half Time)
+            if (is_first_half && mName.startsWith("ht ") && isMoneyline) {
+                return true;
+            }
+
             return isMoneyline && halfMatch;
         }
 
@@ -190,20 +225,23 @@ function findMarketAndSelection(matchDetails, criteria) {
             // Check points if required
             let pointsMatch = true;
             if (points !== undefined && points !== null) {
-                // Try strict numeric match first if available
-                if (sel.specialValueNumber !== undefined && sel.specialValueNumber !== null && !isNaN(Number(points))) {
-                    pointsMatch = Number(sel.specialValueNumber) === Number(points);
+                // Points are stored at the market level (specialValue, specifier, or line)
+                // NOT on individual selections
+                const marketLine = market.specialValue || market.line || (market.specifier ? market.specifier.replace('line=', '') : '');
+
+                if (marketLine) {
+                    // String match - check if the market line contains the requested points
+                    pointsMatch = String(marketLine).includes(String(points));
                 } else {
-                    // Fallback to loose string matching
-                    const selLine = sel.specialValue || sel.line;
-                    pointsMatch = String(selLine).includes(String(points));
+                    // No line info on market - this market doesn't match
+                    pointsMatch = false;
                 }
             }
 
             if (!pointsMatch) continue;
 
             // Check spread exclusions for this matched candidate
-            const reason = getExclusionReason(sel, market_type);
+            const reason = getExclusionReason(sel, market, market_type);
             if (reason) {
                 rejectionReason = reason;
                 continue; // Skip this excluded one, keep looking for others
@@ -282,6 +320,7 @@ export async function placeBet(req, res) {
                 name: "BetKing",
                 username: userToUse,
                 password: passwordToUse || "",
+                isLive: true
             };
 
             const bookmaker = new BetKingBookmaker(bookmakerConf, browser, store);
@@ -335,10 +374,17 @@ export async function placeBet(req, res) {
 
             const found_odds = selection.odd.value;
 
-            if (expected_odds && found_odds < expected_odds) {
-                console.warn(chalk.yellow(`[SimpleAPI][${userToUse}] odds slippage: found ${found_odds} expected ${expected_odds}`));
-                // Optional: We could throw here if we want to abort bet on slippage
-                throw new Error(`Odds slippage: found ${found_odds} expected ${expected_odds}`);
+            // Validate minimum 3% Expected Value (EV)
+            // Constraint: api_odds * 1.03 <= betking_odds
+            if (expected_odds) {
+                const minRequiredOdds = expected_odds * 1.03;
+                if (found_odds < minRequiredOdds) {
+                    const evPercentage = ((found_odds / expected_odds - 1) * 100).toFixed(2);
+                    console.warn(chalk.yellow(`[SimpleAPI][${userToUse}] Insufficient EV: found ${found_odds} (${evPercentage}% EV), required ${minRequiredOdds.toFixed(2)} (3% EV minimum)`));
+                    throw new Error(`Insufficient Expected Value: found odds ${found_odds} with ${evPercentage}% EV, minimum 3% EV required (${minRequiredOdds.toFixed(2)})`);
+                }
+                const evPercentage = ((found_odds / expected_odds - 1) * 100).toFixed(2);
+                console.log(chalk.green(`[SimpleAPI][${userToUse}] EV Check Passed: ${evPercentage}% EV (API: ${expected_odds}, BetKing: ${found_odds})`));
             }
 
             console.log(chalk.green(`[SimpleAPI][${userToUse}] Found Market="${market.name}" Selection="${selection.name}" @ ${selection.odd.value}`));

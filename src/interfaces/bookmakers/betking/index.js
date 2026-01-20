@@ -2407,6 +2407,142 @@ class BetKingBookmaker {
     }
   }
 
+  async getLiveMatches() {
+    const url = "https://m.betking.com/en-ng/sports/live/api/overview/1?includeTranslations=false&_data=routes%2F%28%24locale%29.sports.live.api.overview.%24sportId";
+    try {
+      const events = await this.#fetchJsonFromApi(url);
+      // console.log(`events: ${JSON.stringify(events)}`)
+      // data.tournaments[].events[]
+      const allEvents = [];
+
+      // Handle sportData structure (e.g. { sportData: [ { tournaments: [...] } ] })
+      let tournaments = events.tournaments;
+      if (!tournaments && events.sportData && Array.isArray(events.sportData)) {
+        tournaments = [];
+        events.sportData.forEach(sd => {
+          if (sd.tournaments) {
+            tournaments.push(...sd.tournaments);
+          }
+        });
+      }
+
+      if (tournaments) {
+        tournaments.forEach(t => {
+          if (t.events) {
+            t.events.forEach(e => {
+              // Ensure TeamHome/TeamAway exist for compatibility
+              // The API seems to return 'name' like "Home - Away" and 'teams' array
+              // e.searchableName = e.name; // fallback
+
+              if (!e.TeamHome && !e.TeamAway && e.teams && e.teams.length >= 2) {
+                // Assuming itemOrder 1 is Home and 2 is Away
+                const homeT = e.teams.find(tm => tm.itemOrder === 1);
+                const awayT = e.teams.find(tm => tm.itemOrder === 2);
+                if (homeT) e.TeamHome = homeT.name;
+                if (awayT) e.TeamAway = awayT.name;
+              }
+
+              // Fallback if teams array not present or parsing failed, but strictly we need names
+              if (!e.TeamHome && e.homeName) e.TeamHome = e.homeName;
+              if (!e.TeamAway && e.awayName) e.TeamAway = e.awayName;
+
+              // If still no direct names, we might parse e.name "A - B" in getMatchDataByTeamPair,
+              // but setting them here helps.
+              if (!e.TeamHome && !e.TeamAway && e.name && e.name.includes(' - ')) {
+                const parts = e.name.split(' - ');
+                if (parts.length === 2) {
+                  e.TeamHome = parts[0];
+                  e.TeamAway = parts[1];
+                }
+              }
+
+              allEvents.push(e);
+            });
+          }
+        });
+      }
+      return allEvents;
+    } catch (err) {
+      console.error(chalk.red(`[Bookmaker] Failed to fetch live matches: ${err.message}`));
+      return [];
+    }
+  }
+
+  async _fetchLiveMatchData(eventId) {
+    console.log(`[Bookmaker] (Live) Fetching data for event ${eventId}`);
+    // Area IDs: 1 (Main), 3 (Goals), 11 (1st Half)
+    const areaIds = [1, 3, 11];
+    const baseUrl = "https://m.betking.com/en-ng/sports/live";
+    // Construct the query param for the remix data route
+    const suffix = "_data=routes%2F%28%24locale%29.sports.live.%24matchId";
+
+    const promises = areaIds.map(async (areaId) => {
+      try {
+        const url = `${baseUrl}/${eventId}?areaId=${areaId}&${suffix}`;
+        // Using internal helper that handles puppeteer context/cookies
+        const data = await this.#fetchJsonFromApi(url);
+        if (!data) {
+          throw new Error(`Failed to fetch data (null response)`);
+        }
+        return { areaId, data };
+      } catch (err) {
+        console.warn(`[Bookmaker] Failed to fetch live area ${areaId}: ${err.message}`);
+        return { areaId, error: err };
+      }
+    });
+
+    const results = await Promise.all(promises);
+    console.log(JSON.stringify(results))
+
+    let eventDetails = null;
+    let aggregatedMarkets = [];
+
+    // Prioritize Area 1 (Main) for the base event details
+    // But we process all results to gather markets
+    for (const { areaId, data, error } of results) {
+      if (error || !data) continue;
+
+      // Traverse to the event object
+      // Structure: matchViewData -> tournaments[0] -> events[0]
+      const tournaments = data.matchViewData?.tournaments;
+      if (!tournaments || !tournaments.length) continue;
+      const eventData = tournaments[0].events?.[0];
+
+      if (!eventData) continue;
+
+      // Use the event data from area 1 as the base if available, otherwise first available
+      if (areaId === 1 || !eventDetails) {
+        const { markets, ...rest } = eventData;
+        if (!eventDetails || areaId === 1) {
+          eventDetails = { ...rest, markets: [] };
+        }
+      }
+
+      if (eventData.markets && Array.isArray(eventData.markets)) {
+        aggregatedMarkets.push(...eventData.markets);
+      }
+    }
+
+    if (!eventDetails) {
+      throw new Error(`Could not fetch live match details for ${eventId} (No data from any area)`);
+    }
+
+    // Deduplicate markets by ID
+    const seenMarkets = new Set();
+    const uniqueMarkets = [];
+    for (const m of aggregatedMarkets) {
+      if (!seenMarkets.has(m.id)) {
+        seenMarkets.add(m.id);
+        uniqueMarkets.push(m);
+      }
+    }
+
+    eventDetails.markets = uniqueMarkets;
+    console.log(`[Bookmaker] (Live) Successfully fetched ${uniqueMarkets.length} markets for event ${eventId}`);
+
+    return eventDetails;
+  }
+
   async getMatchDataByTeamPair(home, away) {
     this.state = {
       status: this.constructor.Status.WORKING,
@@ -2426,75 +2562,55 @@ class BetKingBookmaker {
     const combinedSearchTerm = `${normalizedHome} - ${normalizedAway}`;
 
     try {
-      // console.log(`[Bookmaker] Starting Searching for both "${home}" and "${away}"`);
-      const homeResults = await this.getTeamDataByName(home);
-      const awayResults = await this.getTeamDataByName(away);
+      // 1. Try to find match in LIVE games first
+      console.log(`[Bookmaker] Checking LIVE games for: "${home}" vs "${away}"`);
+      const liveMatches = await this.getLiveMatches();
 
-      const allMatches = [...(homeResults || []), ...(awayResults || [])];
-      const uniqueMatches = Array.from(new Map(allMatches.map((match) => [match.IDEvent, match])).values());
+      console.log(`[Bookmaker] Found ${liveMatches.length} live matches.`)
+      // console.log(liveMatches) 
 
-      if (!uniqueMatches.length) {
-        console.log(`[Bookmaker] No matches found for either "${home}" or "${away}"`);
-        return null;
-      }
-
-      console.log(`[Bookmaker] Search: "${normalizedHome}" vs "${normalizedAway}"`);
-      const searchableMatches = uniqueMatches.map((match) => {
-        const apiHome = this.#normalizeTeamName(match.TeamHome);
-        const apiAway = this.#normalizeTeamName(match.TeamAway);
-        return {
-          ...match,
-          combinedEventName: `${apiHome} - ${apiAway}`,
-        };
-      });
-
-      const fuse = new Fuse(searchableMatches, {
-        includeScore: true,
-        threshold: 0.6,
-        keys: ["combinedEventName"],
-      });
-
-      const results = fuse.search({
-        $or: [{ combinedEventName: `${normalizedHome} - ${normalizedAway}` }, { combinedEventName: `${normalizedAway} - ${normalizedHome}` }],
-      });
-      console.log(
-        `[Bookmaker] Search results for Teams ${combinedSearchTerm}`,
-        results.map((r) => {
-          const matchPercentage = (1 - r.score) * 100;
+      if (liveMatches.length > 0) {
+        const searchableLiveMatches = liveMatches.map((match) => {
+          const apiHome = this.#normalizeTeamName(match.TeamHome || match.homeName || "");
+          const apiAway = this.#normalizeTeamName(match.TeamAway || match.awayName || "");
           return {
-            matchConfidence: `${matchPercentage.toFixed(2)}%`,
-            normalizedCombinedSearchTerm: `${combinedSearchTerm}`,
-            normalizedCombinedEventName: `${r.item.combinedEventName}`,
-            eventName: r.item.EventName,
+            ...match,
+            combinedEventName: `${apiHome} - ${apiAway}`,
           };
-        }),
-      );
+        });
 
-      if (results.length === 0) {
-        console.log(`[Bookmaker] No confident fuzzy match found.`);
-        return null;
+        const fuseLive = new Fuse(searchableLiveMatches, {
+          includeScore: true,
+          threshold: 0.6,
+          keys: ["combinedEventName"],
+        });
+
+        const liveResults = fuseLive.search({
+          $or: [{ combinedEventName: `${normalizedHome} - ${normalizedAway}` }, { combinedEventName: `${normalizedAway} - ${normalizedHome}` }],
+        });
+
+        if (liveResults.length > 0) {
+          const bestLiveResult = liveResults.sort((a, b) => a.score - b.score)[0];
+          // Additional check to ensure it's a good match
+          if (bestLiveResult.score <= 0.4) { // Stricter threshold for live games to be sure
+            console.log(chalk.green(`[Bookmaker] FOUND LIVE MATCH! "${bestLiveResult.item.EventName}" (Score: ${bestLiveResult.item.Score})`));
+            this.state = {
+              status: this.constructor.Status.IDLE,
+              message: `Found LIVE match for ${home} vs ${away}`,
+            };
+            return bestLiveResult.item;
+          }
+        }
       }
 
-      const bestResult = results.sort((a, b) => a.score - b.score)[0];
-      const bestResultPercentage = (1 - bestResult.score) * 100;
-      this.state = {
-        status: this.constructor.Status.IDLE,
-        message: `Found best match for ${home} vs ${away}`,
-      };
-
-      if (bestResult.score <= 0.6) {
-        console.log(chalk.green(`[Bookmaker] Found confident match - score (${bestResultPercentage.toFixed(2)}%): "${bestResult.item.EventName}" - below threshold.`));
-        return bestResult.item;
-      }
-
-      console.log(chalk.red(`[Bookmaker] No suitable match found - score (${bestResultPercentage.toFixed(2)}%) - above threshold.`));
+      console.log(`[Bookmaker] Live match not found for ${home} vs ${away} (Pre-match fallback disabled)`);
       return null;
     } catch (error) {
       this.state = {
         status: this.constructor.Status.ERROR,
         message: `Match search failed: ${error.message}`,
       };
-      console.error(`[Bookmaker] Error in getBetKingMatchDataByTeamPair:`, error.message);
+      console.error(`[Bookmaker] Error in getMatchDataByTeamPair:`, error.message);
       throw error;
     }
   }
@@ -2552,7 +2668,10 @@ class BetKingBookmaker {
 
     const eventSlug = this.#slugifyEventName(eventName);
     console.log(`[Bookmaker] Fetching data from page: .../${eventId}/${eventSlug}`);
-    console.log(`[Bookmaker] Event ID: ${eventId}`);
+    if (this.config.isLive) {
+      return this._fetchLiveMatchData(eventId);
+    }
+
     console.log(`[Bookmaker] Event Name: ${eventName}`);
     console.log(`[Bookmaker] Event Slug: ${eventSlug}`);
     const url = `https://m.betking.com/sports/prematch/${eventId}/${eventSlug}`;
@@ -3440,6 +3559,13 @@ class BetKingBookmaker {
       }
 
       page = await this.browser.newPage();
+
+      // Mimic fetchJsonFromApi headers
+      await page.setExtraHTTPHeaders({
+        "Cache-Control": "no-cache",
+        Pragma: "no-cache",
+      });
+
       await page.setRequestInterception(true);
       page.on("request", (req) => {
         if (["image", "stylesheet", "font", "media"].includes(req.resourceType())) {
@@ -3451,7 +3577,7 @@ class BetKingBookmaker {
 
       await page.setCookie(...cookies);
 
-      // console.log('[Bookmaker] Navigating to betslip page to acquire session data...');
+      console.log('[Bookmaker] Navigating to betslip page to acquire session data...');
       await page.goto("https://m.betking.com/sports/betslip", {
         waitUntil: "domcontentloaded",
         timeout: 60000,
@@ -3460,49 +3586,67 @@ class BetKingBookmaker {
       if (data?.betCoupon?.couponTypeId === 2 || data?.betCoupon?.couponType === 2) {
         console.log("[Bookmaker] Multiple bet payload:", JSON.stringify(data));
       }
+
+      console.log(JSON.stringify(data)); // Debug payload if needed
+
       const result = await page.evaluate(
         async (dataToPost, token) => {
-          const apiUrl = "https://m.betking.com/sports/action/placebet?_data=routes%2F%28%24locale%29.sports.action.placebet";
-          const bodyPayload = new URLSearchParams();
-          bodyPayload.append("data", JSON.stringify(dataToPost));
+          const apiUrl = "https://m.betking.com/en-ng/sports/action/placebet?_data=routes%2F%28%24locale%29.sports.action.placebet";
+
+          const formData = new FormData();
+          formData.append("data", JSON.stringify(dataToPost));
+          formData.append("adjustIds", JSON.stringify({
+            adjustId: "",
+            adjustIdfa: "",
+            gpsAdId: ""
+          }));
 
           const headers = {
-            "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
             Referer: "https://m.betking.com/sports/betslip",
             Authorization: `Bearer ${token}`,
           };
 
-          const response = await fetch(apiUrl, {
-            method: "PUT",
-            headers: headers,
-            body: bodyPayload,
-          });
-
-          const responseText = await response.text();
-
-          if (!response.ok) {
-            return { error: true, status: response.status, text: responseText };
-          }
-          if (!responseText) {
-            return {
-              error: true,
-              status: 200,
-              text: "Server returned an empty successful response.",
-            };
-          }
           try {
+            const response = await fetch(apiUrl, {
+              method: "PUT",
+              headers: headers,
+              credentials: "include",
+              body: formData,
+            });
+
+            const responseText = await response.text();
+
+            if (!response.ok) {
+              return {
+                status: response.status,
+                error: responseText || response.statusText || "Unknown Error",
+                isError: true
+              };
+            }
+
+            if (!responseText) {
+              return { error: true, status: 200, text: "Empty response" };
+            }
+
             return JSON.parse(responseText);
           } catch (e) {
             return {
-              error: true,
-              status: 200,
-              text: `Failed to parse JSON: ${responseText}`,
+              status: 0,
+              error: e.message,
+              isError: true
             };
           }
         },
         data,
-        accessToken,
+        accessToken
       );
+
+      if (result && result.isError) {
+        throw new Error(`Bet placement failed with status ${result.status}: ${result.error}`);
+      } else if (result && result.error) {
+        // Handle the case where result structure from previous code was { error: true, ... }
+        throw new Error(`Bet placement failed with status ${result.status}: ${result.text}`);
+      }
 
       if (result.error) {
         throw new Error(`Bet placement failed with status ${result.status}: ${result.text}`);
@@ -3610,12 +3754,13 @@ class BetKingBookmaker {
   constructBetPayload(matchData, market, selection, stakeAmount, providerData) {
     const totalOdds = selection.odd.value;
     const potentialWinnings = stakeAmount * totalOdds;
-    const eventCategory = this.sportIdMapper[providerData.sportId] || "F";
+    // Force "L" for Live if that's the intention, or map dynamic. User said "moved to live".
+    const eventCategory = "L";
 
     const oddsSelection = {
       IDSelectionType: selection.typeId,
       IDSport: matchData.sportId,
-      allowFixed: false,
+      allowFixed: true, // Changed from false
       compatibilityLevel: 0,
       eventCategory: eventCategory,
       eventDate: matchData.date,
@@ -3637,12 +3782,16 @@ class BetKingBookmaker {
       parentEventId: matchData.id,
       selectionId: selection.id,
       selectionName: selection.name,
-      selectionNoWinValues: [],
-      smartCode: matchData.smartBetCode,
+      smartCode: 0, // User showed 0, previously matchData.smartBetCode
       specialValue: selection.specialValue || "0",
       sportName: matchData.sportName,
       tournamentId: matchData.tournamentId,
       tournamentName: matchData.tournamentName,
+      // New fields
+      selectionKMId: selection.kmId || selection.selectionKMId || selection.id, // Fallback to ID if missing, or 0?
+      matchKMId: matchData.kmId || matchData.matchKMId || matchData.id,
+      marketKMId: market.kmId || market.marketKMId || market.id,
+      isTransitioned: false,
     };
 
     const grouping = {
@@ -3694,13 +3843,13 @@ class BetKingBookmaker {
       allGroupings: [grouping],
       possibleMissingGroupings: [],
       currencyId: 16,
-      isLive: false,
+      isLive: true, // Changed to true
       isVirtual: false,
       currentEvalMotivation: 0,
       betCouponGlobalVariable: {
         currencyId: 16,
         defaultStakeGross: 100,
-        isFreeBetRedemptionEnabled: false,
+        // isFreeBetRedemptionEnabled: false, // Removed in new payload
         isVirtualsInstallation: false,
         maxBetStake: 175438596.49,
         maxCombinationBetWin: 75000000,
@@ -3721,6 +3870,9 @@ class BetKingBookmaker {
         stakeMod0Single: 0,
         stakeThresholdMultiple: 175438.6,
         stakeThresholdSingle: 17543.86,
+        // New/Moved fields
+        isCashoutEnabled: true,
+        currencyConversion: 0.00057,
         flexiCutGlobalVariable: {
           parameters: {
             formulaId: 1,
@@ -3730,7 +3882,7 @@ class BetKingBookmaker {
         },
       },
       language: "en",
-      hasLive: false,
+      hasLive: true, // Changed to true
       couponType: 1,
     };
 

@@ -120,6 +120,7 @@ async function reLoginAll() {
                     name: "BetKing",
                     username: username,
                     password: creds.password,
+                    isLive: true
                 };
 
                 const bookmaker = new BetKingBookmaker(bookmakerConf, _browser, store);

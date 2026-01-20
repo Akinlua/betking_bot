@@ -1,0 +1,2899 @@
+{
+    "isNewView": false,
+    "currentMatchId": "33715077",
+    "matchViewData": {
+        "areas": [
+            {
+                "id": 1,
+                "name": "Main",
+                "order": 1
+            },
+            {
+                "id": 2,
+                "name": "Over/Under",
+                "order": 3
+            },
+            {
+                "id": 11,
+                "name": "1st Half",
+                "order": 3
+            },
+            {
+                "id": 12,
+                "name": "2nd Half",
+                "order": 4
+            },
+            {
+                "id": 3,
+                "name": "Goals",
+                "order": 5
+            },
+            {
+                "id": 4,
+                "name": "Handicap",
+                "order": 6
+            },
+            {
+                "id": 5,
+                "name": "Correct Score",
+                "order": 7
+            }
+        ],
+        "currentArea": {
+            "id": 1,
+            "name": "Main",
+            "order": 1
+        },
+        "id": 1,
+        "eventCount": 1,
+        "name": "Football",
+        "tournaments": [
+            {
+                "id": 23806390,
+                "name": "U20 Copa Sao Paulo de Juniores",
+                "events": [
+                    {
+                        "awayGameScore": "0",
+                        "categoryId": 10321728,
+                        "categoryName": "Brazil",
+                        "date": "2026-01-19T22:30:00+01:00",
+                        "hasWidget": true,
+                        "homeGameScore": "1",
+                        "id": 33715077,
+                        "incompatibleEvents": [],
+                        "markets": [
+                            {
+                                "combinability": 1,
+                                "compatibleMarkets": [],
+                                "groupNo": 0,
+                                "hasSpread": false,
+                                "id": 551707470,
+                                "name": "1X2",
+                                "scheduleStatus": 0,
+                                "selections": [
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 1.1
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725323,
+                                        "name": "1",
+                                        "typeId": 4
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 8
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725358,
+                                        "name": "X",
+                                        "typeId": 2
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 25
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725363,
+                                        "name": "2",
+                                        "typeId": 5
+                                    }
+                                ],
+                                "specialValue": "",
+                                "specifier": "",
+                                "status": 1,
+                                "typeId": 110
+                            },
+                            {
+                                "combinability": 1,
+                                "compatibleMarkets": [],
+                                "groupNo": 0,
+                                "hasSpread": false,
+                                "id": 551707435,
+                                "name": "Double chance",
+                                "scheduleStatus": 0,
+                                "selections": [
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 0,
+                                            "value": 0
+                                        },
+                                        "status": "LOCK",
+                                        "id": 1786725193,
+                                        "name": "1X",
+                                        "typeId": 9
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 1.04
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725194,
+                                        "name": "12",
+                                        "typeId": 10
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 7
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725195,
+                                        "name": "X2",
+                                        "typeId": 11
+                                    }
+                                ],
+                                "specialValue": "",
+                                "specifier": "",
+                                "status": 1,
+                                "typeId": 146
+                            },
+                            {
+                                "combinability": 1,
+                                "compatibleMarkets": [],
+                                "groupNo": 0,
+                                "hasSpread": false,
+                                "id": 551707482,
+                                "name": "Total Goals",
+                                "scheduleStatus": 0,
+                                "selections": [
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 1.08
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725403,
+                                        "name": "Over",
+                                        "typeId": 12
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 7
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725404,
+                                        "name": "Under",
+                                        "typeId": 13
+                                    }
+                                ],
+                                "specialValue": "1.5",
+                                "specifier": "line=1.5",
+                                "status": 1,
+                                "typeId": 160,
+                                "spreadMarkets": [
+                                    {
+                                        "combinability": 1,
+                                        "compatibleMarkets": [],
+                                        "groupNo": 0,
+                                        "hasSpread": false,
+                                        "id": 551707482,
+                                        "name": "Total Goals 1.5",
+                                        "scheduleStatus": 0,
+                                        "selections": [
+                                            {
+                                                "odd": {
+                                                    "channelId": 36,
+                                                    "status": 1,
+                                                    "value": 1.08
+                                                },
+                                                "status": "VALID",
+                                                "id": 1786725403,
+                                                "name": "Over",
+                                                "typeId": 12
+                                            },
+                                            {
+                                                "odd": {
+                                                    "channelId": 36,
+                                                    "status": 1,
+                                                    "value": 7
+                                                },
+                                                "status": "VALID",
+                                                "id": 1786725404,
+                                                "name": "Under",
+                                                "typeId": 13
+                                            }
+                                        ],
+                                        "specialValue": "1.5",
+                                        "specifier": "line=1.5",
+                                        "status": 1,
+                                        "typeId": 160
+                                    },
+                                    {
+                                        "combinability": 1,
+                                        "compatibleMarkets": [],
+                                        "groupNo": 0,
+                                        "hasSpread": false,
+                                        "id": 551707500,
+                                        "name": "Total Goals 2.5",
+                                        "scheduleStatus": 0,
+                                        "selections": [
+                                            {
+                                                "odd": {
+                                                    "channelId": 36,
+                                                    "status": 1,
+                                                    "value": 1.45
+                                                },
+                                                "status": "VALID",
+                                                "id": 1786725475,
+                                                "name": "Over",
+                                                "typeId": 12
+                                            },
+                                            {
+                                                "odd": {
+                                                    "channelId": 36,
+                                                    "status": 1,
+                                                    "value": 2.5
+                                                },
+                                                "status": "VALID",
+                                                "id": 1786725476,
+                                                "name": "Under",
+                                                "typeId": 13
+                                            }
+                                        ],
+                                        "specialValue": "2.5",
+                                        "specifier": "line=2.5",
+                                        "status": 1,
+                                        "typeId": 160
+                                    },
+                                    {
+                                        "combinability": 1,
+                                        "compatibleMarkets": [],
+                                        "groupNo": 0,
+                                        "hasSpread": false,
+                                        "id": 551707442,
+                                        "name": "Total Goals 3.5",
+                                        "scheduleStatus": 0,
+                                        "selections": [
+                                            {
+                                                "odd": {
+                                                    "channelId": 36,
+                                                    "status": 1,
+                                                    "value": 2.4
+                                                },
+                                                "status": "VALID",
+                                                "id": 1786725212,
+                                                "name": "Over",
+                                                "typeId": 12
+                                            },
+                                            {
+                                                "odd": {
+                                                    "channelId": 36,
+                                                    "status": 1,
+                                                    "value": 1.5
+                                                },
+                                                "status": "VALID",
+                                                "id": 1786725214,
+                                                "name": "Under",
+                                                "typeId": 13
+                                            }
+                                        ],
+                                        "specialValue": "3.5",
+                                        "specifier": "line=3.5",
+                                        "status": 1,
+                                        "typeId": 160
+                                    },
+                                    {
+                                        "combinability": 1,
+                                        "compatibleMarkets": [],
+                                        "groupNo": 0,
+                                        "hasSpread": false,
+                                        "id": 551707464,
+                                        "name": "Total Goals 4.5",
+                                        "scheduleStatus": 0,
+                                        "selections": [
+                                            {
+                                                "odd": {
+                                                    "channelId": 36,
+                                                    "status": 1,
+                                                    "value": 4.5
+                                                },
+                                                "status": "VALID",
+                                                "id": 1786725295,
+                                                "name": "Over",
+                                                "typeId": 12
+                                            },
+                                            {
+                                                "odd": {
+                                                    "channelId": 36,
+                                                    "status": 1,
+                                                    "value": 1.18
+                                                },
+                                                "status": "VALID",
+                                                "id": 1786725322,
+                                                "name": "Under",
+                                                "typeId": 13
+                                            }
+                                        ],
+                                        "specialValue": "4.5",
+                                        "specifier": "line=4.5",
+                                        "status": 1,
+                                        "typeId": 160
+                                    },
+                                    {
+                                        "combinability": 1,
+                                        "compatibleMarkets": [],
+                                        "groupNo": 0,
+                                        "hasSpread": false,
+                                        "id": 551708940,
+                                        "name": "Total Goals 5.5",
+                                        "scheduleStatus": 0,
+                                        "selections": [
+                                            {
+                                                "odd": {
+                                                    "channelId": 36,
+                                                    "status": 1,
+                                                    "value": 12
+                                                },
+                                                "status": "VALID",
+                                                "id": 1786731619,
+                                                "name": "Over",
+                                                "typeId": 12
+                                            },
+                                            {
+                                                "odd": {
+                                                    "channelId": 36,
+                                                    "status": 1,
+                                                    "value": 1.05
+                                                },
+                                                "status": "VALID",
+                                                "id": 1786731620,
+                                                "name": "Under",
+                                                "typeId": 13
+                                            }
+                                        ],
+                                        "specialValue": "5.5",
+                                        "specifier": "line=5.5",
+                                        "status": 1,
+                                        "typeId": 160
+                                    }
+                                ]
+                            },
+                            {
+                                "combinability": 1,
+                                "compatibleMarkets": [],
+                                "groupNo": 0,
+                                "hasSpread": false,
+                                "id": 551711467,
+                                "name": "Next Goal (2)",
+                                "scheduleStatus": 0,
+                                "selections": [
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 1.45
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786737637,
+                                        "name": "1",
+                                        "typeId": 4
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 7
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786737638,
+                                        "name": "X",
+                                        "typeId": 7
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 3.5
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786737641,
+                                        "name": "2",
+                                        "typeId": 5
+                                    }
+                                ],
+                                "specialValue": "2",
+                                "specifier": "goalnr=2",
+                                "status": 1,
+                                "typeId": 195
+                            },
+                            {
+                                "combinability": 1,
+                                "compatibleMarkets": [],
+                                "groupNo": 0,
+                                "hasSpread": false,
+                                "id": 551707502,
+                                "name": "To Win Tie",
+                                "scheduleStatus": 0,
+                                "selections": [
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 1.04
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725481,
+                                        "name": "1",
+                                        "typeId": 4
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 9
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725492,
+                                        "name": "2",
+                                        "typeId": 5
+                                    }
+                                ],
+                                "specialValue": "",
+                                "specifier": "",
+                                "status": 1,
+                                "typeId": 318
+                            },
+                            {
+                                "combinability": 1,
+                                "compatibleMarkets": [],
+                                "groupNo": 0,
+                                "hasSpread": false,
+                                "id": 551707451,
+                                "name": "GG/NG",
+                                "scheduleStatus": 0,
+                                "selections": [
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 2.2
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725241,
+                                        "name": "GG",
+                                        "typeId": 74
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 1.7
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725251,
+                                        "name": "NG",
+                                        "typeId": 76
+                                    }
+                                ],
+                                "specialValue": "",
+                                "specifier": "",
+                                "status": 1,
+                                "typeId": 302
+                            },
+                            {
+                                "combinability": 1,
+                                "compatibleMarkets": [],
+                                "groupNo": 0,
+                                "hasSpread": false,
+                                "id": 551707473,
+                                "name": "Which Team Wins the Rest Of The Match (0:0)",
+                                "scheduleStatus": 0,
+                                "selections": [
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 0,
+                                            "value": 1.35
+                                        },
+                                        "status": "LOCK",
+                                        "id": 1786725330,
+                                        "name": "1",
+                                        "typeId": 4
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 0,
+                                            "value": 4
+                                        },
+                                        "status": "LOCK",
+                                        "id": 1786725339,
+                                        "name": "X",
+                                        "typeId": 2
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 0,
+                                            "value": 9
+                                        },
+                                        "status": "LOCK",
+                                        "id": 1786725375,
+                                        "name": "2",
+                                        "typeId": 5
+                                    }
+                                ],
+                                "specialValue": "",
+                                "specifier": "score=0:0",
+                                "status": 0,
+                                "typeId": 322
+                            },
+                            {
+                                "combinability": 1,
+                                "compatibleMarkets": [],
+                                "groupNo": 0,
+                                "hasSpread": false,
+                                "id": 551711468,
+                                "name": "Which Team Wins the Rest Of The Match (1:0)",
+                                "scheduleStatus": 0,
+                                "selections": [
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 1.5
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786737643,
+                                        "name": "1",
+                                        "typeId": 4
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 3.5
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786737647,
+                                        "name": "X",
+                                        "typeId": 2
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 7
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786737649,
+                                        "name": "2",
+                                        "typeId": 5
+                                    }
+                                ],
+                                "specialValue": "",
+                                "specifier": "score=1:0",
+                                "status": 1,
+                                "typeId": 322
+                            },
+                            {
+                                "combinability": 1,
+                                "compatibleMarkets": [],
+                                "groupNo": 0,
+                                "hasSpread": false,
+                                "id": 551707485,
+                                "name": "Correct Score",
+                                "scheduleStatus": 0,
+                                "selections": [
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 7
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725442,
+                                        "name": "1:0",
+                                        "typeId": 1539
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 4.5
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725443,
+                                        "name": "2:0",
+                                        "typeId": 1540
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 5
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725444,
+                                        "name": "3:0",
+                                        "typeId": 1541
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 10
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725445,
+                                        "name": "4:0",
+                                        "typeId": 1542
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 12
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725447,
+                                        "name": "1:1",
+                                        "typeId": 1548
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 7
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725448,
+                                        "name": "2:1",
+                                        "typeId": 1549
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 9
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725449,
+                                        "name": "3:1",
+                                        "typeId": 1550
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 15
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725450,
+                                        "name": "4:1",
+                                        "typeId": 1551
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 40
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725452,
+                                        "name": "1:2",
+                                        "typeId": 1556
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 25
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725453,
+                                        "name": "2:2",
+                                        "typeId": 1557
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 30
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725454,
+                                        "name": "3:2",
+                                        "typeId": 1558
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 50
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725455,
+                                        "name": "4:2",
+                                        "typeId": 1559
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 151
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725457,
+                                        "name": "1:3",
+                                        "typeId": 1563
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 101
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725458,
+                                        "name": "2:3",
+                                        "typeId": 1564
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 151
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725459,
+                                        "name": "3:3",
+                                        "typeId": 1565
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 151
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725460,
+                                        "name": "4:3",
+                                        "typeId": 1566
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 151
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725462,
+                                        "name": "1:4",
+                                        "typeId": 1569
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 151
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725463,
+                                        "name": "2:4",
+                                        "typeId": 1570
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 151
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725464,
+                                        "name": "3:4",
+                                        "typeId": 1571
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 151
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725465,
+                                        "name": "4:4",
+                                        "typeId": 1572
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 9
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725466,
+                                        "name": "Others",
+                                        "typeId": 1995
+                                    }
+                                ],
+                                "specialValue": "",
+                                "specifier": "",
+                                "status": 1,
+                                "typeId": 102,
+                                "correctScoreSelections": {
+                                    "homeToWin": [
+                                        {
+                                            "odd": {
+                                                "channelId": 36,
+                                                "status": 1,
+                                                "value": 7
+                                            },
+                                            "status": "VALID",
+                                            "id": 1786725442,
+                                            "name": "1:0",
+                                            "typeId": 1539
+                                        },
+                                        {
+                                            "odd": {
+                                                "channelId": 36,
+                                                "status": 1,
+                                                "value": 4.5
+                                            },
+                                            "status": "VALID",
+                                            "id": 1786725443,
+                                            "name": "2:0",
+                                            "typeId": 1540
+                                        },
+                                        {
+                                            "odd": {
+                                                "channelId": 36,
+                                                "status": 1,
+                                                "value": 5
+                                            },
+                                            "status": "VALID",
+                                            "id": 1786725444,
+                                            "name": "3:0",
+                                            "typeId": 1541
+                                        },
+                                        {
+                                            "odd": {
+                                                "channelId": 36,
+                                                "status": 1,
+                                                "value": 10
+                                            },
+                                            "status": "VALID",
+                                            "id": 1786725445,
+                                            "name": "4:0",
+                                            "typeId": 1542
+                                        },
+                                        {
+                                            "odd": {
+                                                "channelId": 36,
+                                                "status": 1,
+                                                "value": 7
+                                            },
+                                            "status": "VALID",
+                                            "id": 1786725448,
+                                            "name": "2:1",
+                                            "typeId": 1549
+                                        },
+                                        {
+                                            "odd": {
+                                                "channelId": 36,
+                                                "status": 1,
+                                                "value": 9
+                                            },
+                                            "status": "VALID",
+                                            "id": 1786725449,
+                                            "name": "3:1",
+                                            "typeId": 1550
+                                        },
+                                        {
+                                            "odd": {
+                                                "channelId": 36,
+                                                "status": 1,
+                                                "value": 15
+                                            },
+                                            "status": "VALID",
+                                            "id": 1786725450,
+                                            "name": "4:1",
+                                            "typeId": 1551
+                                        },
+                                        {
+                                            "odd": {
+                                                "channelId": 36,
+                                                "status": 1,
+                                                "value": 30
+                                            },
+                                            "status": "VALID",
+                                            "id": 1786725454,
+                                            "name": "3:2",
+                                            "typeId": 1558
+                                        },
+                                        {
+                                            "odd": {
+                                                "channelId": 36,
+                                                "status": 1,
+                                                "value": 50
+                                            },
+                                            "status": "VALID",
+                                            "id": 1786725455,
+                                            "name": "4:2",
+                                            "typeId": 1559
+                                        },
+                                        {
+                                            "odd": {
+                                                "channelId": 36,
+                                                "status": 1,
+                                                "value": 151
+                                            },
+                                            "status": "VALID",
+                                            "id": 1786725460,
+                                            "name": "4:3",
+                                            "typeId": 1566
+                                        }
+                                    ],
+                                    "awayToWin": [
+                                        {
+                                            "odd": {
+                                                "channelId": 36,
+                                                "status": 1,
+                                                "value": 40
+                                            },
+                                            "status": "VALID",
+                                            "id": 1786725452,
+                                            "name": "1:2",
+                                            "typeId": 1556
+                                        },
+                                        {
+                                            "odd": {
+                                                "channelId": 36,
+                                                "status": 1,
+                                                "value": 151
+                                            },
+                                            "status": "VALID",
+                                            "id": 1786725457,
+                                            "name": "1:3",
+                                            "typeId": 1563
+                                        },
+                                        {
+                                            "odd": {
+                                                "channelId": 36,
+                                                "status": 1,
+                                                "value": 101
+                                            },
+                                            "status": "VALID",
+                                            "id": 1786725458,
+                                            "name": "2:3",
+                                            "typeId": 1564
+                                        },
+                                        {
+                                            "odd": {
+                                                "channelId": 36,
+                                                "status": 1,
+                                                "value": 151
+                                            },
+                                            "status": "VALID",
+                                            "id": 1786725462,
+                                            "name": "1:4",
+                                            "typeId": 1569
+                                        },
+                                        {
+                                            "odd": {
+                                                "channelId": 36,
+                                                "status": 1,
+                                                "value": 151
+                                            },
+                                            "status": "VALID",
+                                            "id": 1786725463,
+                                            "name": "2:4",
+                                            "typeId": 1570
+                                        },
+                                        {
+                                            "odd": {
+                                                "channelId": 36,
+                                                "status": 1,
+                                                "value": 151
+                                            },
+                                            "status": "VALID",
+                                            "id": 1786725464,
+                                            "name": "3:4",
+                                            "typeId": 1571
+                                        }
+                                    ],
+                                    "draw": [
+                                        {
+                                            "odd": {
+                                                "channelId": 36,
+                                                "status": 1,
+                                                "value": 12
+                                            },
+                                            "status": "VALID",
+                                            "id": 1786725447,
+                                            "name": "1:1",
+                                            "typeId": 1548
+                                        },
+                                        {
+                                            "odd": {
+                                                "channelId": 36,
+                                                "status": 1,
+                                                "value": 25
+                                            },
+                                            "status": "VALID",
+                                            "id": 1786725453,
+                                            "name": "2:2",
+                                            "typeId": 1557
+                                        },
+                                        {
+                                            "odd": {
+                                                "channelId": 36,
+                                                "status": 1,
+                                                "value": 151
+                                            },
+                                            "status": "VALID",
+                                            "id": 1786725459,
+                                            "name": "3:3",
+                                            "typeId": 1565
+                                        },
+                                        {
+                                            "odd": {
+                                                "channelId": 36,
+                                                "status": 1,
+                                                "value": 151
+                                            },
+                                            "status": "VALID",
+                                            "id": 1786725465,
+                                            "name": "4:4",
+                                            "typeId": 1572
+                                        }
+                                    ],
+                                    "others": [
+                                        {
+                                            "odd": {
+                                                "channelId": 36,
+                                                "status": 1,
+                                                "value": 9
+                                            },
+                                            "status": "VALID",
+                                            "id": 1786725466,
+                                            "name": "Others",
+                                            "typeId": 1995
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "combinability": 1,
+                                "compatibleMarkets": [],
+                                "groupNo": 0,
+                                "hasSpread": false,
+                                "id": 551707503,
+                                "name": "Handicap 0:1",
+                                "scheduleStatus": 0,
+                                "selections": [
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 0,
+                                            "value": 2.2
+                                        },
+                                        "status": "LOCK",
+                                        "id": 1786725478,
+                                        "name": "1",
+                                        "typeId": 1714
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 0,
+                                            "value": 3.5
+                                        },
+                                        "status": "LOCK",
+                                        "id": 1786725479,
+                                        "name": "X",
+                                        "typeId": 1712
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 0,
+                                            "value": 3
+                                        },
+                                        "status": "LOCK",
+                                        "id": 1786725480,
+                                        "name": "2",
+                                        "typeId": 1715
+                                    }
+                                ],
+                                "specialValue": "",
+                                "specifier": "line=0:1",
+                                "status": 0,
+                                "typeId": 342
+                            },
+                            {
+                                "combinability": 1,
+                                "compatibleMarkets": [],
+                                "groupNo": 0,
+                                "hasSpread": false,
+                                "id": 551707498,
+                                "name": "Handicap 0:2",
+                                "scheduleStatus": 0,
+                                "selections": [
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 2.75
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725427,
+                                        "name": "1",
+                                        "typeId": 1714
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 3.25
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725428,
+                                        "name": "X",
+                                        "typeId": 1712
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 2.4
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725429,
+                                        "name": "2",
+                                        "typeId": 1715
+                                    }
+                                ],
+                                "specialValue": "",
+                                "specifier": "line=0:2",
+                                "status": 1,
+                                "typeId": 342
+                            },
+                            {
+                                "combinability": 1,
+                                "compatibleMarkets": [],
+                                "groupNo": 0,
+                                "hasSpread": false,
+                                "id": 551707495,
+                                "name": "Handicap 0:3",
+                                "scheduleStatus": 0,
+                                "selections": [
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 6
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725422,
+                                        "name": "1",
+                                        "typeId": 1714
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 4.5
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725425,
+                                        "name": "X",
+                                        "typeId": 1712
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 1.45
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725430,
+                                        "name": "2",
+                                        "typeId": 1715
+                                    }
+                                ],
+                                "specialValue": "",
+                                "specifier": "line=0:3",
+                                "status": 1,
+                                "typeId": 342
+                            },
+                            {
+                                "combinability": 1,
+                                "compatibleMarkets": [],
+                                "groupNo": 0,
+                                "hasSpread": false,
+                                "id": 551708474,
+                                "name": "Handicap 0:4",
+                                "scheduleStatus": 0,
+                                "selections": [
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 15
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786729627,
+                                        "name": "1",
+                                        "typeId": 1714
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 8
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786729628,
+                                        "name": "X",
+                                        "typeId": 1712
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 1.14
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786729629,
+                                        "name": "2",
+                                        "typeId": 1715
+                                    }
+                                ],
+                                "specialValue": "",
+                                "specifier": "line=0:4",
+                                "status": 1,
+                                "typeId": 342
+                            },
+                            {
+                                "combinability": 1,
+                                "compatibleMarkets": [],
+                                "groupNo": 0,
+                                "hasSpread": false,
+                                "id": 551711469,
+                                "name": "Handicap 0:5",
+                                "scheduleStatus": 0,
+                                "selections": [
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 30
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786737639,
+                                        "name": "1",
+                                        "typeId": 1714
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 12
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786737642,
+                                        "name": "X",
+                                        "typeId": 1712
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 1.03
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786737646,
+                                        "name": "2",
+                                        "typeId": 1715
+                                    }
+                                ],
+                                "specialValue": "",
+                                "specifier": "line=0:5",
+                                "status": 1,
+                                "typeId": 342
+                            },
+                            {
+                                "combinability": 1,
+                                "compatibleMarkets": [],
+                                "groupNo": 0,
+                                "hasSpread": false,
+                                "id": 551707479,
+                                "name": "Handicap -0.5",
+                                "scheduleStatus": 0,
+                                "selections": [
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 1.1
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725336,
+                                        "name": "1 AH",
+                                        "typeId": 1714
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 7
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725344,
+                                        "name": "2 AH",
+                                        "typeId": 1715
+                                    }
+                                ],
+                                "specialValue": "-0.5",
+                                "specifier": "line=-0.5",
+                                "status": 1,
+                                "typeId": 305
+                            },
+                            {
+                                "combinability": 1,
+                                "compatibleMarkets": [],
+                                "groupNo": 0,
+                                "hasSpread": false,
+                                "id": 551707456,
+                                "name": "Handicap -1.5",
+                                "scheduleStatus": 0,
+                                "selections": [
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 1.5
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725304,
+                                        "name": "1 AH",
+                                        "typeId": 1714
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 2.4
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725349,
+                                        "name": "2 AH",
+                                        "typeId": 1715
+                                    }
+                                ],
+                                "specialValue": "-1.5",
+                                "specifier": "line=-1.5",
+                                "status": 1,
+                                "typeId": 305
+                            },
+                            {
+                                "combinability": 1,
+                                "compatibleMarkets": [],
+                                "groupNo": 0,
+                                "hasSpread": false,
+                                "id": 551707511,
+                                "name": "Handicap -2.5",
+                                "scheduleStatus": 0,
+                                "selections": [
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 2.75
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725509,
+                                        "name": "1 AH",
+                                        "typeId": 1714
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 1.45
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725524,
+                                        "name": "2 AH",
+                                        "typeId": 1715
+                                    }
+                                ],
+                                "specialValue": "-2.5",
+                                "specifier": "line=-2.5",
+                                "status": 1,
+                                "typeId": 305
+                            },
+                            {
+                                "combinability": 1,
+                                "compatibleMarkets": [],
+                                "groupNo": 0,
+                                "hasSpread": false,
+                                "id": 551709317,
+                                "name": "Handicap -3.5",
+                                "scheduleStatus": 0,
+                                "selections": [
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 6
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786732433,
+                                        "name": "1 AH",
+                                        "typeId": 1714
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 1.14
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786732434,
+                                        "name": "2 AH",
+                                        "typeId": 1715
+                                    }
+                                ],
+                                "specialValue": "-3.5",
+                                "specifier": "line=-3.5",
+                                "status": 1,
+                                "typeId": 305
+                            },
+                            {
+                                "combinability": 1,
+                                "compatibleMarkets": [],
+                                "groupNo": 0,
+                                "hasSpread": false,
+                                "id": 551707488,
+                                "name": "HT/FT",
+                                "scheduleStatus": 0,
+                                "selections": [
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 1.1
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725405,
+                                        "name": "1/1",
+                                        "typeId": 418
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 9
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725406,
+                                        "name": "1/X",
+                                        "typeId": 420
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 40
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725407,
+                                        "name": "1/2",
+                                        "typeId": 422
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 9
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725408,
+                                        "name": "X/1",
+                                        "typeId": 424
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 12
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725409,
+                                        "name": "X/X",
+                                        "typeId": 426
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 35
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725410,
+                                        "name": "X/2",
+                                        "typeId": 428
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 101
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725411,
+                                        "name": "2/1",
+                                        "typeId": 430
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 101
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725412,
+                                        "name": "2/X",
+                                        "typeId": 432
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 67
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725413,
+                                        "name": "2/2",
+                                        "typeId": 434
+                                    }
+                                ],
+                                "specialValue": "",
+                                "specifier": "",
+                                "status": 1,
+                                "typeId": 9881
+                            },
+                            {
+                                "combinability": 1,
+                                "compatibleMarkets": [],
+                                "groupNo": 0,
+                                "hasSpread": false,
+                                "id": 551707507,
+                                "name": "Half Most Goals",
+                                "scheduleStatus": 0,
+                                "selections": [
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 1.7
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725529,
+                                        "name": "First Half",
+                                        "typeId": 436
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 4
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725539,
+                                        "name": "Second Half",
+                                        "typeId": 438
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 3.5
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725547,
+                                        "name": "Equals",
+                                        "typeId": 924
+                                    }
+                                ],
+                                "specialValue": "",
+                                "specifier": "",
+                                "status": 1,
+                                "typeId": 2001
+                            },
+                            {
+                                "combinability": 1,
+                                "compatibleMarkets": [],
+                                "groupNo": 0,
+                                "hasSpread": false,
+                                "id": 551707494,
+                                "name": "Exact Goals Home",
+                                "scheduleStatus": 0,
+                                "selections": [
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 0,
+                                            "value": 0
+                                        },
+                                        "status": "LOCK",
+                                        "id": 1786725474,
+                                        "name": "0",
+                                        "typeId": 2046
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 4.5
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725490,
+                                        "name": "1",
+                                        "typeId": 2047
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 2.75
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725496,
+                                        "name": "2",
+                                        "typeId": 2048
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 1.9
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725501,
+                                        "name": "3+",
+                                        "typeId": 2109
+                                    }
+                                ],
+                                "specialValue": "",
+                                "specifier": "variant=sr:exact_goals:3+",
+                                "status": 1,
+                                "typeId": 10285
+                            },
+                            {
+                                "combinability": 1,
+                                "compatibleMarkets": [],
+                                "groupNo": 0,
+                                "hasSpread": false,
+                                "id": 551707499,
+                                "name": "Exact Goals Away",
+                                "scheduleStatus": 0,
+                                "selections": [
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 1.7
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725470,
+                                        "name": "0",
+                                        "typeId": 2046
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 2.5
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725485,
+                                        "name": "1",
+                                        "typeId": 2047
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 8
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725487,
+                                        "name": "2",
+                                        "typeId": 2048
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 35
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725488,
+                                        "name": "3+",
+                                        "typeId": 2109
+                                    }
+                                ],
+                                "specialValue": "",
+                                "specifier": "variant=sr:exact_goals:3+",
+                                "status": 1,
+                                "typeId": 10286
+                            },
+                            {
+                                "combinability": 1,
+                                "compatibleMarkets": [],
+                                "groupNo": 0,
+                                "hasSpread": false,
+                                "id": 551707457,
+                                "name": "Total Goals Home",
+                                "scheduleStatus": 0,
+                                "selections": [
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 1.18
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725252,
+                                        "name": "Over",
+                                        "typeId": 12
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 4.5
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725242,
+                                        "name": "Under",
+                                        "typeId": 13
+                                    }
+                                ],
+                                "specialValue": "1.5",
+                                "specifier": "line=1.5",
+                                "status": 1,
+                                "typeId": 10283,
+                                "spreadMarkets": [
+                                    {
+                                        "combinability": 1,
+                                        "compatibleMarkets": [],
+                                        "groupNo": 0,
+                                        "hasSpread": false,
+                                        "id": 551707457,
+                                        "name": "Total Goals Home (1.5)",
+                                        "scheduleStatus": 0,
+                                        "selections": [
+                                            {
+                                                "odd": {
+                                                    "channelId": 36,
+                                                    "status": 1,
+                                                    "value": 1.18
+                                                },
+                                                "status": "VALID",
+                                                "id": 1786725252,
+                                                "name": "Over",
+                                                "typeId": 12
+                                            },
+                                            {
+                                                "odd": {
+                                                    "channelId": 36,
+                                                    "status": 1,
+                                                    "value": 4.5
+                                                },
+                                                "status": "VALID",
+                                                "id": 1786725242,
+                                                "name": "Under",
+                                                "typeId": 13
+                                            }
+                                        ],
+                                        "specialValue": "1.5",
+                                        "specifier": "line=1.5",
+                                        "status": 1,
+                                        "typeId": 10283
+                                    },
+                                    {
+                                        "combinability": 1,
+                                        "compatibleMarkets": [],
+                                        "groupNo": 0,
+                                        "hasSpread": false,
+                                        "id": 551707428,
+                                        "name": "Total Goals Home (2.5)",
+                                        "scheduleStatus": 0,
+                                        "selections": [
+                                            {
+                                                "odd": {
+                                                    "channelId": 36,
+                                                    "status": 1,
+                                                    "value": 1.9
+                                                },
+                                                "status": "VALID",
+                                                "id": 1786725160,
+                                                "name": "Over",
+                                                "typeId": 12
+                                            },
+                                            {
+                                                "odd": {
+                                                    "channelId": 36,
+                                                    "status": 1,
+                                                    "value": 1.8
+                                                },
+                                                "status": "VALID",
+                                                "id": 1786725159,
+                                                "name": "Under",
+                                                "typeId": 13
+                                            }
+                                        ],
+                                        "specialValue": "2.5",
+                                        "specifier": "line=2.5",
+                                        "status": 1,
+                                        "typeId": 10283
+                                    },
+                                    {
+                                        "combinability": 1,
+                                        "compatibleMarkets": [],
+                                        "groupNo": 0,
+                                        "hasSpread": false,
+                                        "id": 551707483,
+                                        "name": "Total Goals Home (3.5)",
+                                        "scheduleStatus": 0,
+                                        "selections": [
+                                            {
+                                                "odd": {
+                                                    "channelId": 36,
+                                                    "status": 1,
+                                                    "value": 3.75
+                                                },
+                                                "status": "VALID",
+                                                "id": 1786725396,
+                                                "name": "Over",
+                                                "typeId": 12
+                                            },
+                                            {
+                                                "odd": {
+                                                    "channelId": 36,
+                                                    "status": 1,
+                                                    "value": 1.2
+                                                },
+                                                "status": "VALID",
+                                                "id": 1786725395,
+                                                "name": "Under",
+                                                "typeId": 13
+                                            }
+                                        ],
+                                        "specialValue": "3.5",
+                                        "specifier": "line=3.5",
+                                        "status": 1,
+                                        "typeId": 10283
+                                    },
+                                    {
+                                        "combinability": 1,
+                                        "compatibleMarkets": [],
+                                        "groupNo": 0,
+                                        "hasSpread": false,
+                                        "id": 551709975,
+                                        "name": "Total Goals Home (4.5)",
+                                        "scheduleStatus": 0,
+                                        "selections": [
+                                            {
+                                                "odd": {
+                                                    "channelId": 36,
+                                                    "status": 1,
+                                                    "value": 7
+                                                },
+                                                "status": "VALID",
+                                                "id": 1786733705,
+                                                "name": "Over",
+                                                "typeId": 12
+                                            },
+                                            {
+                                                "odd": {
+                                                    "channelId": 36,
+                                                    "status": 1,
+                                                    "value": 1.05
+                                                },
+                                                "status": "VALID",
+                                                "id": 1786733704,
+                                                "name": "Under",
+                                                "typeId": 13
+                                            }
+                                        ],
+                                        "specialValue": "4.5",
+                                        "specifier": "line=4.5",
+                                        "status": 1,
+                                        "typeId": 10283
+                                    }
+                                ]
+                            },
+                            {
+                                "combinability": 1,
+                                "compatibleMarkets": [],
+                                "groupNo": 0,
+                                "hasSpread": false,
+                                "id": 551707447,
+                                "name": "Total Goals Away",
+                                "scheduleStatus": 0,
+                                "selections": [
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 2.2
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725221,
+                                        "name": "Over",
+                                        "typeId": 12
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 1.7
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725218,
+                                        "name": "Under",
+                                        "typeId": 13
+                                    }
+                                ],
+                                "specialValue": "0.5",
+                                "specifier": "line=0.5",
+                                "status": 1,
+                                "typeId": 10284,
+                                "spreadMarkets": [
+                                    {
+                                        "combinability": 1,
+                                        "compatibleMarkets": [],
+                                        "groupNo": 0,
+                                        "hasSpread": false,
+                                        "id": 551707447,
+                                        "name": "Total Goals Away (0.5)",
+                                        "scheduleStatus": 0,
+                                        "selections": [
+                                            {
+                                                "odd": {
+                                                    "channelId": 36,
+                                                    "status": 1,
+                                                    "value": 2.2
+                                                },
+                                                "status": "VALID",
+                                                "id": 1786725221,
+                                                "name": "Over",
+                                                "typeId": 12
+                                            },
+                                            {
+                                                "odd": {
+                                                    "channelId": 36,
+                                                    "status": 1,
+                                                    "value": 1.7
+                                                },
+                                                "status": "VALID",
+                                                "id": 1786725218,
+                                                "name": "Under",
+                                                "typeId": 13
+                                            }
+                                        ],
+                                        "specialValue": "0.5",
+                                        "specifier": "line=0.5",
+                                        "status": 1,
+                                        "typeId": 10284
+                                    },
+                                    {
+                                        "combinability": 1,
+                                        "compatibleMarkets": [],
+                                        "groupNo": 0,
+                                        "hasSpread": false,
+                                        "id": 551707492,
+                                        "name": "Total Goals Away (1.5)",
+                                        "scheduleStatus": 0,
+                                        "selections": [
+                                            {
+                                                "odd": {
+                                                    "channelId": 36,
+                                                    "status": 1,
+                                                    "value": 6
+                                                },
+                                                "status": "VALID",
+                                                "id": 1786725473,
+                                                "name": "Over",
+                                                "typeId": 12
+                                            },
+                                            {
+                                                "odd": {
+                                                    "channelId": 36,
+                                                    "status": 1,
+                                                    "value": 1.08
+                                                },
+                                                "status": "VALID",
+                                                "id": 1786725472,
+                                                "name": "Under",
+                                                "typeId": 13
+                                            }
+                                        ],
+                                        "specialValue": "1.5",
+                                        "specifier": "line=1.5",
+                                        "status": 1,
+                                        "typeId": 10284
+                                    },
+                                    {
+                                        "combinability": 1,
+                                        "compatibleMarkets": [],
+                                        "groupNo": 0,
+                                        "hasSpread": false,
+                                        "id": 551707469,
+                                        "name": "Total Goals Away (3.5)",
+                                        "scheduleStatus": 0,
+                                        "selections": [
+                                            {
+                                                "odd": {
+                                                    "channelId": 36,
+                                                    "status": 1,
+                                                    "value": 12
+                                                },
+                                                "status": "VALID",
+                                                "id": 1786725359,
+                                                "name": "Over",
+                                                "typeId": 12
+                                            },
+                                            {
+                                                "odd": {
+                                                    "channelId": 36,
+                                                    "status": 0,
+                                                    "value": 0
+                                                },
+                                                "status": "LOCK",
+                                                "id": 1786725324,
+                                                "name": "Under",
+                                                "typeId": 13
+                                            }
+                                        ],
+                                        "specialValue": "3.5",
+                                        "specifier": "line=3.5",
+                                        "status": 1,
+                                        "typeId": 10284
+                                    }
+                                ]
+                            },
+                            {
+                                "combinability": 1,
+                                "compatibleMarkets": [],
+                                "groupNo": 0,
+                                "hasSpread": false,
+                                "id": 551707480,
+                                "name": "SE Palmeiras SP U20 Clean Sheet",
+                                "scheduleStatus": 0,
+                                "selections": [
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 1.65
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725347,
+                                        "name": "Yes",
+                                        "typeId": 74
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 2
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725366,
+                                        "name": "No",
+                                        "typeId": 76
+                                    }
+                                ],
+                                "specialValue": "",
+                                "specifier": "",
+                                "status": 1,
+                                "typeId": 10287
+                            },
+                            {
+                                "combinability": 1,
+                                "compatibleMarkets": [],
+                                "groupNo": 0,
+                                "hasSpread": false,
+                                "id": 551707510,
+                                "name": "Any team to win",
+                                "scheduleStatus": 0,
+                                "selections": [
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 1.06
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725515,
+                                        "name": "Yes",
+                                        "typeId": 74
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 7
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725518,
+                                        "name": "No",
+                                        "typeId": 76
+                                    }
+                                ],
+                                "specialValue": "",
+                                "specifier": "",
+                                "status": 1,
+                                "typeId": 10383
+                            },
+                            {
+                                "combinability": 1,
+                                "compatibleMarkets": [],
+                                "groupNo": 0,
+                                "hasSpread": false,
+                                "id": 551707487,
+                                "name": "SE Palmeiras SP U20 To Win",
+                                "scheduleStatus": 0,
+                                "selections": [
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 1.1
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725471,
+                                        "name": "Yes",
+                                        "typeId": 74
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 5
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725486,
+                                        "name": "No",
+                                        "typeId": 76
+                                    }
+                                ],
+                                "specialValue": "",
+                                "specifier": "",
+                                "status": 1,
+                                "typeId": 10382
+                            },
+                            {
+                                "combinability": 1,
+                                "compatibleMarkets": [],
+                                "groupNo": 0,
+                                "hasSpread": false,
+                                "id": 551707461,
+                                "name": "Ibrachina FC SP U20 To Win",
+                                "scheduleStatus": 0,
+                                "selections": [
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 10
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725300,
+                                        "name": "Yes",
+                                        "typeId": 74
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 1.01
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725338,
+                                        "name": "No",
+                                        "typeId": 76
+                                    }
+                                ],
+                                "specialValue": "",
+                                "specifier": "",
+                                "status": 1,
+                                "typeId": 10381
+                            },
+                            {
+                                "combinability": 1,
+                                "compatibleMarkets": [],
+                                "groupNo": 0,
+                                "hasSpread": false,
+                                "id": 551707452,
+                                "name": "1X2 & Total 2.5",
+                                "scheduleStatus": 0,
+                                "selections": [
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 1.5
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725255,
+                                        "name": "1 & Over",
+                                        "typeId": 796
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 2.75
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725235,
+                                        "name": "1 & Under",
+                                        "typeId": 794
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 20
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725260,
+                                        "name": "X & Over",
+                                        "typeId": 800
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 12
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725240,
+                                        "name": "X & Under",
+                                        "typeId": 798
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 25
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725266,
+                                        "name": "2 & Over",
+                                        "typeId": 804
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 0,
+                                            "value": 0
+                                        },
+                                        "status": "LOCK",
+                                        "id": 1786725247,
+                                        "name": "2 & Under",
+                                        "typeId": 802
+                                    }
+                                ],
+                                "specialValue": "2.5",
+                                "specifier": "line=2.5",
+                                "status": 1,
+                                "typeId": 9277
+                            },
+                            {
+                                "combinability": 1,
+                                "compatibleMarkets": [],
+                                "groupNo": 0,
+                                "hasSpread": false,
+                                "id": 551707475,
+                                "name": "1X2 + GG/NG",
+                                "scheduleStatus": 0,
+                                "selections": [
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 2.75
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725326,
+                                        "name": "1 & GG",
+                                        "typeId": 78
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 1.6
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725361,
+                                        "name": "1 & NG",
+                                        "typeId": 80
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 8
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725362,
+                                        "name": "X & GG",
+                                        "typeId": 82
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 0,
+                                            "value": 0
+                                        },
+                                        "status": "LOCK",
+                                        "id": 1786725368,
+                                        "name": "X & NG",
+                                        "typeId": 84
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 25
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725378,
+                                        "name": "2 & GG",
+                                        "typeId": 86
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 0,
+                                            "value": 0
+                                        },
+                                        "status": "LOCK",
+                                        "id": 1786725394,
+                                        "name": "2 & NG",
+                                        "typeId": 88
+                                    }
+                                ],
+                                "specialValue": "",
+                                "specifier": "",
+                                "status": 1,
+                                "typeId": 9885
+                            },
+                            {
+                                "combinability": 1,
+                                "compatibleMarkets": [],
+                                "groupNo": 0,
+                                "hasSpread": false,
+                                "id": 551707481,
+                                "name": "Double chance & total 1.5",
+                                "scheduleStatus": 0,
+                                "selections": [
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 1.08
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725398,
+                                        "name": "1X & Over",
+                                        "typeId": 1727
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 1.12
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725400,
+                                        "name": "12 & Over",
+                                        "typeId": 1728
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 4
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725402,
+                                        "name": "X2 & Over",
+                                        "typeId": 1729
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 4.5
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725397,
+                                        "name": "1X & Under",
+                                        "typeId": 1724
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 4.5
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725399,
+                                        "name": "12 & Under",
+                                        "typeId": 1725
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 0,
+                                            "value": 0
+                                        },
+                                        "status": "LOCK",
+                                        "id": 1786725401,
+                                        "name": "X2 & Under",
+                                        "typeId": 1726
+                                    }
+                                ],
+                                "specialValue": "1.5",
+                                "specifier": "line=1.5",
+                                "status": 1,
+                                "typeId": 9888
+                            },
+                            {
+                                "combinability": 1,
+                                "compatibleMarkets": [],
+                                "groupNo": 0,
+                                "hasSpread": false,
+                                "id": 551707472,
+                                "name": "Double chance & total 2.5",
+                                "scheduleStatus": 0,
+                                "selections": [
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 1.4
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725345,
+                                        "name": "1X & Over",
+                                        "typeId": 1727
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 1.4
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725383,
+                                        "name": "12 & Over",
+                                        "typeId": 1728
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 10
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725393,
+                                        "name": "X2 & Over",
+                                        "typeId": 1729
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 2.2
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725332,
+                                        "name": "1X & Under",
+                                        "typeId": 1724
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 2.5
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725377,
+                                        "name": "12 & Under",
+                                        "typeId": 1725
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 10
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725388,
+                                        "name": "X2 & Under",
+                                        "typeId": 1726
+                                    }
+                                ],
+                                "specialValue": "2.5",
+                                "specifier": "line=2.5",
+                                "status": 1,
+                                "typeId": 9888
+                            },
+                            {
+                                "combinability": 1,
+                                "compatibleMarkets": [],
+                                "groupNo": 0,
+                                "hasSpread": false,
+                                "id": 551707450,
+                                "name": "Double chance & total 3.5",
+                                "scheduleStatus": 0,
+                                "selections": [
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 2.2
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725254,
+                                        "name": "1X & Over",
+                                        "typeId": 1727
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 2.2
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725265,
+                                        "name": "12 & Over",
+                                        "typeId": 1728
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 12
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725289,
+                                        "name": "X2 & Over",
+                                        "typeId": 1729
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 1.45
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725245,
+                                        "name": "1X & Under",
+                                        "typeId": 1724
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 1.5
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725259,
+                                        "name": "12 & Under",
+                                        "typeId": 1725
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 8
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725286,
+                                        "name": "X2 & Under",
+                                        "typeId": 1726
+                                    }
+                                ],
+                                "specialValue": "3.5",
+                                "specifier": "line=3.5",
+                                "status": 1,
+                                "typeId": 9888
+                            },
+                            {
+                                "combinability": 1,
+                                "compatibleMarkets": [],
+                                "groupNo": 0,
+                                "hasSpread": false,
+                                "id": 551707505,
+                                "name": "Double chance & total 4.5",
+                                "scheduleStatus": 0,
+                                "selections": [
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 3.5
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725504,
+                                        "name": "1X & Over",
+                                        "typeId": 1727
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 3.5
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725516,
+                                        "name": "12 & Over",
+                                        "typeId": 1728
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 40
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725526,
+                                        "name": "X2 & Over",
+                                        "typeId": 1729
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 1.14
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725500,
+                                        "name": "1X & Under",
+                                        "typeId": 1724
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 1.2
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725512,
+                                        "name": "12 & Under",
+                                        "typeId": 1725
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 5
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725519,
+                                        "name": "X2 & Under",
+                                        "typeId": 1726
+                                    }
+                                ],
+                                "specialValue": "4.5",
+                                "specifier": "line=4.5",
+                                "status": 1,
+                                "typeId": 9888
+                            },
+                            {
+                                "combinability": 1,
+                                "compatibleMarkets": [],
+                                "groupNo": 0,
+                                "hasSpread": false,
+                                "id": 551707444,
+                                "name": "DC + GG/NG",
+                                "scheduleStatus": 0,
+                                "selections": [
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 1.9
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725216,
+                                        "name": "1X & GG",
+                                        "typeId": 1718
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 1.5
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725219,
+                                        "name": "1X & NG",
+                                        "typeId": 1719
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 2.2
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725222,
+                                        "name": "12 & GG",
+                                        "typeId": 1720
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 1.5
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725224,
+                                        "name": "12 & NG",
+                                        "typeId": 1721
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 1,
+                                            "value": 7
+                                        },
+                                        "status": "VALID",
+                                        "id": 1786725226,
+                                        "name": "X2 & GG",
+                                        "typeId": 1722
+                                    },
+                                    {
+                                        "odd": {
+                                            "channelId": 36,
+                                            "status": 0,
+                                            "value": 0
+                                        },
+                                        "status": "LOCK",
+                                        "id": 1786725229,
+                                        "name": "X2 & NG",
+                                        "typeId": 1723
+                                    }
+                                ],
+                                "specialValue": "",
+                                "specifier": "",
+                                "status": 1,
+                                "typeId": 9886
+                            }
+                        ],
+                        "matchStatus": 124,
+                        "matchTime": 11,
+                        "name": "SE Palmeiras SP U20 - Ibrachina FC SP U20",
+                        "popularity": 0,
+                        "providerId": "67929416",
+                        "providerSourceID": 2,
+                        "score": "1:0",
+                        "selectionCount": 0,
+                        "serviceOwner": 0,
+                        "setScores": "1:0",
+                        "smartCode": 0,
+                        "sportId": 1,
+                        "sportName": "Football",
+                        "status": 1,
+                        "teams": [
+                            {
+                                "id": 213718,
+                                "itemOrder": 1,
+                                "name": "SE Palmeiras SP U20"
+                            },
+                            {
+                                "id": 471142,
+                                "itemOrder": 2,
+                                "name": "Ibrachina FC SP U20"
+                            }
+                        ],
+                        "tournamentId": 23806390,
+                        "tournamentName": "Brazil U20 Copa Sao Paulo de Juniores",
+                        "homeTeam": "SE Palmeiras SP U20",
+                        "awayTeam": "Ibrachina FC SP U20",
+                        "showExtraScores": false,
+                        "showCurrentScore": false,
+                        "matchStatusLabel": "",
+                        "eventCategory": "L"
+                    }
+                ]
+            }
+        ]
+    },
+    "earlyPayoutBanner": {
+        "id": 5,
+        "title": null,
+        "description": null,
+        "backgroundColor": null,
+        "textColor": null,
+        "marketIds": "10973",
+        "icon": {
+            "data": {
+                "id": 5628,
+                "attributes": {
+                    "name": "half time early.svg",
+                    "alternativeText": null,
+                    "caption": null,
+                    "width": 98,
+                    "height": 16,
+                    "formats": null,
+                    "hash": "half_time_early_871b807f9e",
+                    "ext": ".svg",
+                    "mime": "image/svg+xml",
+                    "size": 5.6,
+                    "url": "https://imagedelivery.net/Vd-cIddpsfJ7XHHMXJuIbA/47d8aeea-d7ce-4337-0d8e-a4f707ae0f00/public",
+                    "previewUrl": null,
+                    "provider": "@mettle-studio/strapi-provider-upload-cloudflare-2",
+                    "provider_metadata": {
+                        "public_id": "47d8aeea-d7ce-4337-0d8e-a4f707ae0f00",
+                        "variant_url": "https://imagedelivery.net/Vd-cIddpsfJ7XHHMXJuIbA/47d8aeea-d7ce-4337-0d8e-a4f707ae0f00",
+                        "resource_type": "svg"
+                    },
+                    "createdAt": "2025-07-31T09:25:51.907Z",
+                    "updatedAt": "2025-07-31T09:25:51.907Z"
+                }
+            }
+        }
+    },
+    "betRadarWidgetData": {
+        "streamTooltipMessage": "You can watch the match live switching to this tab",
+        "dataConsumptionTitle": "Streaming Consumes Data",
+        "dataConsumptionMessage": "We recommend connecting to Wi-Fi to save data and improve stream quality",
+        "dataConsumptionConfirmBtn": "Got it",
+        "dataConsumptionCancelBtn": "Don’t show again",
+        "streamErrorMessage": "Live Stream is not supported in the current network environment. Please check your network and try again",
+        "streamErrorBtn": "Retry",
+        "createdAt": "2025-12-17T13:22:55.498Z",
+        "updatedAt": "2025-12-17T13:23:00.666Z",
+        "publishedAt": "2025-12-17T13:23:00.657Z",
+        "locale": "en-ng"
+    },
+    "haveStreaming": false
+}

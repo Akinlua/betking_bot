@@ -117,6 +117,7 @@ async function main() {
       name: "BetKing",
       username: username || "",
       password: password || "",
+      isLive: true
     };
 
     const bookmaker = new BetKingBookmaker(bookmakerConf, browser, store);
