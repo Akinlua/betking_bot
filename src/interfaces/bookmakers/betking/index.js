@@ -2492,7 +2492,7 @@ class BetKingBookmaker {
     });
 
     const results = await Promise.all(promises);
-    console.log(JSON.stringify(results))
+    // console.log(JSON.stringify(results))
 
     let eventDetails = null;
     let aggregatedMarkets = [];
