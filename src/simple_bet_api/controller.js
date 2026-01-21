@@ -389,6 +389,7 @@ export async function placeBet(req, res) {
                     console.warn(chalk.yellow(`[SimpleAPI][${userToUse}] Insufficient EV: found ${found_odds} (${evPercentage}% EV), required ${minRequiredOdds.toFixed(2)} (3% EV minimum)`));
                     throw new Error(`Insufficient Expected Value: found odds ${found_odds} with ${evPercentage}% EV, minimum 3% EV required (${minRequiredOdds.toFixed(2)})`);
                 }
+                console.log(`found odds ${found_odds} is greater than ${minRequiredOdds}`)
                 const evPercentage = ((found_odds / expected_odds - 1) * 100).toFixed(2);
                 console.log(chalk.green(`[SimpleAPI][${userToUse}] EV Check Passed: ${evPercentage}% EV (API: ${expected_odds}, BetKing: ${found_odds})`));
             }
