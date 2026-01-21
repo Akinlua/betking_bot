@@ -375,7 +375,7 @@ export async function placeBet(req, res) {
             const found_odds = selection.odd.value;
 
             // Validate maximum odds constraint
-            if (expected_odds && expected_odds > 3.0) {
+            if (found_odds && found_odds > 3.0) {
                 console.warn(chalk.yellow(`[SimpleAPI][${userToUse}] Odds too high: API odds ${expected_odds} exceeds maximum of 3.0`));
                 throw new Error(`Expected odds ${expected_odds} exceeds maximum allowed odds of 3.0`);
             }
