@@ -28,7 +28,7 @@ def poll(session):
 
 
 def convert(tip: dict, cache: set):
-    alerted = (tip["alerted"] * 100) / 100
+    alerted = (tip["alerted"]/ 100) * 100
     id = f"{tip['id']}-{tip['league_id']}-{tip['market']}-{tip['outcome']}-{tip['period']}-{tip['point']}-{alerted}"
 
     if not cache.__contains__(id):
