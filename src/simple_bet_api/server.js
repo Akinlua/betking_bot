@@ -19,8 +19,41 @@ app.use(express.json());
 let browser;
 
 async function initBrowser() {
+    // Read proxy configuration from accounts.json
+    let proxyConf = null;
+    try {
+        const fs = await import('fs/promises');
+        const path = await import('path');
+        const { fileURLToPath } = await import('url');
+        const __dirname = path.dirname(fileURLToPath(import.meta.url));
+        const accountsPath = path.join(__dirname, 'accounts.json');
+
+        const accountsData = await fs.readFile(accountsPath, 'utf-8');
+        const accounts = JSON.parse(accountsData);
+
+        // Find first enabled proxy
+        if (Array.isArray(accounts)) {
+            const accountWithProxy = accounts.find(acc => acc.proxy?.enabled === true);
+            if (accountWithProxy?.proxy) {
+                proxyConf = accountWithProxy.proxy;
+                console.log(chalk.blue(`[SimpleAPI] Found proxy configuration: ${proxyConf.ip}`));
+            }
+        }
+    } catch (error) {
+        console.log(chalk.yellow(`[SimpleAPI] Could not read proxy from accounts.json: ${error.message}`));
+    }
+
+    // Get local IP for proxy validation
+    let localIp = null;
+    try {
+        localIp = await (await fetch("https://api.ipify.org")).text();
+        console.log(chalk.gray(`[SimpleAPI] Local IP: ${localIp}`));
+    } catch (error) {
+        console.log(chalk.yellow(`[SimpleAPI] Could not fetch local IP: ${error.message}`));
+    }
+
     const launchOptions = {
-        headless: true, // or false for debugging
+        headless: true,
         args: [
             "--no-sandbox",
             "--disable-setuid-sandbox",
@@ -43,7 +76,65 @@ async function initBrowser() {
         defaultTimeout: 60_000,
         protocolTimeout: 60_000,
     };
+
+    // Add proxy to launch options if configured
+    if (proxyConf && proxyConf.enabled && proxyConf.ip) {
+        console.log(chalk.blue(`[SimpleAPI] Attempting to use proxy: ${proxyConf.ip}`));
+        launchOptions.args.push(`--proxy-server=${proxyConf.ip}`);
+    }
+
     browser = await puppeteer.launch(launchOptions);
+
+    // Validate proxy connection if enabled
+    if (proxyConf && proxyConf.enabled) {
+        console.log(chalk.yellow("[SimpleAPI] Validating proxy connection..."));
+        let testPage;
+        try {
+            testPage = await browser.newPage();
+
+            // Authenticate with proxy if credentials provided
+            if (proxyConf.username && proxyConf.password) {
+                await testPage.authenticate({
+                    username: proxyConf.username,
+                    password: proxyConf.password,
+                });
+                console.log(chalk.dim("[SimpleAPI] Proxy authentication configured."));
+            }
+
+            // Check IP to validate proxy
+            await testPage.goto("https://api.ipify.org", {
+                timeout: 60_000,
+                waitUntil: "domcontentloaded",
+            });
+
+            const detectedIp = await testPage.evaluate(() => document.body.innerText.trim());
+            const normalize = (ip) => ip.trim().replace(/^::ffff:/, "");
+
+            if (detectedIp && normalize(detectedIp) !== normalize(localIp || "")) {
+                console.log(chalk.green.bold(`[SimpleAPI] ✓ Proxy connection successful! Exit IP: ${normalize(detectedIp)}`));
+            } else {
+                console.log(chalk.red.bold("[SimpleAPI] ✗ Proxy validation failed — IP not changed."));
+                console.log(chalk.red(`  Local IP: ${localIp}`));
+                console.log(chalk.red(`  Detected via proxy: ${detectedIp}`));
+                await testPage.close();
+                await browser.close();
+                throw new Error("Proxy did not mask IP correctly.");
+            }
+
+            await testPage.close();
+        } catch (error) {
+            console.error(chalk.red.bold("[SimpleAPI] Proxy connection FAILED."));
+            console.error(chalk.red(`Error: ${error.message}`));
+            if (testPage) {
+                await testPage.close();
+            }
+            if (browser) {
+                await browser.close();
+            }
+            throw new Error(`Proxy validation failed: ${error.message}`);
+        }
+    }
+
     console.log(chalk.green("[SimpleAPI] Browser initialized."));
     return browser;
 }
