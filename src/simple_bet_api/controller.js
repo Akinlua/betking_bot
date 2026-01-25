@@ -126,6 +126,11 @@ function findMarketAndSelection(matchDetails, criteria) {
     let candidateMarkets = markets.filter(m => {
         const mName = normalize(m.name);
 
+        // Exclude corner markets unless explicitly requested (future proofing)
+        if (mName.includes("corner")) {
+            return false;
+        }
+
         if (market_type === "team_totals") {
             const hasTotal = mName.includes("total");
 
@@ -159,6 +164,8 @@ function findMarketAndSelection(matchDetails, criteria) {
         const halfMatch = is_first_half ?
             (mName.includes("1st half") || mName.includes("1st-half") || mName.includes("first half")) :
             !(mName.includes("1st half") || mName.includes("1st-half") || mName.includes("first half"));
+
+
 
         if (market_type === "moneyline") {
             // Check if market name contains 1x2/moneyline AND matches half criteria

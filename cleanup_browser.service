@@ -1,0 +1,14 @@
+[Unit]
+Description=Cleanup Browser Processes and Restart BetKing API
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash /root/betking_bot/cleanup_browser.sh
+User=root
+WorkingDirectory=/root/betking_bot
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

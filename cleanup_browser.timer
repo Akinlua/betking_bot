@@ -1,0 +1,10 @@
+[Unit]
+Description=Run Cleanup Browser Service Every 30 Minutes
+
+[Timer]
+OnBootSec=10min
+OnUnitActiveSec=30min
+Unit=cleanup_browser.service
+
+[Install]
+WantedBy=timers.target
