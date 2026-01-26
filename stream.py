@@ -10,7 +10,7 @@ client = requests.Session()
 headers = {"x-api-key": credentials["key"], "Accept": "text/event-stream"}
 BASE_URL = credentials["base_url"]
 client.headers.update(headers)
-BET_API_URL = "http://72.62.234.143:3001/bet"
+BET_API_URL = "http://72.62.210.41:5001/bet"
 
 
 def send_to_api(data: dict):
@@ -33,9 +33,18 @@ def convert(tip: dict, cache: dict):
     id = f"{tip['id']}-{tip['league_id']}-{tip['market']}-{tip['outcome']}-{tip['period']}-{tip['point']}"
 
     if id in cache:
-        last_alerted = cache[id]
+        entry = cache[id]
+        if entry["count"] >= 4:
+            return None
+            
+        last_alerted = entry["last_alerted"]
         if tip["alerted"] - last_alerted < 100:
             return None
+        
+        entry["last_alerted"] = tip["alerted"]
+        entry["count"] += 1
+    else:
+        cache[id] = {"last_alerted": tip["alerted"], "count": 1}
     
     ## Markets are moneyline,spread,total
     market = tip["market"].lower()
@@ -57,7 +66,7 @@ def convert(tip: dict, cache: dict):
         team = "home"
 
     half = False if tip["period"] == 0 else True
-    cache[id] = tip["alerted"]
+    # cache update handled above
     return {
         "home": tip["home"],
         "away": tip["away"],
