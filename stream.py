@@ -10,7 +10,7 @@ client = requests.Session()
 headers = {"x-api-key": credentials["key"], "Accept": "text/event-stream"}
 BASE_URL = credentials["base_url"]
 client.headers.update(headers)
-BET_API_URL = "http://72.60.89.248:3001/bet"
+BET_API_URL = "http://72.62.234.143:3001/bet"
 
 
 def send_to_api(data: dict):
