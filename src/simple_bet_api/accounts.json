@@ -2,7 +2,7 @@
     {
         "username": "Tehmple",
         "password": "Skeepoh10$",
-        "stake": 10000,
+        "stake": 5000,
         "proxy": {
             "enabled": true,
             "ip": "isp.decodo.com:10010",
