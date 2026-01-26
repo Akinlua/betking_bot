@@ -27,45 +27,50 @@ def poll(session):
     yield response
 
 
-def convert(tip: dict, cache: set):
-    alerted = (tip["alerted"]/ 100) * 100
-    id = f"{tip['id']}-{tip['league_id']}-{tip['market']}-{tip['outcome']}-{tip['period']}-{tip['point']}-{alerted}"
+def convert(tip: dict, cache: dict):
+    # alerted = (tip["alerted"]/ 100) * 100
+    # id = f"{tip['id']}-{tip['league_id']}-{tip['market']}-{tip['outcome']}-{tip['period']}-{tip['point']}-{alerted}"
+    id = f"{tip['id']}-{tip['league_id']}-{tip['market']}-{tip['outcome']}-{tip['period']}-{tip['point']}"
 
-    if not cache.__contains__(id):
-        ## Markets are moneyline,spread,total
-        market = tip["market"].lower()
-        market = "team_totals" if market == "teamtotal" else market
+    if id in cache:
+        last_alerted = cache[id]
+        if tip["alerted"] - last_alerted < 100:
+            return None
+    
+    ## Markets are moneyline,spread,total
+    market = tip["market"].lower()
+    market = "team_totals" if market == "teamtotal" else market
 
-        outcome: str = tip["outcome"].lower()
-        team = None
-        if outcome == "awayover":
-            outcome = "over"
-            team = "away"
-        elif outcome == "awayunder":
-            outcome = "under"
-            team = "away"
-        elif outcome == "homeunder":
-            outcome = "under"
-            team = "home"
-        elif outcome == "homeover":
-            outcome = "over"
-            team = "home"
+    outcome: str = tip["outcome"].lower()
+    team = None
+    if outcome == "awayover":
+        outcome = "over"
+        team = "away"
+    elif outcome == "awayunder":
+        outcome = "under"
+        team = "away"
+    elif outcome == "homeunder":
+        outcome = "under"
+        team = "home"
+    elif outcome == "homeover":
+        outcome = "over"
+        team = "home"
 
-        half = False if tip["period"] == 0 else True
-        cache.add(id)
-        return {
-            "home": tip["home"],
-            "away": tip["away"],
-            "points": tip["point"],
-            "is_first_half": half,
-            "team": team,
-            "market_type": market,
-            "odds": tip["nvp"],
-            "outcome": outcome,
-        }
+    half = False if tip["period"] == 0 else True
+    cache[id] = tip["alerted"]
+    return {
+        "home": tip["home"],
+        "away": tip["away"],
+        "points": tip["point"],
+        "is_first_half": half,
+        "team": team,
+        "market_type": market,
+        "odds": tip["nvp"],
+        "outcome": outcome,
+    }
 
 
-def stream(session, cache: set[str]):
+def stream(session, cache: dict):
     index = slice(6, None, None)
 
     while True:
@@ -79,6 +84,7 @@ def stream(session, cache: set[str]):
                             tips = tips[index]
                             fixtures = json.loads(tips)
 
+                            print(f"fixtures: {fixtures}")
                             for tip in list(fixtures):
                                 parsed_tip = convert(tip, cache)
                                 if parsed_tip:
@@ -92,7 +98,7 @@ def stream(session, cache: set[str]):
 
 
 if __name__ == "__main__":
-    cache = set()
+    cache = {}
     for alert in stream(client, cache):
         print(f"{alert}")
         send_to_api(alert)
