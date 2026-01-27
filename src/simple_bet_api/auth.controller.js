@@ -63,3 +63,17 @@ export async function login(req, res) {
         return res.status(500).json({ error: error.message });
     }
 }
+
+
+
+// {
+//     "username": "07014598490",
+//     "password": "Ramatu4321",
+//     "stake": 10,
+//     "proxy": {
+//         "enabled": true,
+//         "ip": "isp.decodo.com:10010",
+//         "username": "spqib3jo21",
+//         "password": "S_bb7zjHX9deQ1juw3"
+//     }
+// },
