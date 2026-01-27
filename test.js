@@ -53,7 +53,7 @@ import { chromium } from "playwright";
                     totalCombinations: 1,
                     currencyId: 16,
                     isLive: true,
-                    allowOddChanges: true,
+                    allowOddChanges: false,
                     odds: [
                         {
                             IDSport: 1,

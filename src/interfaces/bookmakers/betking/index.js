@@ -3504,7 +3504,7 @@ class BetKingBookmaker {
 
       return {
         betCoupon,
-        allowOddChanges: true,
+        allowOddChanges: false,
         allowStakeReduction: false,
         requestTransactionId: Date.now().toString(),
         transferStakeFromAgent: false,
@@ -3888,7 +3888,7 @@ class BetKingBookmaker {
 
     return {
       betCoupon,
-      allowOddChanges: true,
+      allowOddChanges: false,
       allowStakeReduction: false,
       requestTransactionId: Date.now().toString(),
       transferStakeFromAgent: false,

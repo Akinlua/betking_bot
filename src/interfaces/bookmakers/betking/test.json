@@ -191,7 +191,7 @@
             }
         ]
     },
-    "allowOddChanges": true,
+    "allowOddChanges": false,
     "allowStakeReduction": false,
     "requestTransactionId": "237660472856",
     "transferStakeFromAgent": false

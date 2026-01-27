@@ -142,7 +142,7 @@
         "hasLive": true,
         "couponType": 1
     },
-    "allowOddChanges": true,
+    "allowOddChanges": false,
     "allowStakeReduction": false,
     "requestTransactionId": "1768915309341",
     "transferStakeFromAgent": false

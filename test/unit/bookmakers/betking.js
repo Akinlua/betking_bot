@@ -145,7 +145,7 @@ const mockBetData = {
 			"selected": true
 		}]
 	},
-	"allowOddChanges": true,
+	"allowOddChanges": false,
 	"allowStakeReduction": false,
 	"requestTransactionId": Date.now().toString(), // Always generate a unique ID
 	"transferStakeFromAgent": false
