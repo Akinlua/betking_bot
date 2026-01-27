@@ -381,14 +381,15 @@ export async function placeBet(req, res) {
 
             const found_odds = selection.odd.value;
 
-            // Validate maximum odds constraint
+            // Validate minimum odds constraint
             if (found_odds && found_odds < 1.5) {
-                console.warn(chalk.yellow(`[SimpleAPI][${userToUse}] Odds too low: API odds ${expected_odds} exceeds minimum of 1.5`));
-                throw new Error(`Expected odds ${expected_odds} exceeds minimum allowed odds of 1.1`);
+                console.warn(chalk.yellow(`[SimpleAPI][${userToUse}] Odds too low: Found odds ${found_odds} is below minimum of 1.5 (API expects: ${expected_odds})`));
+                throw new Error(`Found odds ${found_odds} is below minimum allowed odds of 1.5`);
             }
+            // Validate maximum odds constraint
             if (found_odds && found_odds > 3.0) {
-                console.warn(chalk.yellow(`[SimpleAPI][${userToUse}] Odds too high: API odds ${expected_odds} exceeds maximum of 3.0`));
-                throw new Error(`Expected odds ${expected_odds} exceeds maximum allowed odds of 3.0`);
+                console.warn(chalk.yellow(`[SimpleAPI][${userToUse}] Odds too high: Found odds ${found_odds} exceeds maximum of 3.0 (API expects: ${expected_odds})`));
+                throw new Error(`Found odds ${found_odds} exceeds maximum allowed odds of 3.0`);
             }
 
             // Validate minimum 3% Expected Value (EV)
