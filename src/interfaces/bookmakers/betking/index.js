@@ -2593,13 +2593,42 @@ class BetKingBookmaker {
           const bestLiveResult = liveResults.sort((a, b) => a.score - b.score)[0];
           // Additional check to ensure it's a good match
           if (bestLiveResult.score <= 0.4) { // Stricter threshold for live games to be sure
-            console.log(chalk.green(`[Bookmaker] FOUND LIVE MATCH! "${bestLiveResult.item.EventName}" (Score: ${bestLiveResult.item.Score})`));
+            console.log(chalk.green(`[Bookmaker] FOUND LIVE MATCH! "${bestLiveResult.item.EventName || bestLiveResult.item.name}" (Score: ${bestLiveResult.score})`));
             this.state = {
               status: this.constructor.Status.IDLE,
               message: `Found LIVE match for ${home} vs ${away}`,
             };
-            return bestLiveResult.item;
+            return { ...bestLiveResult.item, matchScore: bestLiveResult.score };
           }
+        }
+
+        // Fallback: Token-based containment check (for "paok" matching "PAOK Thessaloniki U19")
+        console.log("[Bookmaker] Fuse search failed/low confidence. Trying token fallback...");
+        const homeTokens = normalizedHome.split(" ").filter(t => t.length > 2);
+        const awayTokens = normalizedAway.split(" ").filter(t => t.length > 2);
+
+        const tokenMatch = searchableLiveMatches.find(m => {
+          const targetName = m.combinedEventName.toLowerCase();
+          // Check if ALL significant tokens of input team are present in the target name
+          const homeMatch = homeTokens.every(t => targetName.includes(t));
+          const awayMatch = awayTokens.every(t => targetName.includes(t));
+
+          // Also try reverse order just in case
+          // const reverseHomeMatch = homeTokens.every(t => targetName.includes(t)); 
+          // Not needed if we check combinedEventName which is made of Home - Away. 
+          // But actually combinedEventName is "Home - Away".
+          // If we search "Away - Home", homeTokens (actually Away team name) will be in targetName.
+
+          return homeMatch && awayMatch;
+        });
+
+        if (tokenMatch) {
+          console.log(chalk.green(`[Bookmaker] FOUND LIVE MATCH (Token Fallback)! "${tokenMatch.EventName || tokenMatch.name}"`));
+          this.state = {
+            status: this.constructor.Status.IDLE,
+            message: `Found LIVE match via token fallback for ${home} vs ${away}`,
+          };
+          return { ...tokenMatch, matchScore: "token-fallback" };
         }
       }
 
