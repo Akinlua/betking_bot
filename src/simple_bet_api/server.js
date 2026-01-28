@@ -180,3 +180,9 @@ startServer();
 //             "username": "spqib3jo21",
 //             "password": "S_bb7zjHX9deQ1juw3"
 //         }
+
+// {
+//         "username": "Tehmple",
+//         "password": "Skeepoh10$",
+//         "stake": 2000
+//     },
