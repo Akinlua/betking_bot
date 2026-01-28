@@ -2329,9 +2329,17 @@ class BetKingBookmaker {
   }
 
   #fetchJsonFromApi = async (url) => {
+    let context;
     let page;
     try {
-      page = await this.browser.newPage();
+      const cookies = this.botStore.getBookmakerCookies();
+      context = await this.browser.createBrowserContext();
+      page = await context.newPage();
+
+      if (cookies && cookies.length > 0) {
+        // Quick check if cookies are valid? No, just use them. fetchJson might fail if 401.
+        await page.setCookie(...cookies);
+      }
       await page.setExtraHTTPHeaders({
         "Cache-Control": "no-cache",
         Pragma: "no-cache",
@@ -2349,11 +2357,16 @@ class BetKingBookmaker {
       console.error(`[Bookmaker] Error fetching API URL ${url}:`, error.message);
       return null;
     } finally {
-      await page.evaluate(() => {
-        window.localStorage.clear();
-        window.sessionStorage.clear();
-      });
-      await page.close();
+      if (page && !page.isClosed()) {
+        try {
+          await page.evaluate(() => {
+            window.localStorage.clear();
+            window.sessionStorage.clear();
+          });
+        } catch (e) { }
+        await page.close().catch(() => { });
+      }
+      if (context) await context.close().catch(() => { });
     }
   };
 
@@ -2866,9 +2879,11 @@ class BetKingBookmaker {
       status: this.constructor.Status.WORKING,
       message: `Getting account state for ${username}`,
     };
+    let context;
     let page;
     try {
-      page = await this.browser.newPage();
+      context = await this.browser.createBrowserContext();
+      page = await context.newPage();
       await page.setRequestInterception(true);
       page.on("request", (req) => {
         if (["image", "stylesheet", "font", "media"].includes(req.resourceType())) {
@@ -2939,7 +2954,8 @@ class BetKingBookmaker {
       };
       throw error;
     } finally {
-      if (page) await page.close();
+      if (page) await page.close().catch(() => { });
+      if (context) await context.close().catch(() => { });
     }
   }
 
@@ -2979,11 +2995,13 @@ class BetKingBookmaker {
         signedInUrl: "https://m.betking.com/",
       };
 
+      let context;
       let page;
 
       try {
         console.log(`[Bookmaker] Sign-in attempt ${attempt} of ${maxRetries}...`);
-        page = await this.browser.newPage();
+        context = await this.browser.createBrowserContext();
+        page = await context.newPage();
         await page.setRequestInterception(true);
         page.on("request", (req) => {
           const resourceType = req.resourceType();
@@ -3109,7 +3127,8 @@ class BetKingBookmaker {
 
         console.log(`[Bookmaker] Successfully extracted access token (Length: ${accessToken.length})`);
         await this.botStore.setAccessToken(accessToken);
-        await page.close();
+        if (page) await page.close().catch(() => { });
+        if (context) await context.close().catch(() => { });
 
         // Get accunt state
         const accountState = await this.#getBookmakerAccountState(username);
@@ -3129,13 +3148,8 @@ class BetKingBookmaker {
         console.error(`[Bookmaker] Sign-in attempt ${attempt} failed: ${error.message}`);
 
         // Ensure page is closed before next attempt
-        if (page && !page.isClosed()) {
-          try {
-            await page.close();
-          } catch (closeErr) {
-            console.error("[Bookmaker] Error closing page during retry cleanup:", closeErr.message);
-          }
-        }
+        if (page && !page.isClosed()) await page.close().catch(() => { });
+        if (context) await context.close().catch(() => { });
 
         if (attempt < maxRetries) {
           console.log(`[Bookmaker] Retrying sign-in in 2 seconds...`);
@@ -3202,6 +3216,7 @@ class BetKingBookmaker {
    * Uses the current authenticated session cookies to make the request from within the page context.
    */
   async fetchFootballGoOverview() {
+    let context;
     let page;
     try {
       const cookies = this.botStore.getBookmakerCookies();
@@ -3213,7 +3228,8 @@ class BetKingBookmaker {
         throw new AuthenticationError("Cookies have expired.");
       }
 
-      page = await this.browser.newPage();
+      context = await this.browser.createBrowserContext();
+      page = await context.newPage();
       await page.setRequestInterception(true);
       page.on("request", (req) => {
         const rt = req.resourceType();
@@ -3267,7 +3283,8 @@ class BetKingBookmaker {
       console.error("[Bookmaker] fetchFootballGoOverview error:", error.message);
       throw error;
     } finally {
-      if (page) await page.close();
+      if (page) await page.close().catch(() => { });
+      if (context) await context.close().catch(() => { });
     }
   }
 
@@ -3618,6 +3635,7 @@ class BetKingBookmaker {
       status: this.constructor.Status.WORKING,
       message: "Starting bet placement.",
     };
+    let context;
     let page;
 
     try {
@@ -3642,19 +3660,9 @@ class BetKingBookmaker {
       }
       console.log(`[Bookmaker] Session identity verified for ${username}.`);
 
-      page = await this.browser.newPage();
-
-      // CRITICAL: Ensure we are starting with a clean slate
-      // Puppeteer's default context shares cookies. If a previous user logged in, their cookies might persist.
-      // We explicitly clear ALL cookies and cache for this page's underlying browser context.
-      try {
-        const client = await page.target().createCDPSession();
-        await client.send('Network.clearBrowserCookies');
-        await client.send('Network.clearBrowserCache');
-        console.log("[Bookmaker] Browser cookies & cache cleared for fresh session context.");
-      } catch (cdpError) {
-        console.warn("[Bookmaker] Warning: Could not clear browser cookies via CDP. Session leakage is possible if context is shared.", cdpError);
-      }
+      // ISOLATION: Create a fresh Incognito context for this operation to prevent cookie leakage
+      context = await this.browser.createBrowserContext();
+      page = await context.newPage();
 
       // Mimic fetchJsonFromApi headers
       await page.setExtraHTTPHeaders({
@@ -3802,9 +3810,8 @@ class BetKingBookmaker {
       }
       throw error;
     } finally {
-      if (page) {
-        await page.close();
-      }
+      if (page && !page.isClosed()) await page.close().catch(() => { });
+      if (context) await context.close().catch(() => { });
     }
   }
 
