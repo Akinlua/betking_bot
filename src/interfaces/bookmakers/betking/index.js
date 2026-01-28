@@ -2286,6 +2286,48 @@ class BetKingBookmaker {
     }
   }
 
+  #decodeJwt(token) {
+    try {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+
+      return JSON.parse(jsonPayload);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  #verifyTokenIdentity(token, expectedUsername) {
+    if (!token) return false;
+    const payload = this.#decodeJwt(token);
+    if (!payload) {
+      console.warn("[Bookmaker] Could not decode token for identity check. Proceeding with caution.");
+      return true; // Allow processing if token format is unknown, but log warning
+    }
+
+    // console.log("[Bookmaker] Token Payload Claims:", Object.keys(payload)); // Debug
+
+    // Normalize expected username (remove leading 0 if standard country code issue, etc? Keep simple for now)
+    const target = String(expectedUsername).trim();
+
+    // Check common claims
+    const claims = [payload.sub, payload.name, payload.unique_name, payload.mobile, payload.phoneNumber, payload.preferred_username];
+
+    // Check if ANY claim contains the username
+    const match = claims.some(claim => claim && String(claim).includes(target));
+
+    if (!match) {
+      console.error(`[Bookmaker] CRITICAL: Session Identity Mismatch! Expected '${target}' but found:`, claims.filter(c => c));
+      return false;
+    }
+
+    // console.log(`[Bookmaker] Identity verified. Token belongs to ${target}.`);
+    return true;
+  }
+
   #fetchJsonFromApi = async (url) => {
     let page;
     try {
@@ -3058,6 +3100,13 @@ class BetKingBookmaker {
         if (!accessToken) {
           throw new Error("Access token could not be found after login (checked cookies and storage).");
         }
+
+        // Strict Identity Check on Login
+        if (!this.#verifyTokenIdentity(accessToken, username)) {
+          // Force logout / cleanup manually if needed, but throwing error will trigger retry logic
+          throw new Error("Login successful but token identity identity verification failed (wrong user?).");
+        }
+
         console.log(`[Bookmaker] Successfully extracted access token (Length: ${accessToken.length})`);
         await this.botStore.setAccessToken(accessToken);
         await page.close();
@@ -3587,7 +3636,25 @@ class BetKingBookmaker {
         throw new AuthenticationError("Access token is missing. Please sign in or refresh account info.");
       }
 
+      // Verify strict identity to prevent cross-account betting
+      if (!this.#verifyTokenIdentity(accessToken, username)) {
+        throw new AuthenticationError(`Session Mismatch: The active session does not belong to user ${username}. Aborting bet.`);
+      }
+      console.log(`[Bookmaker] Session identity verified for ${username}.`);
+
       page = await this.browser.newPage();
+
+      // CRITICAL: Ensure we are starting with a clean slate
+      // Puppeteer's default context shares cookies. If a previous user logged in, their cookies might persist.
+      // We explicitly clear ALL cookies and cache for this page's underlying browser context.
+      try {
+        const client = await page.target().createCDPSession();
+        await client.send('Network.clearBrowserCookies');
+        await client.send('Network.clearBrowserCache');
+        console.log("[Bookmaker] Browser cookies & cache cleared for fresh session context.");
+      } catch (cdpError) {
+        console.warn("[Bookmaker] Warning: Could not clear browser cookies via CDP. Session leakage is possible if context is shared.", cdpError);
+      }
 
       // Mimic fetchJsonFromApi headers
       await page.setExtraHTTPHeaders({
