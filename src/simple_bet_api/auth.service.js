@@ -48,6 +48,32 @@ async function syncAndLoginAll() {
             return;
         }
 
+        // Flush stale accounts: Remove data files for users not in accounts.json
+        try {
+            const validUsernames = new Set(accounts.map(a => a.username).filter(Boolean));
+
+            // Check if data dir exists before reading
+            try {
+                await fs.access(DATA_DIR);
+                const files = await fs.readdir(DATA_DIR);
+
+                for (const file of files) {
+                    if (file.endsWith(".json")) {
+                        const username = path.basename(file, ".json");
+                        if (!validUsernames.has(username)) {
+                            console.log(chalk.yellow(`[AuthService] Flushing stale account data for: ${username}`));
+                            await fs.unlink(path.join(DATA_DIR, file));
+                        }
+                    }
+                }
+            } catch (err) {
+                // Ignore if data dir doesn't exist yet
+                if (err.code !== 'ENOENT') throw err;
+            }
+        } catch (err) {
+            console.error(chalk.yellow(`[AuthService] Warning during stale account cleanup: ${err.message}`));
+        }
+
         console.log(chalk.dim(`[AuthService] Found ${accounts.length} accounts in configuration.`));
 
         for (const account of accounts) {
