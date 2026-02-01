@@ -286,6 +286,10 @@ export async function placeBet(req, res) {
         return res.status(400).json({ error: "Outcome is required for this market type." });
     }
 
+    if (market_type === "spread" || market_type === "handicap") {
+        return res.status(400).json({ error: "Spread/Handicap betting is disabled on this instance." });
+    }
+
     const { browser } = req;
 
     // Resolve relative to this file
