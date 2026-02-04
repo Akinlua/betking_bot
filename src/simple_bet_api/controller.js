@@ -92,7 +92,7 @@ function findMarketAndSelection(matchDetails, criteria) {
 
     // Check league exclusions
     if (shouldExcludeLeague(matchDetails, market_type)) {
-        const leagueName = matchDetails?.league?.name || matchDetails?.leagueName || "Unknown";
+        const leagueName = normalize(matchDetails?.tournamentName || matchDetails?.leagueName || "");
         throw new Error(`League "${leagueName}" is excluded for ${market_type} bets`);
     }
 
