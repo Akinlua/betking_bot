@@ -3,7 +3,7 @@ Description=Run Cleanup Browser Service Every 30 Minutes
 
 [Timer]
 OnBootSec=10min
-OnUnitActiveSec=30min
+OnUnitActiveSec=60min
 Unit=cleanup_browser.service
 
 [Install]
