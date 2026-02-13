@@ -23,14 +23,14 @@ def send_to_api(data: dict):
 
 
 def poll(session):
-    response = session.get(f"{BASE_URL}/raw-tips", stream=True)
+    response = session.get(f"{BASE_URL}/odds-drop", stream=True)
     yield response
 
 
 def convert(tip: dict, cache: dict):
     # alerted = (tip["alerted"]/ 100) * 100
     # id = f"{tip['id']}-{tip['league_id']}-{tip['market']}-{tip['outcome']}-{tip['period']}-{tip['point']}-{alerted}"
-    id = f"{tip['id']}-{tip['league_id']}-{tip['market']}-{tip['outcome']}-{tip['period']}-{tip['point']}"
+    id = f"{tip['id']}-{tip['league_id']}-{tip['sect']}-{tip['outcome']}-{tip['period']}-{tip['point']}"
 
     if id in cache:
         entry = cache[id]
@@ -47,7 +47,7 @@ def convert(tip: dict, cache: dict):
         cache[id] = {"last_alerted": tip["alerted"], "count": 1}
     
     ## Markets are moneyline,spread,total
-    market = tip["market"].lower()
+    market = tip["sect"].lower()
     market = "team_totals" if market == "teamtotal" else market
 
     outcome: str = tip["outcome"].lower()
@@ -94,6 +94,10 @@ def stream(session, cache: dict):
                             fixtures = json.loads(tips)
 
                             print(f"fixtures: {fixtures}")
+                            # If it's a handshake message, ignore it
+                            if isinstance(fixtures, dict) and fixtures.get("type") == "connected":
+                                continue
+                            
                             for tip in list(fixtures):
                                 parsed_tip = convert(tip, cache)
                                 if parsed_tip:
@@ -107,7 +111,14 @@ def stream(session, cache: dict):
 
 
 if __name__ == "__main__":
-    cache = {}
-    for alert in stream(client, cache):
-        print(f"{alert}")
-        send_to_api(alert)
+    try:
+        cache = {}
+        for alert in stream(client, cache):
+            print(f"{alert}")
+            send_to_api(alert)
+
+    except KeyboardInterrupt:
+        print('Stopping Streams')
+
+    except Exception as e:
+        print(F'Stream stopped unexpectedly because of: {e}')
