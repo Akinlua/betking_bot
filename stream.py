@@ -99,6 +99,8 @@ def stream(session, cache: dict):
                                 continue
                             
                             for tip in list(fixtures):
+                                if tip.get("sport_id") != 1:
+                                    continue
                                 parsed_tip = convert(tip, cache)
                                 if parsed_tip:
                                     yield parsed_tip
