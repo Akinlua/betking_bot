@@ -62,9 +62,40 @@ function getExclusionReason(selection, market, market_type) {
 }
 
 /**
+ * Checks if the bet criteria matches the allowed markets filter.
+ */
+function isAllowedBet(criteria) {
+    const { market_type, outcome } = criteria;
+    const normOutcome = normalize(outcome);
+    const normMarketType = normalize(market_type);
+
+    // 1. Moneyline: Only Away (2) or Draw (X)
+    if (normMarketType === "moneyline") {
+        return (normOutcome === "away" || normOutcome === "2" || normOutcome === "draw" || normOutcome === "x");
+    }
+
+    // 2. Team Totals: Only Under
+    if (normMarketType === "team_totals") {
+        return normOutcome.includes("under");
+    }
+
+    // 3. Totals: Over and Under
+    if (normMarketType === "total" || normMarketType === "totals") {
+        return normOutcome.includes("over") || normOutcome.includes("under");
+    }
+
+    return false;
+}
+
+/**
  * Finds the correct market and selection based on the detailed criteria.
  */
 function findMarketAndSelection(matchDetails, criteria) {
+    // Validate request against allowed markets list
+    if (!isAllowedBet(criteria)) {
+        throw new Error(`Bet skipped by market filter: ${criteria.market_type} - ${criteria.outcome}`);
+    }
+
     const { market_type, outcome, points, is_first_half, team } = criteria;
     const rawMarkets = Array.isArray(matchDetails?.markets) ? matchDetails.markets : [];
 
